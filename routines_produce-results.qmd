@@ -1,0 +1,120 @@
+---
+title: "routine-produce-results"
+format: 
+  html:
+    code-fold: TRUE
+editor: visual
+---
+
+## Produce the results for 'Towards a normative theory of routines'
+
+This notebook provides a computationally reproducible record of the analysis and figure generation for the paper 'Towards a normative theory of routines' (or whatever we wind up deciding to call it.
+
+### Settings and other things
+
+This notebook assumes you have the following file structure:
+
+``` markdown
+routines_produce-results/
+│   ├── _quarto.yml
+│   ├── *.Rproj
+│   ├── this-qmd-doc.qmd
+│   ├── R/
+│   │   └── all-r-scripts.R
+│   ├── data-wrangled/
+│   │   └── all-wrangled-data-files.csv
+│   ├── figs/
+│   ├── sims/
+│   ├── analysis-output/
+```
+
+First, load required packages and set the relative paths for data and other required things...
+
+```{r, fold=TRUE, results='hide'}
+options(tidyverse.quiet = TRUE)
+library(tidyverse)
+library(grid)
+library(gridExtra)
+library(magick)
+library(knitr)
+library(pdftools)
+
+data_path = '/home/kgarner/Documents/projects/doors-data/'
+source('src-ent/ent_initial-data-sort.R')
+source('src-ent/ent_functions.R')
+source('src-ent/ent_compute-routine-measure.R')
+source('src-ent/plot_trajectories.R')
+```
+
+## Q1. Can we produce routines in a consistent way across sessions and conditions?
+
+Here, I calculate the routine (R) scores for each participant, generate density plots of those scores over experiments and conditions, and then I print out the analysis of the basis differences between conditions, across replications.
+
+### Compute R Scores
+
+First I compute R scores for each participant, using the formula -
+
+```         
+![r formula](src-ent/images/R_def.png)
+```
+
+```{r, fold=TRUE, results='hide'}
+
+apply_sort_data <- function(exp_str, data_path){
+    # take the trial level data from session 2 and sort into contexts. We assume a person believes they are in the same context until their first 'cc' hit after a context switch.
+  data_fname <- paste(data_path, 'data-wrangled/exp_', exp_str, 
+                       '_evt.csv', sep='')
+  save_fname <- paste(data_path, 'data-wrangled/exp', exp_str, 
+                          'door_selections_for_ent.csv', sep='')
+  ent_initial_data_sort(data_fname, save_fname)
+}
+lapply(c('lt', 'ts'), apply_sort_data, data_path=data_path)
+
+apply_compute_R <- function(exp_str){
+# take the data output from the step above, and compute the routine score for each participant and context
+  data_fname <- paste(data_path, 'data-wrangled/exp_', exp_str, 
+                      '_door_selections_for_ent.csv', sep='')
+  save_new_data_fname <- paste(data_path, 'data-wrangled/exp_', exp_str,
+                               '_rscore-full.csv', sep='') # for saving R scores not averaged across context. Note that original plotting code in the function below, now commented out, shows that 
+  save_sum_data_fname <- paste(data_path, 'data-wrangled/exp_', exp_str, 
+                               '_rscore.csv', sep='')
+  ent_compute_routine_measure(data_fname, save_new_data_fname, save_sum_data_fname)
+}
+
+lapply(c('lt', 'ts'), apply_compute_R)
+```
+
+### Plot R densities across experiments and conditions
+
+Now that we have the R scores, we can make a pretty plot that shows the scores, by training condition, for each of the experiments.
+
+I will make 2 subplots: one showing the densities over the two experiments (by condition), and one showing the trajectories for 2 participants. These will then be put together into one big figure, for the manuscript
+
+#### Trajectories
+
+Note that the below 'function' contains hard coded, handpicked subsets of trials, to show the trajectories in performance.
+
+```{r, results='hide', output=FALSE}
+
+exp_str <- 'lt'
+traj_data_fname <- paste(data_path, 'data-wrangled/exp_', exp_str, '_evt.csv', sep="")
+traj_fig_fname <- paste(data_path, 'figs/', 'trajectories.pdf', sep='')
+w <- 12 # width of plot, in cm
+traj_plt <- plot_trajectories(traj_data_fname, traj_fig_fname, w)
+
+
+```
+
+Now we've created it, lets display it -
+
+```{r}
+
+##| fig-path: '/home/kgarner/Documents/projects/doors-data/figs'
+#| label: trajectories
+#| fig-align: center
+#| fig-cap: "Example trajectories over trials for two subjects"
+knitr::include_graphics(traj_fig_fname, rel_path = FALSE)
+
+```
+
+### Analysis of R scores by condition, across replications
