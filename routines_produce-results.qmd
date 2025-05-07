@@ -52,7 +52,7 @@ Here, I calculate the routine (R) scores for each participant, generate density 
 
 ### Compute R Scores
 
-First I compute R scores for each participant, using the formula -
+First I compute R scores for each participant, using the formula - test
 
 ```         
 ![r formula](src-ent/images/R_def.png)
