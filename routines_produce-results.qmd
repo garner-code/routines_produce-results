@@ -148,3 +148,11 @@ lapply(exp_strs, apply_generate_nulls)
 
 Now that we have the null Rs, we can compute a z-score for each participant, based on their observed R, and the null distribution. We will save the z-scores for plotting, and save the results of t-tests against zero and against -2 to a csv file.
 Note that when the below was originally run, visual inspection of the data showed some outliers, so I removed participants with a z-score > or < 3 standard deviations from the mean.
+
+```{r}
+
+exp_strs <- c('lt','ts')
+
+  null_rs_fname = paste(data_path, '/exp_', exp_str, '_rnulls.csv', sep='') # for saving
+
+```
