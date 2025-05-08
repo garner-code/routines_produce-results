@@ -107,7 +107,9 @@ tracs <- grid.arrange(all_ps[[1]], all_ps[[2]],
                       left = "sub",
                       top = "trials")
 
-ggsave(fig_save_fname, tracs, 
+ggsave(paste(fig_save_fname, '.pdf', sep=''), tracs, 
+       width = w+.5, height = (w/6*2)+.5, units="cm")
+ggsave(paste(fig_save_fname, '.svg', sep=''), tracs, 
        width = w+.5, height = (w/6*2)+.5, units="cm")
 tracs
 }

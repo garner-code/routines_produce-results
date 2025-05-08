@@ -206,25 +206,55 @@ Disabled features: cairo, ghostscript, rsvg</code></pre>
 <section id="trajectories" class="level4">
 <h4 class="anchored" data-anchor-id="trajectories">Trajectories</h4>
 <p>Note that the below ‘function’ contains hard coded, handpicked subsets of trials, to show the trajectories in performance.</p>
-<p>```{# {r, results=‘hide’, output=FALSE} # # exp_str &lt;- ‘lt’ # traj_data_fname &lt;- paste(data_path, ‘data-wrangled/exp_’, exp_str, ’_evt.csv’, sep=““) # traj_fig_fname &lt;- paste(data_path, ‘figs/’, ‘trajectories.pdf’, sep=’’) # w &lt;- 12 # width of plot, in cm # traj_plt &lt;- plot_trajectories(traj_data_fname, traj_fig_fname, w) #</p>
-<pre><code>
-Now we've created it, lets display it -
-
-
-
-::: {.cell}
-
-```{.r .cell-code}
-# ##| fig-path: '/home/kgarner/Documents/projects/doors-data/figs'
-# #| label: trajectories
-# #| fig-align: center
-# #| fig-cap: "Example trajectories over trials for two subjects"
-# knitr::include_graphics(traj_fig_fname, rel_path = FALSE)</code></pre>
-<p>:::</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>exp_str <span class="ot">&lt;-</span> <span class="st">'lt'</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>traj_data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str, <span class="st">'_evt.csv'</span>, <span class="at">sep=</span><span class="st">""</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>traj_fig_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">'figs/'</span>, <span class="st">'trajectories'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="co"># width of plot, in cm</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>traj_plt <span class="ot">&lt;-</span> <span class="fu">plot_trajectories</span>(traj_data_fname, traj_fig_fname, w)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Now we’ve created it, lets display it -</p>
+<div id="fig-trajectories" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-trajectories-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<img src="figs/trajectories.svg" class="img-fluid figure-img">
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-trajectories-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Fig 1: example trajectories across doors
+</figcaption>
+</figure>
+</div>
 </section>
 </section>
-<section id="analysis-of-r-scores-by-condition-across-replications" class="level3">
-<h3 class="anchored" data-anchor-id="analysis-of-r-scores-by-condition-across-replications">Analysis of R scores by condition, across replications</h3>
+<section id="r-scores-are-systematically-higher-than-you-would-expect-by-chance" class="level3">
+<h3 class="anchored" data-anchor-id="r-scores-are-systematically-higher-than-you-would-expect-by-chance">R scores are systematically higher than you would expect by chance</h3>
+<p>The next thing we want to demonstrate is the R scores are statistically higher than you would expect by chance. To achieve this, we first generate a null distribution of door selections for each subject, and obtaining a z score for their observed R score and the mean and sd of the null. We will compare this to zero, and to the performance of a perfectly performing, random agent.</p>
+<p>First, to make the nulls, we take their observed data, and resample it a thousand times, under the constraint that the same door can’t be sampled twice.</p>
+<p>Note that the evaulation of the code block below is set to false, as it takes a while to get the null distributions</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>) <span class="co"># for reproducibility is the meaning of life</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>exp_strs <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>apply_generate_nulls <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str){</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  door_selections_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str, <span class="st">'_door_selections_for_ent.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  r_dat_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str, <span class="st">'_rscore-full.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  null_rs_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str, <span class="st">'_rnulls.csv'</span>, <span class="at">sep=</span><span class="st">''</span>) <span class="co"># for saving</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_nulls</span>(door_selections_fname,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>                 r_dat_fname,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>                 null_rs_fname)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(exp_strs, apply_generate_nulls)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
 </section>
 
