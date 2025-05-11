@@ -36,9 +36,8 @@ options(tidyverse.quiet = TRUE)
 library(tidyverse)
 library(grid)
 library(gridExtra)
-library(magick)
 library(knitr)
-library(pdftools)
+
 
 data_path = 'data-wrangled'
 
@@ -69,8 +68,8 @@ apply_sort_data <- function(exp_str, data_path){
     # take the trial level data from session 2 and sort into contexts. We assume a person believes they are in the same context until their first 'cc' hit after a context switch.
   data_fname <- paste(data_path, '/exp_', exp_str,
                        '_evt.csv', sep='')
-  save_fname <- paste(data_path, '/exp', exp_str,
-                          'door_selections_for_ent.csv', sep='')
+  save_fname <- paste(data_path, '/exp_', exp_str,
+                          '_door_selections_for_ent.csv', sep='')
   ent_initial_data_sort(data_fname, save_fname)
 }
 lapply(c('lt', 'ts'), apply_sort_data, data_path=data_path)
@@ -112,14 +111,11 @@ traj_plt <- plot_trajectories(traj_data_fname, traj_fig_fname, w)
 
 Now we've created it, lets display it -
 
-::: {#fig-trajectories layout-ncol=1}
-
+::: {#fig-trajectories layout-ncol="1"}
 ![](figs/trajectories.svg)
 
 Fig 1: example trajectories across doors
-
 :::
-
 
 ### R scores are systematically higher than you would expect by chance
 
@@ -146,13 +142,35 @@ lapply(exp_strs, apply_generate_nulls)
 
 ```
 
-Now that we have the null Rs, we can compute a z-score for each participant, based on their observed R, and the null distribution. We will save the z-scores for plotting, and save the results of t-tests against zero and against -2 to a csv file.
-Note that when the below was originally run, visual inspection of the data showed some outliers, so I removed participants with a z-score > or < 3 standard deviations from the mean.
+Now that we have the null Rs, we can compute a z-score for each participant, based on their observed R, and the null distribution. We will save the z-scores for plotting, and save the results of t-tests against zero and against -2 to a csv file. Note that when the below was originally run, visual inspection of the data showed some outliers, so I removed participants with a z-score \> or \< 3 standard deviations from the mean.
 
 ```{r}
 
 exp_strs <- c('lt','ts')
 
+z_comps <- function(exp_str, data_path){
   null_rs_fname = paste(data_path, '/exp_', exp_str, '_rnulls.csv', sep='') # for saving
+  zs_out_fname = paste(data_path, '/exp_', exp_str, '_zs_cl.csv', sep='')
+  zs_stats_fname = paste(data_path, '/exp_', exp_str, '_zs_cl_inf-test.csv', sep='')
+  ent_compute_zs(null_rs_fname, zs_out_fname, zs_stats_fname)
+}  
 
+lapply(exp_strs, z_comps, data_path=data_path)
+  
+  
+```
+
+Lets look at those stats!
+
+```{r}
+
+z_stats <- lapply(c('lt', 'ts'), 
+                function(x) read.csv(paste(data_path, '/exp_', x, '_zs_cl_inf-test.csv', sep=''), 
+                                     header=T))
+
+fmt = 'In line with the hypothesis that we could elicit routines with the task, routine z-scores were significantly lower than would be expected by chance in the first experiment, i.e. a z-score of -2 (t(%d) = %.2f, p< %.2f), and this replicated across experiments (t(%d) = %.2f, p< %.2f)'
+z_results <- sprintf(fmt, z_stats[[1]]$parameter.df[[2]], z_stats[[1]]$statistic.t[2], z_stats[[1]]$p.value,
+        z_stats[[2]]$parameter.df[[2]], z_stats[[2]]$statistic.t[2], z_stats[[2]]$p.value)
+
+z_results
 ```

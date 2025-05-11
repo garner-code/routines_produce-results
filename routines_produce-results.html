@@ -133,32 +133,15 @@ Attaching package: 'gridExtra'</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magick)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Linking to ImageMagick 6.9.12.98
-Enabled features: fontconfig, freetype, fftw, heic, lcms, pango, raw, webp, x11
-Disabled features: cairo, ghostscript, rsvg</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Using 16 threads</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pdftools)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Using poppler version 24.02.0</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">=</span> <span class="st">'data-wrangled'</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>function_loc <span class="ot">&lt;-</span> <span class="st">"R"</span> <span class="co"># where are the functions?</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>req_functions <span class="ot">&lt;-</span> <span class="fu">list.files</span>(function_loc)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(req_functions, <span class="cf">function</span>(x) <span class="fu">source</span>(<span class="fu">paste</span>(here<span class="sc">::</span><span class="fu">here</span>(function_loc),</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                                               x, <span class="at">sep=</span><span class="st">"/"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">=</span> <span class="st">'data-wrangled'</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>function_loc <span class="ot">&lt;-</span> <span class="st">"R"</span> <span class="co"># where are the functions?</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>req_functions <span class="ot">&lt;-</span> <span class="fu">list.files</span>(function_loc)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(req_functions, <span class="cf">function</span>(x) <span class="fu">source</span>(<span class="fu">paste</span>(here<span class="sc">::</span><span class="fu">here</span>(function_loc),</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                                               x, <span class="at">sep=</span><span class="st">"/"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -174,28 +157,28 @@ Disabled features: cairo, ghostscript, rsvg</code></pre>
 <div class="cell" data-fold="true">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>apply_sort_data <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str, data_path){</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># take the trial level data from session 2 and sort into contexts. We assume a person believes they are in the same context until their first 'cc' hit after a context switch.</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str,</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                       <span class="st">'_evt.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  save_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp'</span>, exp_str,</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'door_selections_for_ent.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ent_initial_data_sort</span>(data_fname, save_fname)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>), apply_sort_data, <span class="at">data_path=</span>data_path)</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>apply_compute_R <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str){</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># take the data output from the step above, and compute the routine score for each participant and context</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str,</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'_door_selections_for_ent.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  save_new_data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str,</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>                               <span class="st">'_rscore-full.csv'</span>, <span class="at">sep=</span><span class="st">''</span>) <span class="co"># for saving R scores not averaged across context. Note that original plotting code in the function below, now commented out, shows that</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  save_sum_data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str,</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>                               <span class="st">'_rscore.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ent_compute_routine_measure</span>(data_fname, save_new_data_fname, save_sum_data_fname)</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>), apply_compute_R)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>apply_sort_data <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str, data_path){</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># take the trial level data from session 2 and sort into contexts. We assume a person believes they are in the same context until their first 'cc' hit after a context switch.</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                       <span class="st">'_evt.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  save_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'_door_selections_for_ent.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ent_initial_data_sort</span>(data_fname, save_fname)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>), apply_sort_data, <span class="at">data_path=</span>data_path)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>apply_compute_R <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str){</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co"># take the data output from the step above, and compute the routine score for each participant and context</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'_door_selections_for_ent.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  save_new_data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>                               <span class="st">'_rscore-full.csv'</span>, <span class="at">sep=</span><span class="st">''</span>) <span class="co"># for saving R scores not averaged across context. Note that original plotting code in the function below, now commented out, shows that</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  save_sum_data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str,</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>                               <span class="st">'_rscore.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ent_compute_routine_measure</span>(data_fname, save_new_data_fname, save_sum_data_fname)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>), apply_compute_R)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -209,11 +192,11 @@ Disabled features: cairo, ghostscript, rsvg</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>exp_str <span class="ot">&lt;-</span> <span class="st">'lt'</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>traj_data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str, <span class="st">'_evt.csv'</span>, <span class="at">sep=</span><span class="st">""</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>traj_fig_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">'figs/'</span>, <span class="st">'trajectories'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="co"># width of plot, in cm</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>traj_plt <span class="ot">&lt;-</span> <span class="fu">plot_trajectories</span>(traj_data_fname, traj_fig_fname, w)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>exp_str <span class="ot">&lt;-</span> <span class="st">'lt'</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>traj_data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str, <span class="st">'_evt.csv'</span>, <span class="at">sep=</span><span class="st">""</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>traj_fig_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">'figs/'</span>, <span class="st">'trajectories'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="dv">12</span> <span class="co"># width of plot, in cm</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>traj_plt <span class="ot">&lt;-</span> <span class="fu">plot_trajectories</span>(traj_data_fname, traj_fig_fname, w)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Now we’ve created it, lets display it -</p>
@@ -237,23 +220,71 @@ Figure&nbsp;1: Fig 1: example trajectories across doors
 <h3 class="anchored" data-anchor-id="r-scores-are-systematically-higher-than-you-would-expect-by-chance">R scores are systematically higher than you would expect by chance</h3>
 <p>The next thing we want to demonstrate is the R scores are statistically higher than you would expect by chance. To achieve this, we first generate a null distribution of door selections for each subject, and obtaining a z score for their observed R score and the mean and sd of the null. We will compare this to zero, and to the performance of a perfectly performing, random agent.</p>
 <p>First, to make the nulls, we take their observed data, and resample it a thousand times, under the constraint that the same door can’t be sampled twice.</p>
-<p>Note that the evaulation of the code block below is set to false, as it takes a while to get the null distributions</p>
+<p>Note that the evaluation of the code block below is set to false, as it takes a while to get the null distributions</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>) <span class="co"># for reproducibility is the meaning of life</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>exp_strs <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>apply_generate_nulls <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str){</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  door_selections_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str, <span class="st">'_door_selections_for_ent.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  r_dat_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str, <span class="st">'_rscore-full.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  null_rs_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str, <span class="st">'_rnulls.csv'</span>, <span class="at">sep=</span><span class="st">''</span>) <span class="co"># for saving</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_nulls</span>(door_selections_fname,</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>                 r_dat_fname,</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>                 null_rs_fname)</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(exp_strs, apply_generate_nulls)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>) <span class="co"># for reproducibility is the meaning of life</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>exp_strs <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>apply_generate_nulls <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str){</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  door_selections_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str, <span class="st">'_door_selections_for_ent.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  r_dat_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str, <span class="st">'_rscore-full.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  null_rs_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str, <span class="st">'_rnulls.csv'</span>, <span class="at">sep=</span><span class="st">''</span>) <span class="co"># for saving</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_nulls</span>(door_selections_fname,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                 r_dat_fname,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                 null_rs_fname)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(exp_strs, apply_generate_nulls)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+</div>
+<p>Now that we have the null Rs, we can compute a z-score for each participant, based on their observed R, and the null distribution. We will save the z-scores for plotting, and save the results of t-tests against zero and against -2 to a csv file. Note that when the below was originally run, visual inspection of the data showed some outliers, so I removed participants with a z-score &gt; or &lt; 3 standard deviations from the mean.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>exp_strs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'lt'</span>,<span class="st">'ts'</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>z_comps <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str, data_path){</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  null_rs_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str, <span class="st">'_rnulls.csv'</span>, <span class="at">sep=</span><span class="st">''</span>) <span class="co"># for saving</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  zs_out_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str, <span class="st">'_zs_cl.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  zs_stats_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, exp_str, <span class="st">'_zs_cl_inf-test.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ent_compute_zs</span>(null_rs_fname, zs_out_fname, zs_stats_fname)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>}  </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(exp_strs, z_comps, <span class="at">data_path=</span>data_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'sub'. You can override using the `.groups`
+argument.
+`summarise()` has grouped output by 'sub'. You can override using the `.groups`
+argument.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+NULL
+
+[[2]]
+NULL</code></pre>
+</div>
+</div>
+<p>Lets look at those stats!</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>z_stats <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>), </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                <span class="cf">function</span>(x) <span class="fu">read.csv</span>(<span class="fu">paste</span>(data_path, <span class="st">'/exp_'</span>, x, <span class="st">'_zs_cl_inf-test.csv'</span>, <span class="at">sep=</span><span class="st">''</span>), </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">header=</span>T))</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>fmt <span class="ot">=</span> <span class="st">'In line with the hypothesis that we could elicit routines with the task, routine z-scores were significantly lower than would be expected by chance in the first experiment, i.e. a z-score of -2 (t(%d) = %.2f, p&lt; %.2f), and this replicated across experiments (t(%d) = %.2f, p&lt; %.2f)'</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>z_results <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(fmt, z_stats[[<span class="dv">1</span>]]<span class="sc">$</span>parameter.df[[<span class="dv">2</span>]], z_stats[[<span class="dv">1</span>]]<span class="sc">$</span>statistic.t[<span class="dv">2</span>], z_stats[[<span class="dv">1</span>]]<span class="sc">$</span>p.value,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        z_stats[[<span class="dv">2</span>]]<span class="sc">$</span>parameter.df[[<span class="dv">2</span>]], z_stats[[<span class="dv">2</span>]]<span class="sc">$</span>statistic.t[<span class="dv">2</span>], z_stats[[<span class="dv">2</span>]]<span class="sc">$</span>p.value)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>z_results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "In line with the hypothesis that we could elicit routines with the task, routine z-scores were significantly lower than would be expected by chance in the first experiment, i.e. a z-score of -2 (t(97) = -5.91, p&lt; 0.00), and this replicated across experiments (t(97) = -7.01, p&lt; 0.00)"
+[2] "In line with the hypothesis that we could elicit routines with the task, routine z-scores were significantly lower than would be expected by chance in the first experiment, i.e. a z-score of -2 (t(97) = -5.91, p&lt; 0.00), and this replicated across experiments (t(97) = -7.01, p&lt; 0.00)"</code></pre>
+</div>
 </div>
 </section>
 </section>
