@@ -137,11 +137,13 @@ Attaching package: 'gridExtra'</code></pre>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">=</span> <span class="st">'data-wrangled'</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>function_loc <span class="ot">&lt;-</span> <span class="st">"R"</span> <span class="co"># where are the functions?</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>req_functions <span class="ot">&lt;-</span> <span class="fu">list.files</span>(function_loc)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(req_functions, <span class="cf">function</span>(x) <span class="fu">source</span>(<span class="fu">paste</span>(here<span class="sc">::</span><span class="fu">here</span>(function_loc),</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                                               x, <span class="at">sep=</span><span class="st">"/"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>sim_data_path <span class="ot">=</span> <span class="st">'sims'</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>fig_path <span class="ot">=</span> <span class="st">'figs'</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>function_loc <span class="ot">&lt;-</span> <span class="st">"R"</span> <span class="co"># where are the functions?</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>req_functions <span class="ot">&lt;-</span> <span class="fu">list.files</span>(function_loc)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(req_functions, <span class="cf">function</span>(x) <span class="fu">source</span>(<span class="fu">paste</span>(here<span class="sc">::</span><span class="fu">here</span>(function_loc),</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                                               x, <span class="at">sep=</span><span class="st">"/"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -285,6 +287,48 @@ NULL</code></pre>
 <pre><code>[1] "In line with the hypothesis that we could elicit routines with the task, routine z-scores were significantly lower than would be expected by chance in the first experiment, i.e. a z-score of -2 (t(97) = -5.91, p&lt; 0.00), and this replicated across experiments (t(97) = -7.01, p&lt; 0.00)"
 [2] "In line with the hypothesis that we could elicit routines with the task, routine z-scores were significantly lower than would be expected by chance in the first experiment, i.e. a z-score of -2 (t(97) = -5.91, p&lt; 0.00), and this replicated across experiments (t(97) = -7.01, p&lt; 0.00)"</code></pre>
 </div>
+</div>
+<p>Now we want to visualise the z-scores, but we will also compare them to the performance of a perfectly performing but perfectly random agent, whose choices are similar constrained like the participant nulls (i.e.&nbsp;the same door cannot be picked twice in a row).</p>
+<p>Note that the below code block does not run, owing to the comp time required to generate the nulls.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>agent_save_name <span class="ot">&lt;-</span> <span class="fu">paste</span>(sim_data_path, <span class="st">'random-agent_z-score-analysis.Rds'</span>, <span class="at">sep=</span><span class="st">'/'</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_random_agent_null</span>(<span class="at">n_samples=</span><span class="dv">1000</span>, <span class="at">save_name =</span> agent_save_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Now lets plot the histograms of humans vs random agent. Note this code produces a labelled pdf (humans v agent) for talks, and a pdf pared back for a manuscript.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>exp_strs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>fstem <span class="ot">&lt;-</span> <span class="st">'../doors-data/'</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>col_scheme <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'#1b9e77'</span>,<span class="st">'#d95f02'</span>, <span class="st">'#7570b3'</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(col_scheme) <span class="ot">&lt;-</span> <span class="fu">c</span>(exp_strs, <span class="st">"agent"</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>sims_fname <span class="ot">=</span> <span class="fu">paste</span>(sim_data_path, <span class="st">'random-agent_z-score-analysis.Rds'</span>, <span class="at">sep=</span><span class="st">'/'</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>ms_z_plt_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'z-hsts_ms'</span>, <span class="at">sep=</span><span class="st">'/'</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>tlk_z_plt_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'z-hsts_tlk'</span>, <span class="at">sep=</span><span class="st">'/'</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>p_wdth <span class="ot">&lt;-</span> <span class="dv">7</span> <span class="co"># plot width of ms plot, in cm</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>p_hgt <span class="ot">&lt;-</span> <span class="dv">7</span><span class="sc">*</span>(<span class="dv">6</span><span class="sc">/</span><span class="dv">10</span>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">produce_z_plts</span>(exp_strs,</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>               col_scheme,</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>               p_wdth,</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>               p_hgt,</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>               data_path,</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>               sims_fname,</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>               ms_z_plt_fname,</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>               tlk_z_plt_fname)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>png 
+  2 </code></pre>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/z-hsts_tlk.svg" class="img-fluid figure-img"></p>
+<figcaption>Fig 2: Showing z-scores for humans and random agent</figcaption>
+</figure>
 </div>
 </section>
 </section>

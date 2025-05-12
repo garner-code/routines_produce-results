@@ -40,6 +40,8 @@ library(knitr)
 
 
 data_path = 'data-wrangled'
+sim_data_path = 'sims'
+fig_path = 'figs'
 
 function_loc <- "R" # where are the functions?
 req_functions <- list.files(function_loc)
@@ -174,3 +176,38 @@ z_results <- sprintf(fmt, z_stats[[1]]$parameter.df[[2]], z_stats[[1]]$statistic
 
 z_results
 ```
+
+Now we want to visualise the z-scores, but we will also compare them to the performance of a perfectly performing but perfectly random agent, whose choices are similar constrained like the participant nulls (i.e. the same door cannot be picked twice in a row).
+
+Note that the below code block does not run, owing to the comp time required to generate the nulls.
+
+```{r, eval=FALSE}
+
+agent_save_name <- paste(sim_data_path, 'random-agent_z-score-analysis.Rds', sep='/')
+get_random_agent_null(n_samples=1000, save_name = agent_save_name)
+```
+
+Now lets plot the histograms of humans vs random agent. Note this code produces a labelled pdf (humans v agent) for talks, and a pdf pared back for a manuscript.
+
+```{r}
+
+exp_strs <- c('lt', 'ts')
+fstem <- '../doors-data/'
+col_scheme <- c('#1b9e77','#d95f02', '#7570b3')
+names(col_scheme) <- c(exp_strs, "agent")
+sims_fname = paste(sim_data_path, 'random-agent_z-score-analysis.Rds', sep='/')
+ms_z_plt_fname = paste(fig_path, 'z-hsts_ms', sep='/')
+tlk_z_plt_fname = paste(fig_path, 'z-hsts_tlk', sep='/')
+p_wdth <- 7 # plot width of ms plot, in cm
+p_hgt <- 7*(6/10)
+produce_z_plts(exp_strs,
+               col_scheme,
+               p_wdth,
+               p_hgt,
+               data_path,
+               sims_fname,
+               ms_z_plt_fname,
+               tlk_z_plt_fname)
+```
+
+![Fig 2: Showing z-scores for humans and random agent](figs/z-hsts_tlk.svg){fig-align="cent"}
