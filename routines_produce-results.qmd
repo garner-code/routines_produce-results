@@ -229,6 +229,18 @@ names(human_v_agent_zs) <- exp_strs
 human_v_agent_ps <- sapply(human_v_agent_zs, pnorm)
 names(human_v_agent_ps) <- exp_strs
 
+# make a dataframe of the results and save as a csv
+hum_z_dat <- tibble(exp = exp_strs,
+                    zs = human_v_agent_zs,
+                    ps = human_v_agent_ps)
+write.csv(hum_z_dat, file=paste(data_path, 'human_v_agent_zs.csv', sep=''),
+          row.names=FALSE)
+
+# print out the result
 sprintf('the probability that the human data comes from the null distribution is p= %.2f for the lt exp, and p= .2f% for the ts exp', human_v_agent_ps['lt'], human_v_agent_ps['ts'])
-# NEXT STEP IS TO SAVE BOTH OF THESE THINGS TO A CSV
+
+
+
 ```
+
+Now that we know we elicit routines above what you would expect by chance, we next ask, using the data from the dopamine study, how reliable are these routines within an individual?
