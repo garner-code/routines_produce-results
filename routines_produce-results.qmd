@@ -39,9 +39,9 @@ library(gridExtra)
 library(knitr)
 
 
-data_path = 'data-wrangled'
-sim_data_path = 'sims'
-fig_path = 'figs'
+data_path = 'data-wrangled/'
+sim_data_path = 'sims/'
+fig_path = 'figs/'
 
 function_loc <- "R" # where are the functions?
 req_functions <- list.files(function_loc)
@@ -68,9 +68,9 @@ First I compute R scores for each participant, using the formula -
 
 apply_sort_data <- function(exp_str, data_path){
     # take the trial level data from session 2 and sort into contexts. We assume a person believes they are in the same context until their first 'cc' hit after a context switch.
-  data_fname <- paste(data_path, '/exp_', exp_str,
+  data_fname <- paste(data_path, 'exp_', exp_str,
                        '_evt.csv', sep='')
-  save_fname <- paste(data_path, '/exp_', exp_str,
+  save_fname <- paste(data_path, 'exp_', exp_str,
                           '_door_selections_for_ent.csv', sep='')
   ent_initial_data_sort(data_fname, save_fname)
 }
@@ -78,11 +78,11 @@ lapply(c('lt', 'ts'), apply_sort_data, data_path=data_path)
 
 apply_compute_R <- function(exp_str){
 # take the data output from the step above, and compute the routine score for each participant and context
-  data_fname <- paste(data_path, '/exp_', exp_str,
+  data_fname <- paste(data_path, 'exp_', exp_str,
                       '_door_selections_for_ent.csv', sep='')
-  save_new_data_fname <- paste(data_path, '/exp_', exp_str,
+  save_new_data_fname <- paste(data_path, 'exp_', exp_str,
                                '_rscore-full.csv', sep='') # for saving R scores not averaged across context. Note that original plotting code in the function below, now commented out, shows that
-  save_sum_data_fname <- paste(data_path, '/exp_', exp_str,
+  save_sum_data_fname <- paste(data_path, 'exp_', exp_str,
                                '_rscore.csv', sep='')
   ent_compute_routine_measure(data_fname, save_new_data_fname, save_sum_data_fname)
 }
@@ -103,8 +103,8 @@ Note that the below 'function' contains hard coded, handpicked subsets of trials
 ```{r, results='hide', output=FALSE}
 
 exp_str <- 'lt'
-traj_data_fname <- paste(data_path, '/exp_', exp_str, '_evt.csv', sep="")
-traj_fig_fname <- paste('figs/', 'trajectories', sep='')
+traj_data_fname <- paste(data_path, 'exp_', exp_str, '_evt.csv', sep="")
+traj_fig_fname <- paste(fig_path, 'trajectories', sep='')
 w <- 12 # width of plot, in cm
 traj_plt <- plot_trajectories(traj_data_fname, traj_fig_fname, w)
 
@@ -133,9 +133,9 @@ set.seed(42) # for reproducibility is the meaning of life
 exp_strs = c('lt', 'ts')
 
 apply_generate_nulls <- function(exp_str){
-  door_selections_fname = paste(data_path, '/exp_', exp_str, '_door_selections_for_ent.csv', sep='')
-  r_dat_fname = paste(data_path, '/exp_', exp_str, '_rscore-full.csv', sep='')
-  null_rs_fname = paste(data_path, '/exp_', exp_str, '_rnulls.csv', sep='') # for saving
+  door_selections_fname = paste(data_path, 'exp_', exp_str, '_door_selections_for_ent.csv', sep='')
+  r_dat_fname = paste(data_path, 'exp_', exp_str, '_rscore-full.csv', sep='')
+  null_rs_fname = paste(data_path, 'exp_', exp_str, '_rnulls.csv', sep='') # for saving
   generate_nulls(door_selections_fname,
                  r_dat_fname,
                  null_rs_fname)
@@ -151,9 +151,9 @@ Now that we have the null Rs, we can compute a z-score for each participant, bas
 exp_strs <- c('lt','ts')
 
 z_comps <- function(exp_str, data_path){
-  null_rs_fname = paste(data_path, '/exp_', exp_str, '_rnulls.csv', sep='') # for saving
-  zs_out_fname = paste(data_path, '/exp_', exp_str, '_zs_cl.csv', sep='')
-  zs_stats_fname = paste(data_path, '/exp_', exp_str, '_zs_cl_inf-test.csv', sep='')
+  null_rs_fname = paste(data_path, 'exp_', exp_str, '_rnulls.csv', sep='') # for saving
+  zs_out_fname = paste(data_path, 'exp_', exp_str, '_zs_cl.csv', sep='')
+  zs_stats_fname = paste(data_path, 'exp_', exp_str, '_zs_cl_inf-test.csv', sep='')
   ent_compute_zs(null_rs_fname, zs_out_fname, zs_stats_fname)
 }  
 
@@ -167,7 +167,7 @@ Lets look at those stats!
 ```{r}
 
 z_stats <- lapply(c('lt', 'ts'), 
-                function(x) read.csv(paste(data_path, '/exp_', x, '_zs_cl_inf-test.csv', sep=''), 
+                function(x) read.csv(paste(data_path, 'exp_', x, '_zs_cl_inf-test.csv', sep=''), 
                                      header=T))
 
 fmt = 'In line with the hypothesis that we could elicit routines with the task, routine z-scores were significantly lower than would be expected by chance in the first experiment, i.e. a z-score of -2 (t(%d) = %.2f, p< %.2f), and this replicated across experiments (t(%d) = %.2f, p< %.2f)'
@@ -183,7 +183,7 @@ Note that the below code block does not run, owing to the comp time required to 
 
 ```{r, eval=FALSE}
 
-agent_save_name <- paste(sim_data_path, 'random-agent_z-score-analysis.Rds', sep='/')
+agent_save_name <- paste(sim_data_path, 'random-agent_z-score-analysis.Rds', sep='')
 get_random_agent_null(n_samples=1000, save_name = agent_save_name)
 ```
 
@@ -192,7 +192,6 @@ Now lets plot the histograms of humans vs random agent. Note this code produces 
 ```{r}
 
 exp_strs <- c('lt', 'ts')
-fstem <- '../doors-data/'
 col_scheme <- c('#1b9e77','#d95f02', '#7570b3')
 names(col_scheme) <- c(exp_strs, "agent")
 sims_fname = paste(sim_data_path, 'random-agent_z-score-analysis.Rds', sep='/')
@@ -211,3 +210,25 @@ produce_z_plts(exp_strs,
 ```
 
 ![Fig 2: Showing z-scores for humans and random agent](figs/z-hsts_tlk.svg){fig-align="cent"}
+
+Next, we can compare the mean z-score of the humans to that of the random agent - i.e. what is the probability that the mean z-score of the humans comes from the null distribution of the random agent?
+
+```{r}
+
+exp_strs <- c('lt', 'ts')
+human_zs <- lapply(exp_strs, function(x) read.csv(paste(data_path,
+                                                        'exp_', x,
+                                                        '_zs_cl.csv', 
+                                                        sep=''), header=T))
+
+# this will load a n length vector called 'zs' where n = the number of times a null was generated for the random agent
+load(paste(sim_data_path, 'random-agent_z-score-analysis.Rds', sep=''))
+
+human_v_agent_zs <- sapply(human_zs, function(x) (mean(x[,'mu_z']) - mean(zs))/sd(zs))
+names(human_v_agent_zs) <- exp_strs
+human_v_agent_ps <- sapply(human_v_agent_zs, pnorm)
+names(human_v_agent_ps) <- exp_strs
+
+sprintf('the probability that the human data comes from the null distribution is p= %.2f for the lt exp, and p= .2f% for the ts exp', human_v_agent_ps['lt'], human_v_agent_ps['ts'])
+# NEXT STEP IS TO SAVE BOTH OF THESE THINGS TO A CSV
+```
