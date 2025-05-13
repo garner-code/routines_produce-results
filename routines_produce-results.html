@@ -279,44 +279,38 @@ NULL</code></pre>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>fmt <span class="ot">=</span> <span class="st">'In line with the hypothesis that we could elicit routines with the task, routine z-scores were significantly lower than would be expected by chance in the first experiment, i.e. a z-score of -2 (t(%d) = %.2f, p&lt; %.2f), and this replicated across experiments (t(%d) = %.2f, p&lt; %.2f)'</span></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>z_results <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(fmt, z_stats[[<span class="dv">1</span>]]<span class="sc">$</span>parameter.df[[<span class="dv">2</span>]], z_stats[[<span class="dv">1</span>]]<span class="sc">$</span>statistic.t[<span class="dv">2</span>], z_stats[[<span class="dv">1</span>]]<span class="sc">$</span>p.value,</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        z_stats[[<span class="dv">2</span>]]<span class="sc">$</span>parameter.df[[<span class="dv">2</span>]], z_stats[[<span class="dv">2</span>]]<span class="sc">$</span>statistic.t[<span class="dv">2</span>], z_stats[[<span class="dv">2</span>]]<span class="sc">$</span>p.value)</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>z_results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        z_stats[[<span class="dv">2</span>]]<span class="sc">$</span>parameter.df[[<span class="dv">2</span>]], z_stats[[<span class="dv">2</span>]]<span class="sc">$</span>statistic.t[<span class="dv">2</span>], z_stats[[<span class="dv">2</span>]]<span class="sc">$</span>p.value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "In line with the hypothesis that we could elicit routines with the task, routine z-scores were significantly lower than would be expected by chance in the first experiment, i.e. a z-score of -2 (t(97) = -5.91, p&lt; 0.00), and this replicated across experiments (t(97) = -7.01, p&lt; 0.00)"
-[2] "In line with the hypothesis that we could elicit routines with the task, routine z-scores were significantly lower than would be expected by chance in the first experiment, i.e. a z-score of -2 (t(97) = -5.91, p&lt; 0.00), and this replicated across experiments (t(97) = -7.01, p&lt; 0.00)"</code></pre>
-</div>
 </div>
 <p>Now we want to visualise the z-scores, but we will also compare them to the performance of a perfectly performing but perfectly random agent, whose choices are similar constrained like the participant nulls (i.e.&nbsp;the same door cannot be picked twice in a row).</p>
 <p>Note that the below code block does not run, owing to the comp time required to generate the nulls.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>agent_save_name <span class="ot">&lt;-</span> <span class="fu">paste</span>(sim_data_path, <span class="st">'random-agent_z-score-analysis.Rds'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_random_agent_null</span>(<span class="at">n_samples=</span><span class="dv">1000</span>, <span class="at">save_name =</span> agent_save_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>agent_save_name <span class="ot">&lt;-</span> <span class="fu">paste</span>(sim_data_path, <span class="st">'random-agent_z-score-analysis.Rds'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_random_agent_null</span>(<span class="at">n_samples=</span><span class="dv">1000</span>, <span class="at">save_name =</span> agent_save_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Now lets plot the histograms of humans vs random agent. Note this code produces a labelled pdf (humans v agent) for talks, and a pdf pared back for a manuscript.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>exp_strs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>col_scheme <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'#1b9e77'</span>,<span class="st">'#d95f02'</span>, <span class="st">'#7570b3'</span>)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(col_scheme) <span class="ot">&lt;-</span> <span class="fu">c</span>(exp_strs, <span class="st">"agent"</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>sims_fname <span class="ot">=</span> <span class="fu">paste</span>(sim_data_path, <span class="st">'random-agent_z-score-analysis.Rds'</span>, <span class="at">sep=</span><span class="st">'/'</span>)</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>ms_z_plt_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'z-hsts_ms'</span>, <span class="at">sep=</span><span class="st">'/'</span>)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>tlk_z_plt_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'z-hsts_tlk'</span>, <span class="at">sep=</span><span class="st">'/'</span>)</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>p_wdth <span class="ot">&lt;-</span> <span class="dv">7</span> <span class="co"># plot width of ms plot, in cm</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>p_hgt <span class="ot">&lt;-</span> <span class="dv">7</span><span class="sc">*</span>(<span class="dv">6</span><span class="sc">/</span><span class="dv">10</span>)</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">produce_z_plts</span>(exp_strs,</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>               col_scheme,</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>               p_wdth,</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>               p_hgt,</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>               data_path,</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>               sims_fname,</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>               ms_z_plt_fname,</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>               tlk_z_plt_fname)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>exp_strs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>col_scheme <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'#1b9e77'</span>,<span class="st">'#d95f02'</span>, <span class="st">'#7570b3'</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(col_scheme) <span class="ot">&lt;-</span> <span class="fu">c</span>(exp_strs, <span class="st">"agent"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>sims_fname <span class="ot">=</span> <span class="fu">paste</span>(sim_data_path, <span class="st">'random-agent_z-score-analysis.Rds'</span>, <span class="at">sep=</span><span class="st">'/'</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>ms_z_plt_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'z-hsts_ms'</span>, <span class="at">sep=</span><span class="st">'/'</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>tlk_z_plt_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'z-hsts_tlk'</span>, <span class="at">sep=</span><span class="st">'/'</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>z_p_wdth <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># plot width of ms plot, in cm</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>z_p_hgt <span class="ot">&lt;-</span> z_p_wdth<span class="sc">*</span>(<span class="dv">6</span><span class="sc">/</span><span class="dv">10</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="fu">produce_z_plts</span>(exp_strs,</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>               col_scheme,</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>               z_p_wdth,</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>               z_p_hgt,</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>               data_path,</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>               sims_fname,</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>               ms_z_plt_fname,</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>               tlk_z_plt_fname)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>png 
@@ -333,29 +327,79 @@ NULL</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>exp_strs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>human_zs <span class="ot">&lt;-</span> <span class="fu">lapply</span>(exp_strs, <span class="cf">function</span>(x) <span class="fu">read.csv</span>(<span class="fu">paste</span>(data_path,</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">'exp_'</span>, x,</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">'_zs_cl.csv'</span>, </span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>                                                        <span class="at">sep=</span><span class="st">''</span>), <span class="at">header=</span>T))</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># this will load a n length vector called 'zs' where n = the number of times a null was generated for the random agent</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">paste</span>(sim_data_path, <span class="st">'random-agent_z-score-analysis.Rds'</span>, <span class="at">sep=</span><span class="st">''</span>))</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>human_v_agent_zs <span class="ot">&lt;-</span> <span class="fu">sapply</span>(human_zs, <span class="cf">function</span>(x) (<span class="fu">mean</span>(x[,<span class="st">'mu_z'</span>]) <span class="sc">-</span> <span class="fu">mean</span>(zs))<span class="sc">/</span><span class="fu">sd</span>(zs))</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(human_v_agent_zs) <span class="ot">&lt;-</span> exp_strs</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>human_v_agent_ps <span class="ot">&lt;-</span> <span class="fu">sapply</span>(human_v_agent_zs, pnorm)</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(human_v_agent_ps) <span class="ot">&lt;-</span> exp_strs</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">'the probability that the human data comes from the null distribution is p= %.2f for the lt exp, and p= .2f% for the ts exp'</span>, human_v_agent_ps[<span class="st">'lt'</span>], human_v_agent_ps[<span class="st">'ts'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>exp_strs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>human_zs <span class="ot">&lt;-</span> <span class="fu">lapply</span>(exp_strs, <span class="cf">function</span>(x) <span class="fu">read.csv</span>(<span class="fu">paste</span>(data_path,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">'exp_'</span>, x,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">'_zs_cl.csv'</span>, </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>                                                        <span class="at">sep=</span><span class="st">''</span>), <span class="at">header=</span>T))</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># this will load a n length vector called 'zs' where n = the number of times a null was generated for the random agent</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">paste</span>(sim_data_path, <span class="st">'random-agent_z-score-analysis.Rds'</span>, <span class="at">sep=</span><span class="st">''</span>))</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>human_v_agent_zs <span class="ot">&lt;-</span> <span class="fu">sapply</span>(human_zs, <span class="cf">function</span>(x) (<span class="fu">mean</span>(x[,<span class="st">'mu_z'</span>]) <span class="sc">-</span> <span class="fu">mean</span>(zs))<span class="sc">/</span><span class="fu">sd</span>(zs))</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(human_v_agent_zs) <span class="ot">&lt;-</span> exp_strs</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>human_v_agent_ps <span class="ot">&lt;-</span> <span class="fu">sapply</span>(human_v_agent_zs, pnorm)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(human_v_agent_ps) <span class="ot">&lt;-</span> exp_strs</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co"># make a dataframe of the results and save as a csv</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>hum_z_dat <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">exp =</span> exp_strs,</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>                    <span class="at">zs =</span> human_v_agent_zs,</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ps =</span> human_v_agent_ps)</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(hum_z_dat, <span class="at">file=</span><span class="fu">paste</span>(data_path, <span class="st">'human_v_agent_zs.csv'</span>, <span class="at">sep=</span><span class="st">''</span>),</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>          <span class="at">row.names=</span><span class="cn">FALSE</span>)</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="co"># print out the result</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">'the probability that the human data comes from the null distribution is p= %.2f for the lt exp, and p= %.2f for the ts exp'</span>, <span class="fu">round</span>(human_v_agent_ps[<span class="st">'lt'</span>],<span class="dv">2</span>), <span class="fu">round</span>(human_v_agent_ps[<span class="st">'ts'</span>],<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "the probability that the human data comes from the null distribution is p= 0.00 for the lt exp, and p= .2f 0.000000or the ts exp"</code></pre>
+<pre><code>[1] "the probability that the human data comes from the null distribution is p= 0.00 for the lt exp, and p= 0.00 for the ts exp"</code></pre>
+</div>
+</div>
+<p>Now that we know we elicit routines above what you would expect by chance, we next ask, using the data from the dopamine study, how reliable are these routines within an individual?</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>rel_data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'dat4_seq_model.Rda'</span>, <span class="at">sep=</span><span class="st">''</span>) <span class="co"># note: this datafile was generated by this project -https://github.com/garner-code/DA_VisRoutes and copied over to this project for the current analysis </span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>rel_data_save_name <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'rel_rs_wf.csv'</span>, <span class="at">sep=</span><span class="st">''</span>) <span class="co"># save the r's from da and placebo in widefrom</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>rel_analysis_save_name <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'da_reliability_analysis.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">reliability_analysis</span>(rel_data_fname, rel_data_save_name,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>                     rel_analysis_save_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'sub'. You can override using the `.groups`
+argument.</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># NEXT STEP IS TO SAVE BOTH OF THESE THINGS TO A CSV</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># now we've made the data file, report the results of the reliability analysis</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>rel <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(rel_analysis_save_name)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>fmt <span class="ot">=</span> <span class="st">'the measure demonstrates some reliability, r = %.2f, 95 CI[%.2f, %.2f], t(%.0f) = %.2f, p = %.2f'</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(fmt, rel<span class="sc">$</span>r, rel<span class="sc">$</span>l, rel<span class="sc">$</span>u, rel<span class="sc">$</span>df, rel<span class="sc">$</span>t, rel<span class="sc">$</span>p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "the measure demonstrates some reliability, r = 0.53, 95 CI[0.25, 0.72], t(37) = 3.78, p = 0.00"</code></pre>
+</div>
+</div>
+<p>Now let’s see the correlation in the data -</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># note the 'r' is for reliability</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>r_p_wdth <span class="ot">&lt;-</span> z_p_wdth<span class="sc">/</span><span class="dv">2</span> <span class="co"># plot width of ms plot, in cm - its half the width of the z-score plot</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>r_p_hgt <span class="ot">&lt;-</span> z_p_hgt</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>r_col <span class="ot">=</span> col_scheme[<span class="dv">3</span>]</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>fig_lab <span class="ot">=</span> <span class="st">'C'</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>rel_data_save_name <span class="ot">=</span> rel_data_save_name</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>rel_plt_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'reliability_data'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_rel</span>(r_p_wdth, r_p_hgt, r_col,</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>         fig_lab, </span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>         rel_data_save_name,</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>         rel_plt_fname)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>png 
+  2 </code></pre>
+</div>
 </div>
 </section>
 </section>

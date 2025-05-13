@@ -47,7 +47,7 @@ produce_z_plts <- function(exp_strs, col_scheme,
     axis(1, at = seq(-100, 0, by = 50))
     axis(2, at = seq(0, 0.08, by = 0.04))
     fig_label("A)")
-    legend(-100, 0.08, c("A", "B"), fill = c(col_scheme[exp_strs[1]],
+    legend(-110, 0.08, c("A", "B"), fill = c(col_scheme[exp_strs[1]],
                                             col_scheme[exp_strs[2]]),
            bty='n') 
     hist(with(zdat, mu_z[exp == exp_strs[2]]), probability=TRUE, 
