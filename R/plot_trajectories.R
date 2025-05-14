@@ -105,8 +105,9 @@ tracs <- grid.arrange(all_ps[[1]], all_ps[[2]],
                       widths = rep(2.5, length(all_ps)/nsubs), 
                       heights = rep(2.5, nsubs),
                       left = "sub",
-                      top = "trials")
-
+                      bottom = "trials")
+annotate_figure(tracs,
+                fig.lab='D')
 ggsave(paste(fig_save_fname, '.pdf', sep=''), tracs, 
        width = w+.5, height = (w/6*2)+.5, units="cm")
 ggsave(paste(fig_save_fname, '.svg', sep=''), tracs, 

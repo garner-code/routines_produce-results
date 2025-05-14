@@ -46,7 +46,7 @@ produce_z_plts <- function(exp_strs, col_scheme,
          yaxt = "n")
     axis(1, at = seq(-100, 0, by = 50))
     axis(2, at = seq(0, 0.08, by = 0.04))
-    fig_label("A)")
+    fig_label("A")
     legend(-110, 0.08, c("A", "B"), fill = c(col_scheme[exp_strs[1]],
                                             col_scheme[exp_strs[2]]),
            bty='n') 
@@ -63,7 +63,7 @@ produce_z_plts <- function(exp_strs, col_scheme,
          yaxt = "n")
     axis(1, at = seq(-100, 0, by = 50))
     axis(2, at = seq(0, 0.4, by = 0.2))
-    fig_label("B)")
+    fig_label("B")
   }
   ###########################################################
   # plot histograms
@@ -71,13 +71,13 @@ produce_z_plts <- function(exp_strs, col_scheme,
   # for manuscripts
   pdf(paste(ms_z_plt_fname, '.pdf', sep=''), 
             width = p_wdth/2.54, height = p_hgt/2.54) 
-  par(mfrow = c(1,2), mar = c(4, 4, 2, 1), las=2, cex=2/3)
+  par(mfrow = c(1,2), mar = c(5, 4, 2, 1), las=2, cex=2/3)
   do_z_hists(main_titles = c('',''))
   dev.off()
   
   svg(paste(ms_z_plt_fname, '.svg', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54) 
-  par(mfrow = c(1,2), mar = c(4, 4, 2, 1), las=2, cex=2/3)
+  par(mfrow = c(1,2), mar = c(5, 4, 2, 1), las=2, cex=2/3)
   do_z_hists(main_titles = c('',''))
   dev.off()
 
@@ -85,13 +85,13 @@ produce_z_plts <- function(exp_strs, col_scheme,
   # for talks
   pdf(paste(tlk_z_plt_fname, '.pdf', sep=''), # for talks
       width = p_wdth/2.54*2.5, height = p_hgt/2.54*2.5)
-  par(mfrow = c(1,2), mar = c(4, 4, 2, 1), las=2, cex=1.5)
+  par(mfrow = c(1,2), mar = c(5, 4, 2, 1), las=2, cex=1.5)
   do_z_hists(main_titles = c('humans','agents'))
   dev.off()
   
   svg(paste(tlk_z_plt_fname, '.svg', sep=''), # for talks
       width = p_wdth/2.54*2.5, height = p_hgt/2.54*2.5)
-  par(mfrow = c(1,2), mar = c(4, 4, 2, 1), las=2, cex=1.5)
+  par(mfrow = c(1,2), mar = c(5, 4, 2, 1), las=2, cex=1.5)
   do_z_hists(main_titles = c('humans','agents'))
   dev.off()
 ##########################################################

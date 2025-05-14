@@ -73,7 +73,6 @@ reliability_analysis <- function(rel_data_fname,
                         df = rel_results$parameter,
                         p = rel_results$p.value)
   
-  
   write.csv(rel_results, rel_analysis_save_name, row.names=FALSE)
 }
 
