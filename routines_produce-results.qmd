@@ -45,6 +45,8 @@ library(magick)
 library(ggpubr)
 library(vioplot)
 library(rstatix)
+library(emmeans)
+library(afex)
 
 data_path = 'data-wrangled/' # for all data derivs
 sim_data_path = 'sims/' # for simulation results
@@ -299,7 +301,7 @@ multi <- c(ims[[2]], ims[[3]]) %>%
         c(ims[[1]]) %>%
          image_append(stack=TRUE)
 traj_hght = (w/6*2)+.5 # get the height of the traj plot
-pdf(paste(fig_path, 'FigA', sep=''), width=z_p_wdth+r_p_wdth,
+pdf(paste(fig_path, 'FigA.pdf', sep=''), width=z_p_wdth+r_p_wdth,
     height=z_p_hgt+traj_hght)
 plot(multi)
 dev.off()
@@ -438,8 +440,84 @@ Now lets see the fig in all its glory -
 
 ![Fig 5: People in the frequent switch group broke up their routines to jump tasks](figs/task-jumps_4tlks.svg){fig-align="cent"}
 
-It looks like there is an interaction between group and switch (in fact we know there is, from Emily & Dinuk's analysis). Here I replicate their results -
+Now I will put the routine by group and the task jumps figure into one plot for the manuscript.
 
+```{r}
+
+fnms = c(paste(fig_path, 'rs_by-traintype_hists', sep=''),
+         paste(fig_path, 'task-jumps', sep=''))
+
+ims = lapply(fnms, function(x) image_read_pdf(paste(x, '.pdf', sep='')))
+
+multi <- c(ims[[1]]) %>%
+         image_append() %>%
+        c(ims[[2]]) %>%
+         image_append(stack=TRUE)
+
+pdf(paste(fig_path, 'FigB.pdf', sep=''), width=j_wdth,
+    height=j_hgt)
+plot(multi)
+dev.off()
+
+```
+
+It looks like there is an interaction between group and switch (in fact we know there is, from Emily & Dinuk's analysis). Here I replicate their results: -
+
+```{r, results='hide'}
+
+# first set the factors to be factors
+jumps$sub <- as.factor(jumps$sub)
+jumps$train_type <- as.factor(jumps$train_type)
+levels(jumps$train_type) <- c('stable','variable')
+jumps$switch <- as.factor(jumps$switch)
+levels(jumps$switch) <- c('stay','switch')
+
+# now run the ANOVA model
+# set emmeans option to multivariate
+afex_options(emmeans_model = "multivariate")
+# perform the statistical model
+exp_strs <- unique(jumps$exp)
+tj_aovs <- lapply(exp_strs, function(x) 
+  aov_ez("sub", "jumps", jumps %>% filter(exp == x), 
+         within = "switch",
+         between = "train_type"))
+names(tj_aovs) <- exp_strs
+
+# convert the anovas to a dataframe, save the results and show as a table
+convert_aov_to_df <- function(aovl, exp_str){
+  ref = aovl$anova_table
+  tibble(exp = rep(exp_str, length(ref$F)),
+         effect = rownames(ref),
+         numDF = ref$`num Df`,
+         denDF = ref$`den Df`,
+         Fstat = ref$F,
+         ges = ref$ges,
+         p = ref$`Pr(>F)`)
+}
+tj_aov_dat <- do.call(rbind, 
+                      lapply(1:length(exp_strs),
+                             function(x) convert_aov_to_df(tj_aovs[[x]],
+                                                           exp_strs[x])))
+
+kable(tj_aov_dat, digits=2)
+write.csv(tj_aov_dat, paste(res_path, 'task-jumps_aov.csv'), row.names=FALSE)
+
+```
+Now I need to follow up the interactions, and grab the estimated marginal means so I can report the main effects.
+
+Next steps are to put the main effects and the interaction effects into a csv file, check the method used to calculate them,
+and then create a kable.
+
+```{r}
+
+# first I get the between group effect
+me_grp <- lapply(tj_aovs, function(x) emmeans(x, 'train_type'))
+
+# and now I test the following 
+emmeans(tj_aovs[[1]], 'switch', by='train_type')
+emmeans(tj_aovs[[1]], 'train_type', by='switch')
+```
 
 Then the modelling analysis!
+
 

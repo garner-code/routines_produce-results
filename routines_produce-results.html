@@ -186,15 +186,65 @@ Attaching package: 'rstatix'</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">=</span> <span class="st">'data-wrangled/'</span> <span class="co"># for all data derivs</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>sim_data_path <span class="ot">=</span> <span class="st">'sims/'</span> <span class="co"># for simulation results</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>fig_path <span class="ot">=</span> <span class="st">'figs/'</span> <span class="co"># for figures</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>res_path <span class="ot">=</span> <span class="st">'res/'</span> <span class="co"># for inferential results</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>function_loc <span class="ot">&lt;-</span> <span class="st">"R"</span> <span class="co"># where are the functions?</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>req_functions <span class="ot">&lt;-</span> <span class="fu">list.files</span>(function_loc)</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(req_functions, <span class="cf">function</span>(x) <span class="fu">source</span>(<span class="fu">paste</span>(here<span class="sc">::</span><span class="fu">here</span>(function_loc),</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>                                               x, <span class="at">sep=</span><span class="st">"/"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Welcome to emmeans.
+Caution: You lose important information if you filter this package's results.
+See '? untidy'</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(afex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: lme4</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: Matrix</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'Matrix'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:tidyr':
+
+    expand, pack, unpack</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>************
+Welcome to afex. For support visit: http://afex.singmann.science/</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>- Functions for ANOVAs: aov_car(), aov_ez(), and aov_4()
+- Methods for calculating p-values with mixed(): 'S', 'KR', 'LRT', and 'PB'
+- 'afex_aov' and 'mixed' objects can be passed to emmeans() for follow-up tests
+- Get and set global package options with: afex_options()
+- Set sum-to-zero contrasts globally: set_sum_contrasts()
+- For example analyses see: browseVignettes("afex")
+************</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'afex'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:lme4':
+
+    lmer</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">=</span> <span class="st">'data-wrangled/'</span> <span class="co"># for all data derivs</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>sim_data_path <span class="ot">=</span> <span class="st">'sims/'</span> <span class="co"># for simulation results</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>fig_path <span class="ot">=</span> <span class="st">'figs/'</span> <span class="co"># for figures</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>res_path <span class="ot">=</span> <span class="st">'res/'</span> <span class="co"># for inferential results</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>function_loc <span class="ot">&lt;-</span> <span class="st">"R"</span> <span class="co"># where are the functions?</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>req_functions <span class="ot">&lt;-</span> <span class="fu">list.files</span>(function_loc)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(req_functions, <span class="cf">function</span>(x) <span class="fu">source</span>(<span class="fu">paste</span>(here<span class="sc">::</span><span class="fu">here</span>(function_loc),</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>                                               x, <span class="at">sep=</span><span class="st">"/"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -210,28 +260,28 @@ Attaching package: 'rstatix'</code></pre>
 <div class="cell" data-fold="true">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>apply_sort_data <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str, data_path){</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># take the trial level data from session 2 and sort into contexts. We assume a person believes they are in the same context until their first 'cc' hit after a context switch.</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str,</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                       <span class="st">'_evt.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  save_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str,</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'_door_selections_for_ent.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ent_initial_data_sort</span>(data_fname, save_fname)</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>), apply_sort_data, <span class="at">data_path=</span>data_path)</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>apply_compute_R <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str){</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co"># take the data output from the step above, and compute the routine score for each participant and context</span></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str,</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'_door_selections_for_ent.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  save_new_data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str,</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>                               <span class="st">'_rscore-full.csv'</span>, <span class="at">sep=</span><span class="st">''</span>) <span class="co"># for saving R scores not averaged across context. Note that original plotting code in the function below, now commented out, shows that</span></span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>  save_sum_data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str,</span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>                               <span class="st">'_rscore.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ent_compute_routine_measure</span>(data_fname, save_new_data_fname, save_sum_data_fname)</span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>), apply_compute_R)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>apply_sort_data <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str, data_path){</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># take the trial level data from session 2 and sort into contexts. We assume a person believes they are in the same context until their first 'cc' hit after a context switch.</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>                       <span class="st">'_evt.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  save_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str,</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>                          <span class="st">'_door_selections_for_ent.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ent_initial_data_sort</span>(data_fname, save_fname)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>), apply_sort_data, <span class="at">data_path=</span>data_path)</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>apply_compute_R <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str){</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="co"># take the data output from the step above, and compute the routine score for each participant and context</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>  data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str,</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>                      <span class="st">'_door_selections_for_ent.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>  save_new_data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str,</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>                               <span class="st">'_rscore-full.csv'</span>, <span class="at">sep=</span><span class="st">''</span>) <span class="co"># for saving R scores not averaged across context. Note that original plotting code in the function below, now commented out, shows that</span></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>  save_sum_data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str,</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>                               <span class="st">'_rscore.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ent_compute_routine_measure</span>(data_fname, save_new_data_fname, save_sum_data_fname)</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>), apply_compute_R)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Now that we have the R scores, we can investigate whether we elicit R scores that are greater than you would expect by chance, measure something reliable in humans, and we want to get a feel for what the behaviour is that we are quantifying.</p>
@@ -243,11 +293,11 @@ Attaching package: 'rstatix'</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>exp_str <span class="ot">&lt;-</span> <span class="st">'lt'</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>traj_data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str, <span class="st">'_evt.csv'</span>, <span class="at">sep=</span><span class="st">""</span>)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>traj_fig_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(fig_path, <span class="st">'trajectories'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="dv">15</span> <span class="co"># width of plot, in cm</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>traj_plt <span class="ot">&lt;-</span> <span class="fu">plot_trajectories</span>(traj_data_fname, traj_fig_fname, w)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>exp_str <span class="ot">&lt;-</span> <span class="st">'lt'</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>traj_data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str, <span class="st">'_evt.csv'</span>, <span class="at">sep=</span><span class="st">""</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>traj_fig_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(fig_path, <span class="st">'trajectories'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="dv">15</span> <span class="co"># width of plot, in cm</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>traj_plt <span class="ot">&lt;-</span> <span class="fu">plot_trajectories</span>(traj_data_fname, traj_fig_fname, w)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Now we’ve created it, lets display it -</p>
@@ -274,34 +324,34 @@ Figure&nbsp;1: Fig 1: example trajectories across doors
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>) <span class="co"># for reproducibility is the meaning of life</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>exp_strs <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>apply_generate_nulls <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str){</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  door_selections_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str, <span class="st">'_door_selections_for_ent.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  r_dat_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str, <span class="st">'_rscore-full.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  null_rs_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str, <span class="st">'_rnulls.csv'</span>, <span class="at">sep=</span><span class="st">''</span>) <span class="co"># for saving</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_nulls</span>(door_selections_fname,</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>                 r_dat_fname,</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>                 null_rs_fname)</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(exp_strs, apply_generate_nulls)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>) <span class="co"># for reproducibility is the meaning of life</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>exp_strs <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>apply_generate_nulls <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str){</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  door_selections_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str, <span class="st">'_door_selections_for_ent.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  r_dat_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str, <span class="st">'_rscore-full.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  null_rs_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str, <span class="st">'_rnulls.csv'</span>, <span class="at">sep=</span><span class="st">''</span>) <span class="co"># for saving</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_nulls</span>(door_selections_fname,</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>                 r_dat_fname,</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>                 null_rs_fname)</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(exp_strs, apply_generate_nulls)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Now that we have the null Rs, we can compute a z-score for each participant, based on their observed R, and the null distribution. We will save the z-scores for plotting, and save the results of t-tests against zero and against -2 to a csv file. Note that when the below was originally run, visual inspection of the data showed some outliers, so I removed participants with a z-score &gt; or &lt; 3 standard deviations from the mean.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>exp_strs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'lt'</span>,<span class="st">'ts'</span>)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>z_comps <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str, data_path){</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  null_rs_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str, <span class="st">'_rnulls.csv'</span>, <span class="at">sep=</span><span class="st">''</span>) <span class="co"># for saving</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  zs_out_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str, <span class="st">'_zs_cl.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  zs_stats_fname <span class="ot">=</span> <span class="fu">paste</span>(res_path, <span class="st">'exp_'</span>, exp_str, <span class="st">'_zs_cl_inf-test.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ent_compute_zs</span>(null_rs_fname, zs_out_fname, zs_stats_fname)</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>}  </span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(exp_strs, z_comps, <span class="at">data_path=</span>data_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>exp_strs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'lt'</span>,<span class="st">'ts'</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>z_comps <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str, data_path){</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  null_rs_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str, <span class="st">'_rnulls.csv'</span>, <span class="at">sep=</span><span class="st">''</span>) <span class="co"># for saving</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  zs_out_fname <span class="ot">=</span> <span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str, <span class="st">'_zs_cl.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  zs_stats_fname <span class="ot">=</span> <span class="fu">paste</span>(res_path, <span class="st">'exp_'</span>, exp_str, <span class="st">'_zs_cl_inf-test.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ent_compute_zs</span>(null_rs_fname, zs_out_fname, zs_stats_fname)</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>}  </span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(exp_strs, z_comps, <span class="at">data_path=</span>data_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'sub'. You can override using the `.groups`
@@ -309,25 +359,18 @@ argument.
 `summarise()` has grouped output by 'sub'. You can override using the `.groups`
 argument.</code></pre>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[[1]]
-NULL
-
-[[2]]
-NULL</code></pre>
-</div>
 </div>
 <p>Lets look at those stats!</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>z_stats <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>), </span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>                <span class="cf">function</span>(x) <span class="fu">read.csv</span>(<span class="fu">paste</span>(res_path, <span class="st">'exp_'</span>, x, <span class="st">'_zs_cl_inf-test.csv'</span>, <span class="at">sep=</span><span class="st">''</span>), </span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">header=</span>T))</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>fmt <span class="ot">=</span> <span class="st">'In line with the hypothesis that we could elicit routines with the task, routine z-scores were significantly lower than would be expected by chance in the first experiment, i.e. a z-score of -2 (t(%d) = %.2f, p&lt; %.2f), and this replicated across experiments (t(%d) = %.2f, p&lt; %.2f)'</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>z_results <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(fmt, z_stats[[<span class="dv">1</span>]]<span class="sc">$</span>parameter.df[[<span class="dv">2</span>]], z_stats[[<span class="dv">1</span>]]<span class="sc">$</span>statistic.t[<span class="dv">2</span>], z_stats[[<span class="dv">1</span>]]<span class="sc">$</span>p.value,</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>        z_stats[[<span class="dv">2</span>]]<span class="sc">$</span>parameter.df[[<span class="dv">2</span>]], z_stats[[<span class="dv">2</span>]]<span class="sc">$</span>statistic.t[<span class="dv">2</span>], z_stats[[<span class="dv">2</span>]]<span class="sc">$</span>p.value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>z_stats <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>), </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>                <span class="cf">function</span>(x) <span class="fu">read.csv</span>(<span class="fu">paste</span>(res_path, <span class="st">'exp_'</span>, x, <span class="st">'_zs_cl_inf-test.csv'</span>, <span class="at">sep=</span><span class="st">''</span>), </span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">header=</span>T))</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>fmt <span class="ot">=</span> <span class="st">'In line with the hypothesis that we could elicit routines with the task, routine z-scores were significantly lower than would be expected by chance in the first experiment, i.e. a z-score of -2 (t(%d) = %.2f, p&lt; %.2f), and this replicated across experiments (t(%d) = %.2f, p&lt; %.2f)'</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>z_results <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(fmt, z_stats[[<span class="dv">1</span>]]<span class="sc">$</span>parameter.df[[<span class="dv">2</span>]], z_stats[[<span class="dv">1</span>]]<span class="sc">$</span>statistic.t[<span class="dv">2</span>], z_stats[[<span class="dv">1</span>]]<span class="sc">$</span>p.value,</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>        z_stats[[<span class="dv">2</span>]]<span class="sc">$</span>parameter.df[[<span class="dv">2</span>]], z_stats[[<span class="dv">2</span>]]<span class="sc">$</span>statistic.t[<span class="dv">2</span>], z_stats[[<span class="dv">2</span>]]<span class="sc">$</span>p.value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Now we want to visualise the z-scores, but we will also compare them to the performance of a perfectly performing but perfectly random agent, whose choices are similar constrained like the participant nulls (i.e.&nbsp;the same door cannot be picked twice in a row).</p>
@@ -335,30 +378,30 @@ NULL</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>agent_save_name <span class="ot">&lt;-</span> <span class="fu">paste</span>(sim_data_path, <span class="st">'random-agent_z-score-analysis.Rds'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_random_agent_null</span>(<span class="at">n_samples=</span><span class="dv">1000</span>, <span class="at">save_name =</span> agent_save_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>agent_save_name <span class="ot">&lt;-</span> <span class="fu">paste</span>(sim_data_path, <span class="st">'random-agent_z-score-analysis.Rds'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_random_agent_null</span>(<span class="at">n_samples=</span><span class="dv">1000</span>, <span class="at">save_name =</span> agent_save_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Now lets plot the histograms of humans vs random agent. Note this code produces a labelled pdf (humans v agent) for talks, and a pdf pared back for a manuscript.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>exp_strs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>col_scheme <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'#1b9e77'</span>,<span class="st">'#d95f02'</span>, <span class="st">'#7570b3'</span>)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(col_scheme) <span class="ot">&lt;-</span> <span class="fu">c</span>(exp_strs, <span class="st">"agent"</span>)</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>sims_fname <span class="ot">=</span> <span class="fu">paste</span>(sim_data_path, <span class="st">'random-agent_z-score-analysis.Rds'</span>, <span class="at">sep=</span><span class="st">'/'</span>)</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>ms_z_plt_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'z-hsts_ms'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>tlk_z_plt_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'z-hsts_tlk'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>z_p_wdth <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># plot width of ms plot, in cm</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>z_p_hgt <span class="ot">&lt;-</span> z_p_wdth<span class="sc">*</span>(<span class="dv">6</span><span class="sc">/</span><span class="dv">10</span>)</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="fu">produce_z_plts</span>(exp_strs,</span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>               col_scheme,</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>               z_p_wdth,</span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>               z_p_hgt,</span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>               data_path,</span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>               sims_fname,</span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>               ms_z_plt_fname,</span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>               tlk_z_plt_fname)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>exp_strs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>col_scheme <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'#1b9e77'</span>,<span class="st">'#d95f02'</span>, <span class="st">'#7570b3'</span>)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(col_scheme) <span class="ot">&lt;-</span> <span class="fu">c</span>(exp_strs, <span class="st">"agent"</span>)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>sims_fname <span class="ot">=</span> <span class="fu">paste</span>(sim_data_path, <span class="st">'random-agent_z-score-analysis.Rds'</span>, <span class="at">sep=</span><span class="st">'/'</span>)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>ms_z_plt_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'z-hsts_ms'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>tlk_z_plt_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'z-hsts_tlk'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>z_p_wdth <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># plot width of ms plot, in cm</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>z_p_hgt <span class="ot">&lt;-</span> z_p_wdth<span class="sc">*</span>(<span class="dv">6</span><span class="sc">/</span><span class="dv">10</span>)</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="fu">produce_z_plts</span>(exp_strs,</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>               col_scheme,</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>               z_p_wdth,</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>               z_p_hgt,</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>               data_path,</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>               sims_fname,</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>               ms_z_plt_fname,</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>               tlk_z_plt_fname)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>png 
@@ -375,29 +418,29 @@ NULL</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>exp_strs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>)</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>human_zs <span class="ot">&lt;-</span> <span class="fu">lapply</span>(exp_strs, <span class="cf">function</span>(x) <span class="fu">read.csv</span>(<span class="fu">paste</span>(data_path,</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">'exp_'</span>, x,</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">'_zs_cl.csv'</span>, </span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>                                                        <span class="at">sep=</span><span class="st">''</span>), <span class="at">header=</span>T))</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co"># this will load a n length vector called 'zs' where n = the number of times a null was generated for the random agent</span></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">paste</span>(sim_data_path, <span class="st">'random-agent_z-score-analysis.Rds'</span>, <span class="at">sep=</span><span class="st">''</span>))</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>human_v_agent_zs <span class="ot">&lt;-</span> <span class="fu">sapply</span>(human_zs, <span class="cf">function</span>(x) (<span class="fu">mean</span>(x[,<span class="st">'mu_z'</span>]) <span class="sc">-</span> <span class="fu">mean</span>(zs))<span class="sc">/</span><span class="fu">sd</span>(zs))</span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(human_v_agent_zs) <span class="ot">&lt;-</span> exp_strs</span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>human_v_agent_ps <span class="ot">&lt;-</span> <span class="fu">sapply</span>(human_v_agent_zs, pnorm)</span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(human_v_agent_ps) <span class="ot">&lt;-</span> exp_strs</span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="co"># make a dataframe of the results and save as a csv</span></span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>hum_z_dat <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">exp =</span> exp_strs,</span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>                    <span class="at">zs =</span> human_v_agent_zs,</span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ps =</span> human_v_agent_ps)</span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(hum_z_dat, <span class="at">file=</span><span class="fu">paste</span>(res_path, <span class="st">'human_v_agent_zs.csv'</span>, <span class="at">sep=</span><span class="st">''</span>),</span>
-<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>          <span class="at">row.names=</span><span class="cn">FALSE</span>)</span>
-<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a><span class="co"># print out the result</span></span>
-<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">'the probability that the human data comes from the null distribution is p= %.2f for the lt exp, and p= %.2f for the ts exp'</span>, <span class="fu">round</span>(human_v_agent_ps[<span class="st">'lt'</span>],<span class="dv">2</span>), <span class="fu">round</span>(human_v_agent_ps[<span class="st">'ts'</span>],<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>exp_strs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>human_zs <span class="ot">&lt;-</span> <span class="fu">lapply</span>(exp_strs, <span class="cf">function</span>(x) <span class="fu">read.csv</span>(<span class="fu">paste</span>(data_path,</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">'exp_'</span>, x,</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>                                                        <span class="st">'_zs_cl.csv'</span>, </span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>                                                        <span class="at">sep=</span><span class="st">''</span>), <span class="at">header=</span>T))</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="co"># this will load a n length vector called 'zs' where n = the number of times a null was generated for the random agent</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">paste</span>(sim_data_path, <span class="st">'random-agent_z-score-analysis.Rds'</span>, <span class="at">sep=</span><span class="st">''</span>))</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>human_v_agent_zs <span class="ot">&lt;-</span> <span class="fu">sapply</span>(human_zs, <span class="cf">function</span>(x) (<span class="fu">mean</span>(x[,<span class="st">'mu_z'</span>]) <span class="sc">-</span> <span class="fu">mean</span>(zs))<span class="sc">/</span><span class="fu">sd</span>(zs))</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(human_v_agent_zs) <span class="ot">&lt;-</span> exp_strs</span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>human_v_agent_ps <span class="ot">&lt;-</span> <span class="fu">sapply</span>(human_v_agent_zs, pnorm)</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(human_v_agent_ps) <span class="ot">&lt;-</span> exp_strs</span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a><span class="co"># make a dataframe of the results and save as a csv</span></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>hum_z_dat <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">exp =</span> exp_strs,</span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>                    <span class="at">zs =</span> human_v_agent_zs,</span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ps =</span> human_v_agent_ps)</span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(hum_z_dat, <span class="at">file=</span><span class="fu">paste</span>(res_path, <span class="st">'human_v_agent_zs.csv'</span>, <span class="at">sep=</span><span class="st">''</span>),</span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>          <span class="at">row.names=</span><span class="cn">FALSE</span>)</span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a><span class="co"># print out the result</span></span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(<span class="st">'the probability that the human data comes from the null distribution is p= %.2f for the lt exp, and p= %.2f for the ts exp'</span>, <span class="fu">round</span>(human_v_agent_ps[<span class="st">'lt'</span>],<span class="dv">2</span>), <span class="fu">round</span>(human_v_agent_ps[<span class="st">'ts'</span>],<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "the probability that the human data comes from the null distribution is p= 0.00 for the lt exp, and p= 0.00 for the ts exp"</code></pre>
@@ -410,11 +453,11 @@ NULL</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>rel_data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'dat4_seq_model.Rda'</span>, <span class="at">sep=</span><span class="st">''</span>) <span class="co"># note: this datafile was generated by this project -https://github.com/garner-code/DA_VisRoutes and copied over to this project for the current analysis </span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>rel_data_save_name <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'rel_rs_wf.csv'</span>, <span class="at">sep=</span><span class="st">''</span>) <span class="co"># save the r's from da and placebo in widefrom</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>rel_analysis_save_name <span class="ot">&lt;-</span> <span class="fu">paste</span>(res_path, <span class="st">'da_reliability_analysis.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">reliability_analysis</span>(rel_data_fname, rel_data_save_name,</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>                     rel_analysis_save_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>rel_data_fname <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'dat4_seq_model.Rda'</span>, <span class="at">sep=</span><span class="st">''</span>) <span class="co"># note: this datafile was generated by this project -https://github.com/garner-code/DA_VisRoutes and copied over to this project for the current analysis </span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>rel_data_save_name <span class="ot">&lt;-</span> <span class="fu">paste</span>(data_path, <span class="st">'rel_rs_wf.csv'</span>, <span class="at">sep=</span><span class="st">''</span>) <span class="co"># save the r's from da and placebo in widefrom</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>rel_analysis_save_name <span class="ot">&lt;-</span> <span class="fu">paste</span>(res_path, <span class="st">'da_reliability_analysis.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="fu">reliability_analysis</span>(rel_data_fname, rel_data_save_name,</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>                     rel_analysis_save_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'sub'. You can override using the `.groups`
@@ -422,53 +465,56 @@ argument.</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># now we've made the data file, report the results of the reliability analysis</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>rel <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(rel_analysis_save_name)</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>fmt <span class="ot">=</span> <span class="st">'the measure demonstrates some reliability, r = %.2f, 95 CI[%.2f, %.2f], t(%.0f) = %.2f, p = %.2f'</span></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(fmt, rel<span class="sc">$</span>r, rel<span class="sc">$</span>l, rel<span class="sc">$</span>u, rel<span class="sc">$</span>df, rel<span class="sc">$</span>t, rel<span class="sc">$</span>p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># now we've made the data file, report the results of the reliability analysis</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>rel <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(rel_analysis_save_name)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>fmt <span class="ot">=</span> <span class="st">'the measure demonstrates some reliability, r = %.2f, 95 CI[%.2f, %.2f], t(%.0f) = %.2f, p = %.2f'</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sprintf</span>(fmt, rel<span class="sc">$</span>r, rel<span class="sc">$</span>l, rel<span class="sc">$</span>u, rel<span class="sc">$</span>df, rel<span class="sc">$</span>t, rel<span class="sc">$</span>p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "the measure demonstrates some reliability, r = 0.53, 95 CI[0.25, 0.72], t(37) = 3.78, p = 0.00"</code></pre>
-</div>
 </div>
 <p>Now let’s see the correlation in the data -</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># note the 'r' is for reliability</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>r_p_wdth <span class="ot">&lt;-</span> z_p_wdth<span class="sc">/</span><span class="dv">2</span> <span class="co"># plot width of ms plot, in cm - its half the width of the z-score plot</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>r_p_hgt <span class="ot">&lt;-</span> z_p_hgt</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>r_col <span class="ot">=</span> col_scheme[<span class="dv">3</span>]</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>fig_lab <span class="ot">=</span> <span class="st">'C'</span></span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>rel_data_save_name <span class="ot">=</span> rel_data_save_name</span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>rel_plt_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'reliability_data'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_rel</span>(r_p_wdth, r_p_hgt, r_col,</span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>         fig_lab, </span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>         rel_data_save_name,</span>
-<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>         rel_plt_fname)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># note the 'r' is for reliability</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>r_p_wdth <span class="ot">&lt;-</span> z_p_wdth<span class="sc">/</span><span class="dv">2</span> <span class="co"># plot width of ms plot, in cm - its half the width of the z-score plot</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>r_p_hgt <span class="ot">&lt;-</span> z_p_hgt</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>r_col <span class="ot">=</span> col_scheme[<span class="dv">3</span>]</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>fig_lab <span class="ot">=</span> <span class="st">'C'</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>rel_data_save_name <span class="ot">=</span> rel_data_save_name</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>rel_plt_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'reliability_data'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_rel</span>(r_p_wdth, r_p_hgt, r_col,</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>         fig_lab, </span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>         rel_data_save_name,</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>         rel_plt_fname)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>png 
   2 </code></pre>
 </div>
 </div>
-<p><img src="figs/reliability_data_4tlks.svg" class="img-fluid quarto-figure quarto-figure-cent" alt="Fig 3: Correlation of routine scores between sessions"> Now I can put Figs 1, 2 and 3 together to make one figure. Going to use the magick package, as dealing with pdfs.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/reliability_data_4tlks.svg" class="img-fluid figure-img"></p>
+<figcaption>Fig 3: Correlation of routine scores between sessions</figcaption>
+</figure>
+</div>
+<p>Now I can put Figs 1, 2 and 3 together to make one figure. Going to use the magick package, as dealing with pdfs.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>fnms <span class="ot">=</span> <span class="fu">c</span>(traj_fig_fname, ms_z_plt_fname, rel_plt_fname)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>ims <span class="ot">=</span> <span class="fu">lapply</span>(fnms, <span class="cf">function</span>(x) <span class="fu">image_read_pdf</span>(<span class="fu">paste</span>(x, <span class="st">'.pdf'</span>, <span class="at">sep=</span><span class="st">''</span>)))</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>multi <span class="ot">&lt;-</span> <span class="fu">c</span>(ims[[<span class="dv">2</span>]], ims[[<span class="dv">3</span>]]) <span class="sc">%&gt;%</span></span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>         <span class="fu">image_append</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(ims[[<span class="dv">1</span>]]) <span class="sc">%&gt;%</span></span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>         <span class="fu">image_append</span>(<span class="at">stack=</span><span class="cn">TRUE</span>)</span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>traj_hght <span class="ot">=</span> (w<span class="sc">/</span><span class="dv">6</span><span class="sc">*</span><span class="dv">2</span>)<span class="sc">+</span>.<span class="dv">5</span> <span class="co"># get the height of the traj plot</span></span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="fu">paste</span>(fig_path, <span class="st">'FigA'</span>, <span class="at">sep=</span><span class="st">''</span>), <span class="at">width=</span>z_p_wdth<span class="sc">+</span>r_p_wdth,</span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">height=</span>z_p_hgt<span class="sc">+</span>traj_hght)</span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(multi)</span>
-<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>fnms <span class="ot">=</span> <span class="fu">c</span>(traj_fig_fname, ms_z_plt_fname, rel_plt_fname)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>ims <span class="ot">=</span> <span class="fu">lapply</span>(fnms, <span class="cf">function</span>(x) <span class="fu">image_read_pdf</span>(<span class="fu">paste</span>(x, <span class="st">'.pdf'</span>, <span class="at">sep=</span><span class="st">''</span>)))</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>multi <span class="ot">&lt;-</span> <span class="fu">c</span>(ims[[<span class="dv">2</span>]], ims[[<span class="dv">3</span>]]) <span class="sc">%&gt;%</span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>         <span class="fu">image_append</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(ims[[<span class="dv">1</span>]]) <span class="sc">%&gt;%</span></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>         <span class="fu">image_append</span>(<span class="at">stack=</span><span class="cn">TRUE</span>)</span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>traj_hght <span class="ot">=</span> (w<span class="sc">/</span><span class="dv">6</span><span class="sc">*</span><span class="dv">2</span>)<span class="sc">+</span>.<span class="dv">5</span> <span class="co"># get the height of the traj plot</span></span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="fu">paste</span>(fig_path, <span class="st">'FigA.pdf'</span>, <span class="at">sep=</span><span class="st">''</span>), <span class="at">width=</span>z_p_wdth<span class="sc">+</span>r_p_wdth,</span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">height=</span>z_p_hgt<span class="sc">+</span>traj_hght)</span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(multi)</span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>png 
@@ -486,17 +532,17 @@ argument.</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first, I need to get the routine scores matched with the training group scores</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>), get_r_info_and_save, <span class="at">data_path=</span>data_path)</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_r_train</span>(<span class="at">p_wdth =</span> z_p_wdth, </span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">p_hgt =</span> z_p_hgt, </span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">cols =</span> col_scheme, </span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">x_rng =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">40</span>),</span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">y_rng =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">25</span>),</span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">exp_strs =</span> exp_strs,</span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">data_path =</span> data_path,</span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">r_by_g_fname =</span> <span class="fu">paste</span>(fig_path, <span class="st">'rs_by-traintype_hists'</span>, <span class="at">sep=</span><span class="st">''</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first, I need to get the routine scores matched with the training group scores</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">'lt'</span>, <span class="st">'ts'</span>), get_r_info_and_save, <span class="at">data_path=</span>data_path)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_r_train</span>(<span class="at">p_wdth =</span> z_p_wdth, </span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">p_hgt =</span> z_p_hgt, </span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">cols =</span> col_scheme, </span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">x_rng =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">40</span>),</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">y_rng =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">25</span>),</span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">exp_strs =</span> exp_strs,</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">data_path =</span> data_path,</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">r_by_g_fname =</span> <span class="fu">paste</span>(fig_path, <span class="st">'rs_by-traintype_hists'</span>, <span class="at">sep=</span><span class="st">''</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="quarto-figure quarto-figure-center">
@@ -509,62 +555,62 @@ argument.</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>get_rdat_and_label <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str, data_path){</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  rdat <span class="ot">&lt;-</span> <span class="fu">get_dat</span>(exp_str, data_path)</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  rdat<span class="sc">$</span>exp <span class="ot">=</span> exp_str</span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  rdat</span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>rdat <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(exp_strs, get_rdat_and_label, <span class="at">data_path =</span> data_path))</span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>do_grp_t <span class="ot">&lt;-</span> <span class="cf">function</span>(rdat, exp_str){</span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(rdat <span class="sc">%&gt;%</span> <span class="fu">filter</span>(exp <span class="sc">==</span> exp_str),</span>
-<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>       <span class="fu">t.test</span>(<span class="fu">log</span>(r) <span class="sc">~</span> train_type))</span>
-<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>get_cohens <span class="ot">&lt;-</span> <span class="cf">function</span>(rdat, exp_str){</span>
-<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">=</span> rdat <span class="sc">%&gt;%</span> <span class="fu">filter</span>(exp <span class="sc">==</span> exp_str) <span class="sc">%&gt;%</span></span>
-<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mutate</span>(<span class="at">logr =</span> <span class="fu">log</span>(r))</span>
-<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cohens_d</span>(<span class="at">data =</span> tmp,</span>
-<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>           <span class="at">formula =</span> logr<span class="sc">~</span>train_type,</span>
-<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>           <span class="at">ci =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>           <span class="at">ci.type=</span><span class="st">"perc"</span>,</span>
-<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a>           <span class="at">nboot =</span> <span class="dv">1000</span>)</span>
-<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a>grp_comps <span class="ot">&lt;-</span> <span class="fu">lapply</span>(exp_strs, do_grp_t, <span class="at">rdat=</span>rdat)</span>
-<span id="cb40-25"><a href="#cb40-25" aria-hidden="true" tabindex="-1"></a>grp_cohens <span class="ot">&lt;-</span> <span class="fu">lapply</span>(exp_strs, get_cohens, <span class="at">rdat=</span>rdat)</span>
-<span id="cb40-26"><a href="#cb40-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-27"><a href="#cb40-27" aria-hidden="true" tabindex="-1"></a>prnt_t <span class="ot">&lt;-</span> <span class="cf">function</span>(t_res, d_res){</span>
-<span id="cb40-28"><a href="#cb40-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb40-29"><a href="#cb40-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">t =</span> t_res<span class="sc">$</span>statistic,</span>
-<span id="cb40-30"><a href="#cb40-30" aria-hidden="true" tabindex="-1"></a>         <span class="at">df =</span> t_res<span class="sc">$</span>parameter,</span>
-<span id="cb40-31"><a href="#cb40-31" aria-hidden="true" tabindex="-1"></a>         <span class="at">p =</span> t_res<span class="sc">$</span>p.value,</span>
-<span id="cb40-32"><a href="#cb40-32" aria-hidden="true" tabindex="-1"></a>         <span class="at">mu_diff =</span> t_res<span class="sc">$</span>estimate[<span class="dv">1</span>] <span class="sc">-</span> t_res<span class="sc">$</span>estimate[<span class="dv">2</span>],</span>
-<span id="cb40-33"><a href="#cb40-33" aria-hidden="true" tabindex="-1"></a>         <span class="at">mu_l =</span> t_res<span class="sc">$</span>conf.int[<span class="dv">1</span>],</span>
-<span id="cb40-34"><a href="#cb40-34" aria-hidden="true" tabindex="-1"></a>         <span class="at">mu_u =</span> t_res<span class="sc">$</span>conf.int[<span class="dv">2</span>],</span>
-<span id="cb40-35"><a href="#cb40-35" aria-hidden="true" tabindex="-1"></a>         <span class="at">d =</span> d_res<span class="sc">$</span>effsize,</span>
-<span id="cb40-36"><a href="#cb40-36" aria-hidden="true" tabindex="-1"></a>         <span class="at">d_l =</span> d_res<span class="sc">$</span>conf.low,</span>
-<span id="cb40-37"><a href="#cb40-37" aria-hidden="true" tabindex="-1"></a>         <span class="at">d_u =</span> d_res<span class="sc">$</span>conf.high,</span>
-<span id="cb40-38"><a href="#cb40-38" aria-hidden="true" tabindex="-1"></a>         <span class="at">dv =</span> <span class="st">'log r'</span>)</span>
-<span id="cb40-39"><a href="#cb40-39" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb40-40"><a href="#cb40-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-41"><a href="#cb40-41" aria-hidden="true" tabindex="-1"></a>grp_r_comp <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, </span>
-<span id="cb40-42"><a href="#cb40-42" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(grp_comps),</span>
-<span id="cb40-43"><a href="#cb40-43" aria-hidden="true" tabindex="-1"></a>                             <span class="cf">function</span>(x) </span>
-<span id="cb40-44"><a href="#cb40-44" aria-hidden="true" tabindex="-1"></a>                               <span class="fu">prnt_t</span>(grp_comps[[x]],</span>
-<span id="cb40-45"><a href="#cb40-45" aria-hidden="true" tabindex="-1"></a>                                      grp_cohens[[x]])))</span>
-<span id="cb40-46"><a href="#cb40-46" aria-hidden="true" tabindex="-1"></a>grp_r_comp<span class="sc">$</span>exp <span class="ot">&lt;-</span> exp_strs</span>
-<span id="cb40-47"><a href="#cb40-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-48"><a href="#cb40-48" aria-hidden="true" tabindex="-1"></a><span class="co"># now save as a csv file </span></span>
-<span id="cb40-49"><a href="#cb40-49" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">paste</span>(res_path, <span class="st">'grp_r_ts.csv'</span>, <span class="at">sep=</span><span class="st">''</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>get_rdat_and_label <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str, data_path){</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  rdat <span class="ot">&lt;-</span> <span class="fu">get_dat</span>(exp_str, data_path)</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  rdat<span class="sc">$</span>exp <span class="ot">=</span> exp_str</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  rdat</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>rdat <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(exp_strs, get_rdat_and_label, <span class="at">data_path =</span> data_path))</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>do_grp_t <span class="ot">&lt;-</span> <span class="cf">function</span>(rdat, exp_str){</span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(rdat <span class="sc">%&gt;%</span> <span class="fu">filter</span>(exp <span class="sc">==</span> exp_str),</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>       <span class="fu">t.test</span>(<span class="fu">log</span>(r) <span class="sc">~</span> train_type))</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>get_cohens <span class="ot">&lt;-</span> <span class="cf">function</span>(rdat, exp_str){</span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">=</span> rdat <span class="sc">%&gt;%</span> <span class="fu">filter</span>(exp <span class="sc">==</span> exp_str) <span class="sc">%&gt;%</span></span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mutate</span>(<span class="at">logr =</span> <span class="fu">log</span>(r))</span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cohens_d</span>(<span class="at">data =</span> tmp,</span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>           <span class="at">formula =</span> logr<span class="sc">~</span>train_type,</span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a>           <span class="at">ci =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a>           <span class="at">ci.type=</span><span class="st">"perc"</span>,</span>
+<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a>           <span class="at">nboot =</span> <span class="dv">1000</span>)</span>
+<span id="cb49-22"><a href="#cb49-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb49-23"><a href="#cb49-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-24"><a href="#cb49-24" aria-hidden="true" tabindex="-1"></a>grp_comps <span class="ot">&lt;-</span> <span class="fu">lapply</span>(exp_strs, do_grp_t, <span class="at">rdat=</span>rdat)</span>
+<span id="cb49-25"><a href="#cb49-25" aria-hidden="true" tabindex="-1"></a>grp_cohens <span class="ot">&lt;-</span> <span class="fu">lapply</span>(exp_strs, get_cohens, <span class="at">rdat=</span>rdat)</span>
+<span id="cb49-26"><a href="#cb49-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-27"><a href="#cb49-27" aria-hidden="true" tabindex="-1"></a>prnt_t <span class="ot">&lt;-</span> <span class="cf">function</span>(t_res, d_res){</span>
+<span id="cb49-28"><a href="#cb49-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb49-29"><a href="#cb49-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">t =</span> t_res<span class="sc">$</span>statistic,</span>
+<span id="cb49-30"><a href="#cb49-30" aria-hidden="true" tabindex="-1"></a>         <span class="at">df =</span> t_res<span class="sc">$</span>parameter,</span>
+<span id="cb49-31"><a href="#cb49-31" aria-hidden="true" tabindex="-1"></a>         <span class="at">p =</span> t_res<span class="sc">$</span>p.value,</span>
+<span id="cb49-32"><a href="#cb49-32" aria-hidden="true" tabindex="-1"></a>         <span class="at">mu_diff =</span> t_res<span class="sc">$</span>estimate[<span class="dv">1</span>] <span class="sc">-</span> t_res<span class="sc">$</span>estimate[<span class="dv">2</span>],</span>
+<span id="cb49-33"><a href="#cb49-33" aria-hidden="true" tabindex="-1"></a>         <span class="at">mu_l =</span> t_res<span class="sc">$</span>conf.int[<span class="dv">1</span>],</span>
+<span id="cb49-34"><a href="#cb49-34" aria-hidden="true" tabindex="-1"></a>         <span class="at">mu_u =</span> t_res<span class="sc">$</span>conf.int[<span class="dv">2</span>],</span>
+<span id="cb49-35"><a href="#cb49-35" aria-hidden="true" tabindex="-1"></a>         <span class="at">d =</span> d_res<span class="sc">$</span>effsize,</span>
+<span id="cb49-36"><a href="#cb49-36" aria-hidden="true" tabindex="-1"></a>         <span class="at">d_l =</span> d_res<span class="sc">$</span>conf.low,</span>
+<span id="cb49-37"><a href="#cb49-37" aria-hidden="true" tabindex="-1"></a>         <span class="at">d_u =</span> d_res<span class="sc">$</span>conf.high,</span>
+<span id="cb49-38"><a href="#cb49-38" aria-hidden="true" tabindex="-1"></a>         <span class="at">dv =</span> <span class="st">'log r'</span>)</span>
+<span id="cb49-39"><a href="#cb49-39" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb49-40"><a href="#cb49-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-41"><a href="#cb49-41" aria-hidden="true" tabindex="-1"></a>grp_r_comp <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, </span>
+<span id="cb49-42"><a href="#cb49-42" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(grp_comps),</span>
+<span id="cb49-43"><a href="#cb49-43" aria-hidden="true" tabindex="-1"></a>                             <span class="cf">function</span>(x) </span>
+<span id="cb49-44"><a href="#cb49-44" aria-hidden="true" tabindex="-1"></a>                               <span class="fu">prnt_t</span>(grp_comps[[x]],</span>
+<span id="cb49-45"><a href="#cb49-45" aria-hidden="true" tabindex="-1"></a>                                      grp_cohens[[x]])))</span>
+<span id="cb49-46"><a href="#cb49-46" aria-hidden="true" tabindex="-1"></a>grp_r_comp<span class="sc">$</span>exp <span class="ot">&lt;-</span> exp_strs</span>
+<span id="cb49-47"><a href="#cb49-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-48"><a href="#cb49-48" aria-hidden="true" tabindex="-1"></a><span class="co"># now save as a csv file </span></span>
+<span id="cb49-49"><a href="#cb49-49" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">paste</span>(res_path, <span class="st">'grp_r_ts.csv'</span>, <span class="at">sep=</span><span class="st">''</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>The results are pleasingly consistent across both experiments, so will show the inferential outcomes in a table -</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(grp_r_comp, <span class="at">digits=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(grp_r_comp, <span class="at">digits=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -606,8 +652,8 @@ argument.</code></pre>
 <td style="text-align: right;">-0.74</td>
 <td style="text-align: right;">-0.19</td>
 <td style="text-align: right;">-0.68</td>
-<td style="text-align: right;">-1.13</td>
-<td style="text-align: right;">-0.30</td>
+<td style="text-align: right;">-1.11</td>
+<td style="text-align: right;">-0.29</td>
 <td style="text-align: left;">log r</td>
 <td style="text-align: left;">lt</td>
 </tr>
@@ -619,8 +665,8 @@ argument.</code></pre>
 <td style="text-align: right;">-0.72</td>
 <td style="text-align: right;">-0.21</td>
 <td style="text-align: right;">-0.74</td>
-<td style="text-align: right;">-1.18</td>
-<td style="text-align: right;">-0.34</td>
+<td style="text-align: right;">-1.19</td>
+<td style="text-align: right;">-0.32</td>
 <td style="text-align: left;">log r</td>
 <td style="text-align: left;">ts</td>
 </tr>
@@ -635,23 +681,23 @@ argument.</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first, get the task jump data - note that I am not saving it as a csv,</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co"># as it already exists with all the relevant info in the _avg csv</span></span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>get_jump_data <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str, data_path){</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str,</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'_avg.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(ses <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(sub, train_type, context, <span class="cf">switch</span>, context_changes) <span class="sc">%&gt;%</span></span>
-<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(sub, train_type, <span class="cf">switch</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">jumps=</span><span class="fu">mean</span>(context_changes)) <span class="sc">%&gt;%</span></span>
-<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span>
-<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>  tmp<span class="sc">$</span>exp <span class="ot">=</span> exp_str</span>
-<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>  tmp</span>
-<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>jumps <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(exp_strs, get_jump_data,</span>
-<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>                               <span class="at">data_path =</span> data_path))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first, get the task jump data - note that I am not saving it as a csv,</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co"># as it already exists with all the relevant info in the _avg csv</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>get_jump_data <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str, data_path){</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str,</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'_avg.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(ses <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(sub, train_type, context, <span class="cf">switch</span>, context_changes) <span class="sc">%&gt;%</span></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(sub, train_type, <span class="cf">switch</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">jumps=</span><span class="fu">mean</span>(context_changes)) <span class="sc">%&gt;%</span></span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>  tmp<span class="sc">$</span>exp <span class="ot">=</span> exp_str</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>  tmp</span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>jumps <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(exp_strs, get_jump_data,</span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>                               <span class="at">data_path =</span> data_path))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'sub', 'train_type'. You can override using
@@ -661,15 +707,15 @@ the `.groups` argument.</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>j_wdth <span class="ot">=</span> z_p_wdth</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>j_hgt <span class="ot">=</span> z_p_hgt</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>col_scheme <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'#7570b3'</span>, <span class="st">'#e7298a'</span>)</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_jumps_plot</span>(jumps,</span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>               exp_strs,</span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>               col_scheme,</span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>               j_wdth, j_hgt,</span>
-<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>               <span class="fu">paste</span>(fig_path, <span class="st">'task-jumps'</span>, <span class="at">sep=</span><span class="st">''</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>j_wdth <span class="ot">=</span> z_p_wdth</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>j_hgt <span class="ot">=</span> z_p_hgt</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>col_scheme <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'#7570b3'</span>, <span class="st">'#e7298a'</span>)</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_jumps_plot</span>(jumps,</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>               exp_strs,</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>               col_scheme,</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>               j_wdth, j_hgt,</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>               <span class="fu">paste</span>(fig_path, <span class="st">'task-jumps'</span>, <span class="at">sep=</span><span class="st">''</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Now lets see the fig in all its glory -</p>
@@ -679,7 +725,149 @@ the `.groups` argument.</code></pre>
 <figcaption>Fig 5: People in the frequent switch group broke up their routines to jump tasks</figcaption>
 </figure>
 </div>
-<p>The next step is to a) test the notepad works with minimal datafiles in data-wrangled Then analyse task jumps Then the modelling analysis!</p>
+<p>Now I will put the routine by group and the task jumps figure into one plot for the manuscript.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>fnms <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">paste</span>(fig_path, <span class="st">'rs_by-traintype_hists'</span>, <span class="at">sep=</span><span class="st">''</span>),</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>         <span class="fu">paste</span>(fig_path, <span class="st">'task-jumps'</span>, <span class="at">sep=</span><span class="st">''</span>))</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>ims <span class="ot">=</span> <span class="fu">lapply</span>(fnms, <span class="cf">function</span>(x) <span class="fu">image_read_pdf</span>(<span class="fu">paste</span>(x, <span class="st">'.pdf'</span>, <span class="at">sep=</span><span class="st">''</span>)))</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>multi <span class="ot">&lt;-</span> <span class="fu">c</span>(ims[[<span class="dv">1</span>]]) <span class="sc">%&gt;%</span></span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>         <span class="fu">image_append</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(ims[[<span class="dv">2</span>]]) <span class="sc">%&gt;%</span></span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>         <span class="fu">image_append</span>(<span class="at">stack=</span><span class="cn">TRUE</span>)</span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="fu">paste</span>(fig_path, <span class="st">'FigB.pdf'</span>, <span class="at">sep=</span><span class="st">''</span>), <span class="at">width=</span>j_wdth,</span>
+<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">height=</span>j_hgt)</span>
+<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(multi)</span>
+<span id="cb54-14"><a href="#cb54-14" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>png 
+  2 </code></pre>
+</div>
+</div>
+<p>It looks like there is an interaction between group and switch (in fact we know there is, from Emily &amp; Dinuk’s analysis). Here I replicate their results: -</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first set the factors to be factors</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>jumps<span class="sc">$</span>sub <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(jumps<span class="sc">$</span>sub)</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>jumps<span class="sc">$</span>train_type <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(jumps<span class="sc">$</span>train_type)</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(jumps<span class="sc">$</span>train_type) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'stable'</span>,<span class="st">'variable'</span>)</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>jumps<span class="sc">$</span><span class="cf">switch</span> <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(jumps<span class="sc">$</span><span class="cf">switch</span>)</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(jumps<span class="sc">$</span><span class="cf">switch</span>) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'stay'</span>,<span class="st">'switch'</span>)</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a><span class="co"># now run the ANOVA model</span></span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a><span class="co"># set emmeans option to multivariate</span></span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a><span class="fu">afex_options</span>(<span class="at">emmeans_model =</span> <span class="st">"multivariate"</span>)</span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a><span class="co"># perform the statistical model</span></span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>exp_strs <span class="ot">&lt;-</span> <span class="fu">unique</span>(jumps<span class="sc">$</span>exp)</span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>tj_aovs <span class="ot">&lt;-</span> <span class="fu">lapply</span>(exp_strs, <span class="cf">function</span>(x) </span>
+<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aov_ez</span>(<span class="st">"sub"</span>, <span class="st">"jumps"</span>, jumps <span class="sc">%&gt;%</span> <span class="fu">filter</span>(exp <span class="sc">==</span> x), </span>
+<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">within =</span> <span class="st">"switch"</span>,</span>
+<span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">between =</span> <span class="st">"train_type"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Contrasts set to contr.sum for the following variables: train_type
+Contrasts set to contr.sum for the following variables: train_type</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(tj_aovs) <span class="ot">&lt;-</span> exp_strs</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="co"># convert the anovas to a dataframe, save the results and show as a table</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>convert_aov_to_df <span class="ot">&lt;-</span> <span class="cf">function</span>(aovl, exp_str){</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>  ref <span class="ot">=</span> aovl<span class="sc">$</span>anova_table</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">exp =</span> <span class="fu">rep</span>(exp_str, <span class="fu">length</span>(ref<span class="sc">$</span>F)),</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">effect =</span> <span class="fu">rownames</span>(ref),</span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">numDF =</span> ref<span class="sc">$</span><span class="st">`</span><span class="at">num Df</span><span class="st">`</span>,</span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">denDF =</span> ref<span class="sc">$</span><span class="st">`</span><span class="at">den Df</span><span class="st">`</span>,</span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">Fstat =</span> ref<span class="sc">$</span>F,</span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">ges =</span> ref<span class="sc">$</span>ges,</span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">p =</span> ref<span class="sc">$</span><span class="st">`</span><span class="at">Pr(&gt;F)</span><span class="st">`</span>)</span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>tj_aov_dat <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, </span>
+<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(exp_strs),</span>
+<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a>                             <span class="cf">function</span>(x) <span class="fu">convert_aov_to_df</span>(tj_aovs[[x]],</span>
+<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a>                                                           exp_strs[x])))</span>
+<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(tj_aov_dat, <span class="at">digits=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">exp</th>
+<th style="text-align: left;">effect</th>
+<th style="text-align: right;">numDF</th>
+<th style="text-align: right;">denDF</th>
+<th style="text-align: right;">Fstat</th>
+<th style="text-align: right;">ges</th>
+<th style="text-align: right;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">lt</td>
+<td style="text-align: left;">train_type</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">8.35</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">lt</td>
+<td style="text-align: left;">switch</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">5.51</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.02</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">lt</td>
+<td style="text-align: left;">train_type:switch</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">24.36</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ts</td>
+<td style="text-align: left;">train_type</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">10.66</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ts</td>
+<td style="text-align: left;">switch</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">1.26</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.26</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ts</td>
+<td style="text-align: left;">train_type:switch</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">16.54</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Then the modelling analysis!</p>
 </section>
 </section>
 

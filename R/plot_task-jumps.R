@@ -4,7 +4,7 @@ gen_jumps_plot <- function(task_jumps,
                             p_wdth, p_hgt,
                             plt_sv_nm){
   
-  fig_labs = c("A", "B")
+  fig_labs = c("C", "D")
   ###########################################################
   # plot task jumps box plots
   ##########################################################
@@ -96,7 +96,7 @@ plot_task_jumps <- function(task_jumps,
                col=rep(cols,2),
                ylab=ylab,
                xlab='group'))
-  axis(1, at = c(1.5,3.5), labels=c('rare','freq'))
+  axis(1, at = c(1.5,3.5), labels=c('stab','var'))
   axis(2, at = c(0, 5))
   if (leg){
     legend('topleft', c('st','sw'), fill=col_scheme, bty='n')
