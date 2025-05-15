@@ -438,7 +438,8 @@ Now lets see the fig in all its glory -
 
 ![Fig 5: People in the frequent switch group broke up their routines to jump tasks](figs/task-jumps_4tlks.svg){fig-align="cent"}
 
-The next step is to a) test the notepad works with minimal datafiles in data-wrangled
-Then analyse task jumps
+It looks like there is an interaction between group and switch (in fact we know there is, from Emily & Dinuk's analysis). Here I replicate their results -
+
+
 Then the modelling analysis!
 
