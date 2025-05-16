@@ -194,7 +194,7 @@ get_p_context <- function(dat, subN){
   rw_idx <- c(with(tmp, which(diff(t) != 0)), nrow(tmp)) # get the row numbers where each trial ends, this will allow me to pull out the context for each trial
   cntx <- with(tmp, context[rw_idx]) # get the pattern of context changes
   # now I need to count, for each trial, what is the probability that its the same as the last trial
-  cntx_chngs <- diff(cntx) # get whether you were in the same or differeny context on the previous trial (this gives 2:end
+  cntx_chngs <- diff(cntx) # get whether you were in the same or different context on the previous trial (this gives 2:end
   cntx_chngs <- !cntx_chngs # make the stays a true, and the changes a false
   psC <- c(.5, .5) # the probability you are in the same context as the last one you saw (pdC will be 1 - this number). p=.5 reflects uninformed priors, 2 values as the first update comes at the end of trial 2.
   for (i in 1:(length(cntx_chngs)-1)){ # we only go to the penultimate observation as there are no updates after the last trial 
@@ -218,19 +218,24 @@ get_p_context <- function(dat, subN){
   cntx_a_tgts <- unique(tmp$door[tmp$context == 1 & tmp$door_cc > 0]) ## how does this not return 4 values?
   cntx_b_tgts <- unique(tmp$door[tmp$context == 2 & tmp$door_cc > 0])
   tgts <- matrix(c(cntx_a_tgts, cntx_b_tgts), ncol=2)
-  
   frst_tgt_door <- tmp$door[which(tmp$door_cc == 1 | tmp$door_oc == 1)[1]]
   prv_cntxt_4_frst_trl <- which(tgts == frst_tgt_door, arr.ind=T)[,'col']
-  
   tmp$prv_cntx[tmp$t == 1] = prv_cntxt_4_frst_trl
-  ## now I need to recode cc and oc responses as following:
-  ## if current context == 1 & prev context == 1, n = cc, m = oc
-  ## if current context == 1 & prev context == 2, n = oc, m = cc
-  ## if current context == 2 & prev context == 2, n = cc, m = oc
+  
+  ## now I need to recode the data in terms of which context
+  ## the participant has evidence in for being, rather than the 
+  ## actual physical context they are in (ground truth). This is because,
+  ## if I just found a target from context 1, then I have no evidence I
+  ## am now in context 2, until I find a target in context 2.
+  ## so I need to code cc and oc responses as following:
+  ## if current context == 1 & prev context == 1, n = cc, m = oc # current context is indeed current context
+  ## if current context == 1 & prev context == 2, n = oc, m = cc # then until you find the target from context 1, you should think that 2 is cc
+  ## if current context == 2 & prev context == 2, n = cc, m = oc # and so on
   ## if current context == 2 & prev context == 1, n = oc, m = cc
   tmp$door_n <- 0
-  tmp$door_m <- 0 #####NOTE: door_m is also our DV aka we are modelling responses that
-  # are from the context in which you were not just rewarded
+  tmp$door_m <- 0 ##### NOTE: door_m is also our DV aka we are modelling responses that
+  # are from the context in which you were not just rewarded, to see how much the probability
+  # of that context influences your behavioural set
   tmp$door_n[tmp$context == tmp$prv_cntx] <- 
     tmp$door_cc[tmp$context == tmp$prv_cntx]
   # row 1 & 3, [n] from comments above
@@ -242,8 +247,8 @@ get_p_context <- function(dat, subN){
     tmp$door_cc[tmp$context != tmp$prv_cntx] # row 2 & 4 [m]
   
   ## now I need to add to this bit a filtering of the unique target selections on that trial, 
-  ## and remove the n's and m's which are repetitions
-  
+  ## and remove the n's and m's which are repetitions, this is because you only get information
+  ## the first time you select an n or an m
   remove_repeats <- function(tmp, trialN, tgts){
     ###########
     # here I write a function where for each trial I take the door_n selections (i.e. the relevant ones, relative to last reward). I find which of them are repetitions, and I remove those repetitions
@@ -260,7 +265,7 @@ get_p_context <- function(dat, subN){
     trial_dat$door_frst_n[tidx[scnd_ns_this_trl]] <- 0
     
     ##########
-    # now deal with the ms - code is a little clunky. I may generalise this later
+    # now deal with the ms - code is a little clunky. I may generalise this later given time, space and being a better person
     tgts_tm <- tgts[,3-trial_dat$prv_cntx[1]]
     midx <- which(trial_dat$door_m > 0)
     scnd_ms_this_trl <- duplicated(trial_dat$door[midx])
@@ -270,7 +275,7 @@ get_p_context <- function(dat, subN){
     ########## 
     # now what we actually need to do is shift the first_n variables down 1, and put 0 in the first
     # selection of the trial. This is because we need the regressor to reflect the update that 
-    # influences perfomance on that trial - e.g. trial 2 information affects trial 3, not trial 2
+    # influences performance on that trial - e.g. trial 2 information affects trial 3, not trial 2
     nr = nrow(trial_dat)
     if (nr > 1){
       trial_dat$door_frst_n <- c(0, trial_dat$door_frst_n[1:(nr-1)]) # because we won't update after 
@@ -316,7 +321,7 @@ get_p_context <- function(dat, subN){
   ##### trial
   ##### so the info on each row reflects the information available to influence behaviour on that
   ##### trial (i.e. the info from 1:t-1)
-  ##### so the I can compute on each trial, the probability of being in the same context given that
+  ##### so then I can compute on each trial, the probability of being in the same context given that
   ##### many ns and ms that have been discovered up until now
   ##### I can then subtract from 1, to get the probability that
   ##### you are in the other context, and then divide the two 

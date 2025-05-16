@@ -691,7 +691,7 @@ where t is the total number of targets found so far.
 
 First lets get the data in shape. First we get the switch and switch rate variables -
 
-```{r}
+```{r, eval=FALSE}
 
 exp_strs <- exp_strs
 
@@ -709,9 +709,34 @@ get_sw_info <- function(exp_str){
 }
 
 dat <- do.call(rbind, lapply(exp_strs, get_sw_info))
+```
 
-    
-    
-dat <- do.call(rbind, lapply(subs, get_p_context, dat=dat))
+Now I will get $p(C = A | n, m)$ and $p(S|C,n)$. The function I call is a bit of a beast, but hopefully its sufficiently commented that its easy enough to follow what is happening. Basically for each trial, I calculate:
 
+$p(C = A) = \frac{1}{t} \sum_{i=1}^{t} (C_i == C_{i-1})$
+
+For each trial, I then count the number of n's and m's. Note that n and m are characterised according to the last place you found a target. e.g. if I just found a target from CA, but the true state of the world is now CB, any selection from CB would be counted as an m, as I have no evidence yet to tell me its an n. Note that each n and m is only counted once (duplicates are not counted).
+
+For the cumulative counts of n and m on each trial, I assign the probability of that many nulls, given you are in the context to which those doors belong. Note the equation below is defined for n, but I also do the same for $p(m|C=B)$
+
+$$
+p(n | C=A) =  \frac{n_{max} - n}{n_{max}}
+$$
+
+This allows me to compute, based on trial by trial experience, $p(C = A | n, m)$ and $p(S|C=A, n,m)$. At the end, I then shift all the information down 1 row, as the current outcome should affect the next behaviour.
+
+```{r, eval=FALSE}
+
+exp_strs <- exp_strs
+
+get_pcanm_info <- function(exp_str, dat){
+  #################################################
+  # add Sw and Swr regressors for each subject
+  subs <- unique(dat$sub)
+  dat <- do.call(rbind, lapply(subs, get_p_context, dat=dat))
+  dat
+}
+
+dat <- do.call(rbind, lapply(exp_strs, function(x) get_pcanm_info(x, dat %>% filter(exp == x))))
+write.csv(dat, paste(data_path, 'evt-dat_4log-reg.csv', sep=''))
 ```
