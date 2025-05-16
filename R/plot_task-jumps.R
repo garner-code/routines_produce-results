@@ -1,10 +1,13 @@
-gen_jumps_plot <- function(task_jumps,
+gen_jumps_plot <- function(data,
+                           plot_formula,
                             exp_strs,
                             cols,
                             p_wdth, p_hgt,
-                            plt_sv_nm){
+                            plt_sv_nm,
+                            fig_labs,
+                            ylabel){
   
-  fig_labs = c("C", "D")
+#  fig_labs = c("C", "D")
   ###########################################################
   # plot task jumps box plots
   ##########################################################
@@ -15,12 +18,12 @@ gen_jumps_plot <- function(task_jumps,
   for (i in 1:length(exp_strs)){
     if (i == 1){
       leg = TRUE
-      ylab = 'jumps'
+      ylab = ylabel
     } else {
       leg = FALSE
       ylab = ''
     }
-    plot_task_jumps(task_jumps, exp_strs[i], cols, leg, ylab)
+    plot_task_jumps(data, plot_formula, exp_strs[i], cols, leg, ylab)
     fig_label(fig_labs[i])
   }
   dev.off()
@@ -31,12 +34,12 @@ gen_jumps_plot <- function(task_jumps,
   for (i in 1:length(exp_strs)){
     if (i == 1){
       leg = TRUE
-      ylab = 'jumps'
+      ylab = ylabel
     } else {
       leg = FALSE
       ylab = ''
     }
-    plot_task_jumps(task_jumps, exp_strs[i], cols, leg, ylab)
+    plot_task_jumps(data, plot_formula, exp_strs[i], cols, leg, ylab)
     fig_label(fig_labs[i])
   }
   dev.off()
@@ -49,12 +52,12 @@ gen_jumps_plot <- function(task_jumps,
   for (i in 1:length(exp_strs)){
     if (i == 1){
       leg = TRUE
-      ylab = 'jumps'
+      ylab = ylabel
     } else {
       leg = FALSE
       ylab = ''
     }
-    plot_task_jumps(task_jumps, exp_strs[i], cols, leg, ylab)
+    plot_task_jumps(data, plot_formula, exp_strs[i], cols, leg, ylab)
     fig_label(fig_labs[i])
   }
   dev.off()
@@ -65,30 +68,31 @@ gen_jumps_plot <- function(task_jumps,
   for (i in 1:length(exp_strs)){
     if (i == 1){
       leg = TRUE
-      ylab = 'jumps'
+      ylab = ylabel
     } else {
       leg = FALSE
       ylab = ''
     }
-    plot_task_jumps(task_jumps, exp_strs[i], cols, leg, ylab)
+    plot_task_jumps(data, plot_formula, exp_strs[i], cols, leg, ylab)
     fig_label(fig_labs[i])
   }
   dev.off()
 }
 
 
-plot_task_jumps <- function(task_jumps,
+plot_task_jumps <- function(data,
+                            plot_formula,
                             exp_str,
                             cols,
                             leg = TRUE,
                             ylab){
   # use this function to create the appropriate box plot
-  jumps$train_type <- as.factor(jumps$train_type)
-  levels(jumps$train_type) <- c('stable', 'variable')
-  jumps$switch <- as.factor(jumps$switch)
-  levels(jumps$switch) <- c('stay', 'switch')
-  with(jumps %>% filter(exp == 'ts'),
-       boxplot(jumps~switch*train_type,
+  data$train_type <- as.factor(data$train_type)
+  levels(data$train_type) <- c('stable', 'variable')
+  data$switch <- as.factor(data$switch)
+  levels(data$switch) <- c('stay', 'switch')
+  with(data %>% filter(exp == 'ts'),
+       boxplot(as.formula(plot_formula),
                frame=F,
                ylim=c(0,5),
                yaxt = 'n',

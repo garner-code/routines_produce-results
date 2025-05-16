@@ -652,8 +652,8 @@ argument.</code></pre>
 <td style="text-align: right;">-0.74</td>
 <td style="text-align: right;">-0.19</td>
 <td style="text-align: right;">-0.68</td>
-<td style="text-align: right;">-1.11</td>
-<td style="text-align: right;">-0.29</td>
+<td style="text-align: right;">-1.14</td>
+<td style="text-align: right;">-0.26</td>
 <td style="text-align: left;">log r</td>
 <td style="text-align: left;">lt</td>
 </tr>
@@ -665,8 +665,8 @@ argument.</code></pre>
 <td style="text-align: right;">-0.72</td>
 <td style="text-align: right;">-0.21</td>
 <td style="text-align: right;">-0.74</td>
-<td style="text-align: right;">-1.19</td>
-<td style="text-align: right;">-0.32</td>
+<td style="text-align: right;">-1.15</td>
+<td style="text-align: right;">-0.33</td>
 <td style="text-align: left;">log r</td>
 <td style="text-align: left;">ts</td>
 </tr>
@@ -712,10 +712,13 @@ the `.groups` argument.</code></pre>
 <span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>col_scheme <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'#7570b3'</span>, <span class="st">'#e7298a'</span>)</span>
 <span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_jumps_plot</span>(jumps,</span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>               exp_strs,</span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>               col_scheme,</span>
-<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>               j_wdth, j_hgt,</span>
-<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>               <span class="fu">paste</span>(fig_path, <span class="st">'task-jumps'</span>, <span class="at">sep=</span><span class="st">''</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>               <span class="st">'jumps ~ switch*train_type'</span>, </span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>               exp_strs,</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>               col_scheme,</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>               j_wdth, j_hgt,</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>               <span class="fu">paste</span>(fig_path, <span class="st">'task-jumps'</span>, <span class="at">sep=</span><span class="st">''</span>),</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">fig_labs =</span> <span class="fu">c</span>(<span class="st">'C'</span>, <span class="st">'D'</span>),</span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">ylabel =</span> <span class="st">'jumps'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Now lets see the fig in all its glory -</p>
@@ -793,81 +796,240 @@ Contrasts set to contr.sum for the following variables: train_type</code></pre>
 <span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(exp_strs),</span>
 <span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a>                             <span class="cf">function</span>(x) <span class="fu">convert_aov_to_df</span>(tj_aovs[[x]],</span>
 <span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a>                                                           exp_strs[x])))</span>
-<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(tj_aov_dat, <span class="at">digits=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-19"><a href="#cb58-19" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(tj_aov_dat, <span class="at">digits=</span><span class="dv">2</span>)</span>
+<span id="cb58-20"><a href="#cb58-20" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(tj_aov_dat, <span class="fu">paste</span>(res_path, <span class="st">'task-jumps_aov.csv'</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Now I need to follow up the interactions, and grab the estimated marginal means so I can report the main effects.</p>
+<p>Getting the desc stats on the main effect of group:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first I get the between group effect</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>me_grp <span class="ot">&lt;-</span> <span class="fu">lapply</span>(tj_aovs, <span class="cf">function</span>(x) <span class="fu">summary</span>(<span class="fu">emmeans</span>(x, <span class="st">'train_type'</span>)))</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>me_grp <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, me_grp)</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>me_grp<span class="sc">$</span>exp <span class="ot">&lt;-</span> <span class="fu">rep</span>(exp_strs, <span class="at">each=</span><span class="fu">length</span>(<span class="fu">unique</span>(me_grp<span class="sc">$</span>train_type)))</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(me_grp) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'group'</span>, <span class="st">'emmean'</span>, <span class="st">'se'</span>, <span class="st">'df'</span>, <span class="st">'l'</span>, <span class="st">'u'</span>, <span class="st">'exp'</span>)</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(me_grp, <span class="fu">paste</span>(res_path, <span class="st">'/task-jumps_ph_me-grp.csv'</span>, <span class="at">sep=</span><span class="st">''</span>))</span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(me_grp, <span class="at">digits=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
+<th style="text-align: left;">group</th>
+<th style="text-align: right;">emmean</th>
+<th style="text-align: right;">se</th>
+<th style="text-align: right;">df</th>
+<th style="text-align: right;">l</th>
+<th style="text-align: right;">u</th>
 <th style="text-align: left;">exp</th>
-<th style="text-align: left;">effect</th>
-<th style="text-align: right;">numDF</th>
-<th style="text-align: right;">denDF</th>
-<th style="text-align: right;">Fstat</th>
-<th style="text-align: right;">ges</th>
-<th style="text-align: right;">p</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">lt</td>
-<td style="text-align: left;">train_type</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: left;">stable</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">0.13</td>
 <td style="text-align: right;">98</td>
-<td style="text-align: right;">8.35</td>
-<td style="text-align: right;">0.08</td>
-<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: left;">lt</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">lt</td>
-<td style="text-align: left;">switch</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: left;">variable</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">0.13</td>
 <td style="text-align: right;">98</td>
-<td style="text-align: right;">5.51</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: right;">1.22</td>
+<td style="text-align: left;">lt</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">lt</td>
-<td style="text-align: left;">train_type:switch</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: left;">stable</td>
+<td style="text-align: right;">0.46</td>
+<td style="text-align: right;">0.15</td>
 <td style="text-align: right;">98</td>
-<td style="text-align: right;">24.36</td>
-<td style="text-align: right;">0.01</td>
-<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: left;">ts</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">ts</td>
-<td style="text-align: left;">train_type</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: left;">variable</td>
+<td style="text-align: right;">1.14</td>
+<td style="text-align: right;">0.15</td>
 <td style="text-align: right;">98</td>
-<td style="text-align: right;">10.66</td>
-<td style="text-align: right;">0.09</td>
-<td style="text-align: right;">0.00</td>
-</tr>
-<tr class="odd">
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">1.43</td>
 <td style="text-align: left;">ts</td>
-<td style="text-align: left;">switch</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">98</td>
-<td style="text-align: right;">1.26</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">0.26</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ts</td>
-<td style="text-align: left;">train_type:switch</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">98</td>
-<td style="text-align: right;">16.54</td>
-<td style="text-align: right;">0.01</td>
-<td style="text-align: right;">0.00</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>Then the modelling analysis!</p>
+<p>And the simple effects of switch, at each level of group:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># and now I test the following </span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>simp_fx <span class="ot">&lt;-</span> <span class="fu">lapply</span>(tj_aovs, <span class="cf">function</span>(x) </span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>           <span class="fu">list</span>(<span class="fu">summary</span>(<span class="fu">emmeans</span>(x, <span class="st">'switch'</span>, <span class="at">by=</span><span class="st">'train_type'</span>))))</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>sw_by_tt <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(simp_fx, <span class="cf">function</span>(x) <span class="fu">summary</span>(x[[<span class="dv">1</span>]])))</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>sw_by_tt<span class="sc">$</span>exp <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">'lt'</span>,<span class="st">'ts'</span>), <span class="at">each =</span> <span class="dv">4</span>)</span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(sw_by_tt) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'group'</span>, <span class="st">'switch'</span>, <span class="st">'emmean'</span>, </span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>                     <span class="st">'se'</span>, <span class="st">'df'</span>, <span class="st">'l'</span>, <span class="st">'u'</span>, <span class="st">'exp'</span>)</span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(sw_by_tt, <span class="at">file=</span><span class="fu">paste</span>(res_path, <span class="st">'task-jumps_ph_se-sw.csv'</span>, <span class="at">sep=</span><span class="st">''</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>)</span>
+<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(sw_by_tt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">group</th>
+<th style="text-align: left;">switch</th>
+<th style="text-align: right;">emmean</th>
+<th style="text-align: right;">se</th>
+<th style="text-align: right;">df</th>
+<th style="text-align: right;">l</th>
+<th style="text-align: right;">u</th>
+<th style="text-align: left;">exp</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">stable</td>
+<td style="text-align: left;">stay</td>
+<td style="text-align: right;">0.3547768</td>
+<td style="text-align: right;">0.1389444</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">0.0790462</td>
+<td style="text-align: right;">0.6305074</td>
+<td style="text-align: left;">lt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">stable</td>
+<td style="text-align: left;">switch</td>
+<td style="text-align: right;">0.4446429</td>
+<td style="text-align: right;">0.1349610</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">0.1768172</td>
+<td style="text-align: right;">0.7124686</td>
+<td style="text-align: left;">lt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">variable</td>
+<td style="text-align: left;">stay</td>
+<td style="text-align: right;">1.0767310</td>
+<td style="text-align: right;">0.1389444</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">0.8010004</td>
+<td style="text-align: right;">1.3524617</td>
+<td style="text-align: left;">lt</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">variable</td>
+<td style="text-align: left;">switch</td>
+<td style="text-align: right;">0.8239229</td>
+<td style="text-align: right;">0.1349610</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">0.5560972</td>
+<td style="text-align: right;">1.0917486</td>
+<td style="text-align: left;">lt</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">stable</td>
+<td style="text-align: left;">stay</td>
+<td style="text-align: right;">0.3266721</td>
+<td style="text-align: right;">0.1419280</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">0.0450207</td>
+<td style="text-align: right;">0.6083235</td>
+<td style="text-align: left;">ts</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">stable</td>
+<td style="text-align: left;">switch</td>
+<td style="text-align: right;">0.6008333</td>
+<td style="text-align: right;">0.1608016</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">0.2817278</td>
+<td style="text-align: right;">0.9199388</td>
+<td style="text-align: left;">ts</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">variable</td>
+<td style="text-align: left;">stay</td>
+<td style="text-align: right;">1.2202009</td>
+<td style="text-align: right;">0.1419280</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">0.9385495</td>
+<td style="text-align: right;">1.5018524</td>
+<td style="text-align: left;">ts</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">variable</td>
+<td style="text-align: left;">switch</td>
+<td style="text-align: right;">1.0645766</td>
+<td style="text-align: right;">0.1608016</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">0.7454711</td>
+<td style="text-align: right;">1.3836821</td>
+<td style="text-align: left;">ts</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>We can conclude at this point that frequent switching makes people more variable in the order in which they perform their behaviours, and that this might be because they are jumping between the two tasks more frequently. This may be because they are mixing up the two tasks more. We also want to rule out general confusion. To do this, we look at responses that come from neither task.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get general errors data</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>get_error_data <span class="ot">&lt;-</span> <span class="cf">function</span>(exp_str, data_path){</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste</span>(data_path, <span class="st">'exp_'</span>, exp_str,</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'_avg.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(ses <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(sub, train_type, context, <span class="cf">switch</span>, general_errors) <span class="sc">%&gt;%</span></span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(sub, train_type, <span class="cf">switch</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">errors=</span><span class="fu">mean</span>(general_errors)) <span class="sc">%&gt;%</span></span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a>  tmp<span class="sc">$</span>exp <span class="ot">=</span> exp_str</span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a>  tmp</span>
+<span id="cb61-13"><a href="#cb61-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb61-14"><a href="#cb61-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-15"><a href="#cb61-15" aria-hidden="true" tabindex="-1"></a>errors <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(exp_strs, get_error_data,</span>
+<span id="cb61-16"><a href="#cb61-16" aria-hidden="true" tabindex="-1"></a>                                <span class="at">data_path =</span> data_path))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'sub', 'train_type'. You can override using
+the `.groups` argument.
+`summarise()` has grouped output by 'sub', 'train_type'. You can override using
+the `.groups` argument.</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_jumps_plot</span>(errors,</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>               <span class="st">'errors ~ switch*train_type'</span>,</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>               exp_strs,</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>               col_scheme,</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>               j_wdth, j_hgt,</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>               <span class="fu">paste</span>(fig_path, <span class="st">'general-errors'</span>, <span class="at">sep=</span><span class="st">''</span>),</span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">fig_labs =</span> <span class="fu">c</span>(<span class="st">'A'</span>, <span class="st">'B'</span>),</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">ylabel =</span> <span class="st">'errors'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>png 
+  2 </code></pre>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/general-errors_4tlks.svg" class="img-fluid figure-img"></p>
+<figcaption>Fig 5: People in the two groups showed the same levels of out of task errors</figcaption>
+</figure>
+</div>
 </section>
 </section>
 

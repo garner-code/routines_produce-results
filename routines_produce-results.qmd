@@ -400,7 +400,7 @@ kable(grp_r_comp, digits=2)
 
 ```
 
-### How did training impact routine scores over the two experiments?
+### What kinds of responses account for the differences in routine observed between the groups, across the two experiments?
 
 This is where we look at the task-jumps measure between the two groups. Here I create a group x trial type dataframe and draw and save the boxplots.
 
@@ -429,10 +429,13 @@ j_hgt = z_p_hgt
 col_scheme = c('#7570b3', '#e7298a')
 
 gen_jumps_plot(jumps,
+               'jumps ~ switch*train_type', 
                exp_strs,
                col_scheme,
                j_wdth, j_hgt,
-               paste(fig_path, 'task-jumps', sep=''))
+               paste(fig_path, 'task-jumps', sep=''),
+               fig_labs = c('C', 'D'),
+               ylabel = 'jumps')
 
 ```
 
@@ -505,19 +508,120 @@ write.csv(tj_aov_dat, paste(res_path, 'task-jumps_aov.csv'), row.names=FALSE)
 ```
 Now I need to follow up the interactions, and grab the estimated marginal means so I can report the main effects.
 
-Next steps are to put the main effects and the interaction effects into a csv file, check the method used to calculate them,
-and then create a kable.
+Getting the desc stats on the main effect of group:
 
 ```{r}
 
 # first I get the between group effect
-me_grp <- lapply(tj_aovs, function(x) emmeans(x, 'train_type'))
+me_grp <- lapply(tj_aovs, function(x) summary(emmeans(x, 'train_type')))
+me_grp <- do.call(rbind, me_grp)
+me_grp$exp <- rep(exp_strs, each=length(unique(me_grp$train_type)))
+names(me_grp) <- c('group', 'emmean', 'se', 'df', 'l', 'u', 'exp')
+write.csv(me_grp, paste(res_path, '/task-jumps_ph_me-grp.csv', sep=''))
+kable(me_grp, digits=2)
+```
+ 
+And the simple effects of switch, at each level of group:
+
+```{r}
 
 # and now I test the following 
-emmeans(tj_aovs[[1]], 'switch', by='train_type')
-emmeans(tj_aovs[[1]], 'train_type', by='switch')
+simp_fx <- lapply(tj_aovs, function(x) 
+           list(summary(emmeans(x, 'switch', by='train_type'))))
+sw_by_tt <- do.call(rbind, lapply(simp_fx, function(x) summary(x[[1]])))
+sw_by_tt$exp <- rep(c('lt','ts'), each = 4)
+names(sw_by_tt) <- c('group', 'switch', 'emmean', 
+                     'se', 'df', 'l', 'u', 'exp')
+write.csv(sw_by_tt, file=paste(res_path, 'task-jumps_ph_se-sw.csv', sep=''), row.names=FALSE)
+kable(sw_by_tt)
+
 ```
 
-Then the modelling analysis!
+
+We can conclude at this point that frequent switching makes people more variable in the order in which they perform their behaviours, and that this might be because they are jumping between the two tasks more frequently. This may be because they are mixing up the two tasks more. We also want to rule out general confusion. To do this, we look at responses that come from neither task.
+
+```{r}
+
+# get general errors data
+get_error_data <- function(exp_str, data_path){
+  
+  tmp <- read.csv(paste(data_path, 'exp_', exp_str,
+                        '_avg.csv', sep='')) %>%
+    filter(ses == 2) %>%
+    select(sub, train_type, context, switch, general_errors) %>%
+    group_by(sub, train_type, switch) %>% 
+    summarise(errors=mean(general_errors)) %>%
+    ungroup()
+  tmp$exp = exp_str
+  tmp
+}
+
+errors <- do.call(rbind, lapply(exp_strs, get_error_data,
+                                data_path = data_path))
+
+gen_jumps_plot(errors,
+               'errors ~ switch*train_type',
+               exp_strs,
+               col_scheme,
+               j_wdth, j_hgt,
+               paste(fig_path, 'general-errors', sep=''),
+               fig_labs = c('A', 'B'),
+               ylabel = 'errors')
+
+
+```
+
+![Fig 5: People in the two groups showed the same levels of out of task errors](figs/general-errors_4tlks.svg){fig-align="cent"}
+
+Now I analyse errors in the same way as I did task jumps. Note that after correcting for multiple tests, only the main effect of switch is consistently significant across the two experiments.
+
+```{r, results='hide'}
+
+# first set the factors to be factors
+errors$sub <- as.factor(errors$sub)
+errors$train_type <- as.factor(errors$train_type)
+levels(errors$train_type) <- c('stable','variable')
+errors$switch <- as.factor(errors$switch)
+levels(errors$switch) <- c('stay','switch')
+
+# perform the statistical model
+exp_strs <- unique(errors$exp)
+er_aovs <- lapply(exp_strs, function(x) 
+  aov_ez("sub", "errors", errors %>% filter(exp == x), 
+         within = "switch",
+         between = "train_type"))
+names(er_aovs) <- exp_strs
+
+er_aov_dat <- do.call(rbind, 
+                      lapply(1:length(exp_strs),
+                             function(x) convert_aov_to_df(er_aovs[[x]],
+                                                           exp_strs[x])))
+
+kable(er_aov_dat, digits=2)
+write.csv(er_aov_dat, paste(res_path, 'gen-errs_aov.csv'), row.names=FALSE)
+
+```
+
+Because of that, I'll just get the emms on the me of switch.
+
+```{r}
+
+me_sw_er <- lapply(er_aovs, function(x) summary(emmeans(x, 'switch')))
+me_sw_er <- do.call(rbind, me_sw_er)
+me_sw_er$exp <- rep(exp_strs, each=length(unique(errors$train_type)))
+names(me_sw_er) <- c('switch', 'emmean', 'se', 'df', 'l', 'u', 'exp')
+write.csv(me_sw_er, paste(res_path, '/gen-errs_ph_sw.csv', sep=''))
+kable(me_sw_er, digits=2)
+
+```
+
+OK, so now we know that the variable group showed less consistent behaviours in terms of order, but comparable accuracy to the stable group (the test is well powered and we can't discern a group difference).
+
+So being in the variable group impacts your routines. The next question is why?
+
+## Why did the stable vs variable manipulation impact routines?
+
+To answer this question, we turn to what we know about normative behaviour in this task. 
+
 
 
