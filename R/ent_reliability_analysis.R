@@ -32,11 +32,6 @@ get_Rs <- function(dat, subN, drugN, condN){
   tibble(sub=subN, cond=condN, drug=drugN, r=r_score)
 }
 
-plot_rel_corr <- function(r_dat_w){
-  
-  
-}
-
 reliability_analysis <- function(rel_data_fname, 
                                  rel_data_save_name, 
                                  rel_analysis_save_name){
