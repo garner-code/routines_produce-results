@@ -723,7 +723,7 @@ $$
 p(n | C=A) =  \frac{n_{max} - n}{n_{max}}
 $$
 
-This allows me to compute, based on trial by trial experience, $p(C = A | n, m)$ and $p(S|C=A, n,m)$. At the end, I then shift all the information down 1 row, as the current outcome should affect the next behaviour.
+This allows me to compute, based on trial by trial experience, $p(C = A | n, m)$ and $p(S|C=A, n,m)$. At the end, I then shift all the information down 1 row, as the current outcome should affect the next behaviour. For each regressor, I then take the odds by dividing by $p(C=B|n,m)$ and $p(S|C = B,n,m)$. I then use the odds variables in the subsequent logistic regressions.
 
 ```{r, eval=FALSE}
 
@@ -738,5 +738,15 @@ get_pcanm_info <- function(exp_str, dat){
 }
 
 dat <- do.call(rbind, lapply(exp_strs, function(x) get_pcanm_info(x, dat %>% filter(exp == x))))
-write.csv(dat, paste(data_path, 'evt-dat_4log-reg.csv', sep=''))
+write.csv(dat, paste(data_path, 'evt-dat_4log-reg.csv', sep=''), row.names=FALSE)
+rm(dat)
+```
+
+Now I have the model-based regressors, I use them in a logistic regression to predict $m$ selections for each individual. Note that I scale the predictors before running the model.
+
+```{r, results='hide'}
+
+betas_fname = paste(data_path, 'evt-dat_4log-reg.csv', sep='')
+exp_strs <- c('lt', 'ts')
+lapply(exp_strs, get_logist_mods_and_betas, fname=betas_fname, data_path=data_path)
 ```
