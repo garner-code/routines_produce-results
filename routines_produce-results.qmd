@@ -750,3 +750,5 @@ betas_fname = paste(data_path, 'evt-dat_4log-reg.csv', sep='')
 exp_strs <- c('lt', 'ts')
 lapply(exp_strs, get_logist_mods_and_betas, fname=betas_fname, data_path=data_path)
 ```
+
+Note that I played with plotting the individual level fits, and while I was happy the models were doing a good enough capturing individual variance, I am yet to find a satisfying way to plot the individual fits (owing to the multiple continuous predictors). So I will skip straight to plotting the beta coefficients at the group level.

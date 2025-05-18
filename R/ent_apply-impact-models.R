@@ -7,7 +7,7 @@ get_logist_mods_and_betas <- function(fname, exp_str, data_path){
   
   dat <- read.csv(fname) %>% filter(exp == exp_str)
   subs <- unique(dat$sub)
-  betas <- do.call(rbind, lapply(subs, run_logist, dat=dat))
+  betas <- do.call(rbind, lapply(subs, run_logist, dat=dat, exp_str=exp_str))
   write.csv(betas, paste(data_path, 'betas_', exp_str, '_first-level.csv', 
                          sep=''))
 }
@@ -15,8 +15,9 @@ get_logist_mods_and_betas <- function(fname, exp_str, data_path){
 #################################################
 # write a function that runs the logistic regression
 # and returns beta coefficients, for each subject
-run_logist <- function(dat, subN){
+run_logist <- function(dat, subN, exp_str){
 
+  sprintf('running sub-%d of exp %s', subN, exp_str)
   tmp <- dat %>% filter(sub == subN)
   fit <- glm(door_m ~ scale(Sw) + scale(Swr) + scale(succss_odds) +
                scale(cntxt_odds),
