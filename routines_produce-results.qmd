@@ -751,4 +751,9 @@ exp_strs <- c('lt', 'ts')
 lapply(exp_strs, get_logist_mods_and_betas, fname=betas_fname, data_path=data_path)
 ```
 
-Note that I played with plotting the individual level fits, and while I was happy the models were doing a good enough capturing individual variance, I am yet to find a satisfying way to plot the individual fits (owing to the multiple continuous predictors). So I will skip straight to plotting the beta coefficients at the group level.
+Note that I played with plotting the individual level fits, and while I was happy the models were doing a good enough capturing individual variance, I am yet to find a satisfying way to plot the individual model fits (owing to the multiple continuous predictors). So I will skip straight to the second level analysis, where we take the parameters from the logistic regression models and compare between groups.
+
+```{r}
+# U2H - the next step is to convert the contents of ent_impact_scnd-lvl.R from doors/src-ent/ to functions to be used here
+
+```
