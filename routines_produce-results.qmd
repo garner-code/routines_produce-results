@@ -762,7 +762,9 @@ logist_mods_w_warnings <- function(exp_strs, fname, data_path, res_path){
   sink(type = 'output')
   close(msg_fname)
 }
-
+# working on warnings
+# http://adv-r.had.co.nz/beyond-exception-handling.html
+# http://homepage.stat.uiowa.edu/~luke/R/exceptions/simpcond.html
 lapply(exp_strs, logist_mods_w_warnings, fname=betas_fname, data_path=data_path,
        res_path=res_path)
 ```
