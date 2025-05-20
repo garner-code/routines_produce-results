@@ -748,7 +748,23 @@ Now I have the model-based regressors, I use them in a logistic regression to pr
 
 betas_fname = paste(data_path, 'evt-dat_4log-reg.csv', sep='')
 exp_strs <- c('lt', 'ts')
-lapply(exp_strs, get_logist_mods_and_betas, fname=betas_fname, data_path=data_path)
+
+logist_mods_w_warnings <- function(exp_strs, fname, data_path, res_path){
+    # capture warnings for non-converging models
+  
+  msg_fname = paste(res_path, 'log-warnings_', exp_str, '.csv', sep='')
+  try( msg_fname <- file( msg_fname, open="at"))
+  sink( type='message' )
+  sink( type='output' )
+  
+  get_logist_mods_and_betas(fname=fname, exp_str=exp_str, data_path=data_path)
+  sink(type = 'message')
+  sink(type = 'output')
+  close(msg_fname)
+}
+
+lapply(exp_strs, logist_mods_w_warnings, fname=betas_fname, data_path=data_path,
+       res_path=res_path)
 ```
 
 Note that I played with plotting the individual level fits, and while I was happy the models were doing a good enough capturing individual variance, I am yet to find a satisfying way to plot the individual model fits (owing to the multiple continuous predictors). So I will skip straight to the second level analysis, where we take the parameters from the logistic regression models and compare between groups.

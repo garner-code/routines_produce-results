@@ -4,13 +4,14 @@
 # values
 #################################################
 get_logist_mods_and_betas <- function(fname, exp_str, data_path){
-  
+
   dat <- read.csv(fname) %>% filter(exp == exp_str)
   subs <- unique(dat$sub)
   betas <- do.call(rbind, lapply(subs, run_logist, dat=dat, exp_str=exp_str))
   write.csv(betas, paste(data_path, 'betas_', exp_str, '_first-level.csv', 
                          sep=''))
 }
+
 
 #################################################
 # write a function that runs the logistic regression
