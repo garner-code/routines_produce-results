@@ -849,4 +849,5 @@ summary(with(betas_r, lm(r ~ mu_flt + scs_flt + cntx_flt)))
 
 ## Does the formation of routines attenuate capacity to transfer learning, or promote task switching performance?
 
+Now the cherry on top. We ask whether the extent to which you became routine (the lower your r score) predicts your difficulty being flexible, or corresponds to you being better at task switching.
 
