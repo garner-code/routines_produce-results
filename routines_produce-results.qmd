@@ -47,7 +47,7 @@ library(rstatix)
 library(emmeans)
 library(afex)
 library(pdftools)
-
+library(purrr)
 
 data_path = 'data-wrangled/' # for all data derivs
 sim_data_path = 'sims/' # for simulation results
@@ -749,29 +749,61 @@ Now I have the model-based regressors, I use them in a logistic regression to pr
 betas_fname = paste(data_path, 'evt-dat_4log-reg.csv', sep='')
 exp_strs <- c('lt', 'ts')
 
-logist_mods_w_warnings <- function(exp_strs, fname, data_path, res_path){
-    # capture warnings for non-converging models
-  
-  msg_fname = paste(res_path, 'log-warnings_', exp_str, '.csv', sep='')
-  try( msg_fname <- file( msg_fname, open="at"))
-  sink( type='message' )
-  sink( type='output' )
-  
-  get_logist_mods_and_betas(fname=fname, exp_str=exp_str, data_path=data_path)
-  sink(type = 'message')
-  sink(type = 'output')
-  close(msg_fname)
-}
-# working on warnings
-# http://adv-r.had.co.nz/beyond-exception-handling.html
-# http://homepage.stat.uiowa.edu/~luke/R/exceptions/simpcond.html
-lapply(exp_strs, logist_mods_w_warnings, fname=betas_fname, data_path=data_path,
-       res_path=res_path)
+lapply(exp_strs, get_logist_mods_and_betas, fname=betas_fname, 
+       data_path=data_path, res_path=res_path)
 ```
 
 Note that I played with plotting the individual level fits, and while I was happy the models were doing a good enough capturing individual variance, I am yet to find a satisfying way to plot the individual model fits (owing to the multiple continuous predictors). So I will skip straight to the second level analysis, where we take the parameters from the logistic regression models and compare between groups.
 
-```{r}
-# U2H - the next step is to convert the contents of ent_impact_scnd-lvl.R from doors/src-ent/ to functions to be used here
+```{r, eval=FALSE}
+# some notes re: cleaning. For some participants, the algorithm did not converge,  or the estimated probabilties could not be distinguished between 0 and 1. Eyeballing the boxplots, these subjects largely fell outside the > 1.5 x the IQR (although sometimes the IQR excluded extra participants for whom there was no warning). Removing outliers > 1.5 x IQR seems the most objective way to treat the data, to me.
+
+apply_clean_and_analyse_betas <- function(exp_str, data_path, res_path){
+  
+  betas <- read.csv(paste(data_path, 
+                          'betas_', exp_str, '_first-level.csv',
+                          sep=''))
+  betas <- apply_outlier_filter_to_all_vars(betas)
+  # save the new data file, as it has extra variables
+  write.csv(betas, file=paste(data_path, 'betas_',
+                              exp_str, '_first-level_cln.csv',
+                              sep=''))
+  apply_t_tests_to_all_vars(betas, exp_str, res_path) # this applies inferential t-tests and writes the results to csv files in res_path
+}
+lapply(c('lt', 'ts'), apply_clean_and_analyse_betas, 
+                      data_path = data_path,
+                      res_path = res_path)
 
 ```
+
+I don't present the beta inferential tests here, as there are so many, but the take home is that they all betas are significantly above zero, the mu is clearly sig between the two groups, which we know, there is some glimpse of an impact of p(scs\|cntxt), but we maybe need more data, or a model that adapts to learning rate to determine for sure.
+
+Next step is to blot the beta coefficients by group (and analysis)
+
+```{r}
+
+# now that we have analysed the betas ()
+# plan is to do box plots
+# top row = co-effs by parameter, by group # lt
+# second row = co-effs by parameter, by group # ts
+
+make_coefs_plts_4paper_andtlks(data_path,
+                               paste(fig_path, 
+                                     'betas_scnd-lvl',
+                                     sep=''),
+                               p_wdth=12,
+                               p_hgt=12)
+
+```
+
+Now lets see the results:
+
+::: {#fig-betas layout-ncol="1"}
+![](figs/betas_scnd-lvl_4tlks.svg)
+
+Showing the betas by group and parameter
+:::
+
+As an exploratory plot, I plot people's routine scores against their beta coefficients for each variable.
+
+THEN CORRELATE WITH LEARNING TRANSFER AND TASK SWITCHING

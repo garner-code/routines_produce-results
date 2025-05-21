@@ -100,7 +100,7 @@ plot_task_jumps <- function(data,
                col=rep(cols,2),
                ylab=ylab,
                xlab='group'))
-  axis(1, at = c(1.5,3.5), labels=c('stab','var'))
+  axis(1, at = c(1.5, 3.5), labels=c('stab','var'))
   axis(2, at = c(0, 5))
   if (leg){
     legend('topleft', c('st','sw'), fill=col_scheme, bty='n')
