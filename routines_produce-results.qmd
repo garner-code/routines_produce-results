@@ -48,6 +48,7 @@ library(emmeans)
 library(afex)
 library(pdftools)
 library(purrr)
+library(GGally)
 
 data_path = 'data-wrangled/' # for all data derivs
 sim_data_path = 'sims/' # for simulation results
@@ -804,6 +805,48 @@ Now lets see the results:
 Showing the betas by group and parameter
 :::
 
-As an exploratory plot, I plot people's routine scores against their beta coefficients for each variable.
+So it looks like all of the tested factors contributed to the increase of other context door selections, which differed by groups (who differed by routine). It looks like the variable group was generally more confused than the other group, with a small suggestion that they may have also been matching to the probability of the context.
 
-THEN CORRELATE WITH LEARNING TRANSFER AND TASK SWITCHING
+As an exploratory plot, I plot routine scores against beta coefficients, to check the correlations between them appear to do what we think -
+
+```{r}
+
+exp_str = 'lt'
+r_dat = read.csv(paste(data_path, 'exp_', exp_str, '_rscore.csv', sep=''))
+betas = read.csv(paste(data_path, 'betas_', exp_str, '_first-level_cln.csv',
+                                sep=''))
+betas_r <- inner_join(betas %>% select(c(sub, train_type, ends_with('_flt'))),
+                      r_dat, by='sub')
+betas_r <- betas_r %>% na.omit() %>% mutate(r = log(r))
+
+# first I'll check for multivariate outliers
+mhl.mat <- as.matrix(betas_r[,c('mu_flt', 'scs_flt', 'cntx_flt','r')]) 
+mhl.cov <- cov(mhl.mat) # here I get the covariance matrix
+mhl.dist <- mahalanobis(mhl.mat, colMeans(mhl.mat), mhl.cov) # now calc the M dist
+cut_off <- qchisq(.001, df=length(mhl.dist)-1)
+#hist(mhl.dist)
+sum(mhl.dist > cut_off) # we keep all the data
+
+# prepare for the pairs plot
+betas_r$train_type <- as.factor(betas_r$train_type)
+levels(betas_r$train_type) <- c('stable', 'variable')
+ggpairs(betas_r %>% select(mu_flt, scs_flt, cntx_flt, r),
+        mapping=ggplot2::aes(colour = betas_r$train_type),
+        upper = list(continuous = wrap("cor", method = "spearman")))
+
+```
+
+What this plot tells us is that the more that the probability of context increases your log odds of hitting a door from the other context, the less that the probability of success given context influences the probability of hitting a door from the other context. This is good. It tells us that the parameters trade off against each other in a way we would expect.
+(Note that I don't include sw and swr, for visual clarity. Comfortingly, the correlations
+between these parameters and the others were not significant (nor with the routine scores.))
+
+To understand the relationship between R scores and the remaining predictors, here is an optional lm to run. I am not concluding much from it as everything is calculated on the same data, but it does tell us that we can't trust the direction of the first order correlations with r, so I am not going to over interpret the direction here. But we do see that these predictors correlate with the routine score.
+
+```{r, eval=FALSE}
+
+summary(with(betas_r, lm(r ~ mu_flt + scs_flt + cntx_flt)))
+```
+
+## Does the formation of routines attenuate capacity to transfer learning, or promote task switching performance?
+
+
