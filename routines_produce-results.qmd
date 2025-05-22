@@ -25,6 +25,7 @@ routines_produce-results/
 │   ├── data-wrangled/
 │   │   └── exp_[exp_str]_evt.csv
 │   │   └── exp_[exp_str]_avg.csv
+│   │   └── exp_lt_maggi-k4.csv
 │   │   └── dat4_seq_model.Rda ### need to find origin of this file and make consistent across locations
 │   ├── figs/
 │   ├── sims/
@@ -851,3 +852,29 @@ summary(with(betas_r, lm(r ~ mu_flt + scs_flt + cntx_flt)))
 
 Now the cherry on top. We ask whether the extent to which you became routine (the lower your r score) predicts your difficulty being flexible, or corresponds to you being better at task switching.
 
+First steps are to wrangle the routine and group x transfer task data, and looking at learning onset for each group and task as a boxplot. Note that from visual inspection of qqplots, I decided to log transform the data, to improve normality.  ThenI take the ratio of the scores from each task and correlate with the routine score, then an inferential test of the things.
+
+```{r}
+
+# wrangle data
+r_dat <- read.csv(paste(data_path, 'exp_lt_rscore.csv', sep=''))
+onset_dat <- read.csv(paste(data_path, 'exp_lt_maggi-k4.csv', sep='')) %>% 
+  select(sid, ses, transfer, k4_onset) %>% 
+  filter(ses == 3) %>%
+  group_by(sid, ses) %>% 
+  summarise(k4_ratio = k4_onset[transfer == 1] / k4_onset[transfer == 2])
+names(onset_dat)[names(onset_dat) == "sid"] = "sub"
+
+# some participants never learned, so we lose anyone who has a k4 ratio of 0,
+# as that means their score was Inf
+onset_dat <- onset_dat %>% filter(k4_ratio != 0)
+
+# now join to the r dat
+onset_dat <- inner_join(onset_dat, r_dat, by='sub')
+
+# now I log my variables, and I load the avg data so that I can get the training 
+# group variale
+onset_dat <- onset_dat %>% mutate(log_r = log(r), log_k4 = log(k4_ratio))
+
+
+```
