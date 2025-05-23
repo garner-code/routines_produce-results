@@ -155,3 +155,28 @@ trn_bias <- function(dat,
   axis(2, at=seq(0,1, by=0.25), labels=paste(seq(0,1, by=0.25)))
   abline(h=0.5, lty=2, col='darkgrey')
 }
+
+plot_r_bias_cor <- function(bias){
+  
+  with(bias, plot(x=log_r_flt, y=k4_flt, pch=19,
+                     frame.plot=F, 
+                     ylim=c(0.1, 0.9),
+                     xlim=c(0.8, 3.6),
+                     xlab = "log r",
+                     ylab = "transfer bias",
+                     col = '#7570b3',
+                     main = "",
+                     xaxt = "n",
+                     yaxt = "n"))
+#                     cex = 2,
+#                     cex.lab = 2))
+  axis(1, at = seq(0.8, 3.6, by = 0.8),
+       labels = paste(seq(0.8, 3.6, by = 0.8)))
+  axis(2, at = seq(0.1, 0.9, by = 0.2), 
+       labels=paste(seq(0.1, 0.9, by = 0.2)))
+  with(bias, points(x=log_r_flt, y=k4_flt, pch=1))
+  # draw regression line
+  mod <- lm(k4_flt ~ log_r_flt, data=bias)
+  abline(mod, col = "darkgrey", lwd = 1)
+  text(x=1.4, y=0.15, labels="r(78)=-0.23**", cex = 1)
+}
