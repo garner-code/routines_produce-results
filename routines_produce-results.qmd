@@ -1070,6 +1070,7 @@ ts_dat <- inner_join(ts_dat, r_dat, by='sub') %>%
             mutate(log_r = log(r))
 
 # Now I have the data, I want to replace any outliers with NA
+# Note that setting errors wound up in a lot of dropped data, so I am not going to use the filtered versions of that variable
 dvs <- c('se', 'rt', 'acc', 'se_bias', 'rt_bias', 'acc_bias', 'log_r')
 ts_dat <- cbind(ts_dat,
                 do.call(cbind, lapply(dvs, remove_outliers, betas=ts_dat)))
@@ -1082,7 +1083,7 @@ Now I make 3 very similar plots as I did for learning transfer. But I have to do
 
 # setting errors plot
 ts_dat_4_plt <- ts_dat %>% 
-  select(sub, train_type, switch, se_flt)
+  select(sub, train_type, switch, se)
 
 col_scheme = c('#7570b3', '#e7298a')
 
@@ -1092,11 +1093,11 @@ ts_bp_hgt = trn_bp_hgt
 plt_ts_bp_4paper_andtlks(ts_bp_g_se_fname,
                          ts_bp_wdth, ts_bp_hgt,
                          ts_dat_4_plt,
-                         'se_flt ~ switch + train_type',
+                         'se ~ switch + train_type',
                          col_scheme,
                          ylabel='set errors',
-                         ylims=c(0, 0.14),
-                         yticks=seq(0, 0.14, by = 0.04),
+                         ylims=c(0, 0.2), # sort axes
+                         yticks=seq(0, 0.2, by = 0.04),
                          fig_lab='A')
 ```
 
@@ -1132,10 +1133,10 @@ I will now focus on setting errors as we can see there is very little going on w
 
 ```{r}
 
-bias_se <- ts_dat %>% select(sub, train_type, se_bias_flt) %>%
+bias_se <- ts_dat %>% select(sub, train_type, se_bias) %>%
                na.omit() %>% unique()
 col_scheme <- c('#1b9e77','#d95f02')
-this_form = 'se_bias_flt ~ train_type'
+this_form = 'se_bias ~ train_type'
 ylabel = 'switch se bias'
 fig_lab = 'B'
 
@@ -1169,8 +1170,7 @@ plt_r_se_bias_cor_4paper_andtlks(se_bias_corr_fname,
                                 'C')
 ```
 
-![Setting error bias correlates with routine score.](figs/ts-se-bias_r_corr_4tlks.svg){fig-align="cent"}
-And now I put these figures together for the paper -
+![Setting error bias correlates with routine score.](figs/ts-se-bias_r_corr_4tlks.svg){fig-align="cent"} And now I put these figures together for the paper -
 
 ```{r}
 
@@ -1187,14 +1187,15 @@ plot(multi)
 dev.off()
 
 ```
+
 All the figures are done! Now I'll just get the inferential stats for setting errors, and that. is. it.
 
 ```{r}
 
 # learning transfer inferences
 # first get the switch setting errors to compare between
-sw4t_dat <- ts_dat %>% select(sub, train_type, switch, se_flt) %>%
-  pivot_wider(names_from=switch, values_from = se_flt) %>%
+sw4t_dat <- ts_dat %>% select(sub, train_type, switch, se) %>%
+  pivot_wider(names_from=switch, values_from = se) %>%
   na.omit()
 
 switch_t = with(sw4t_dat, 
@@ -1209,13 +1210,13 @@ switch_d = cohens_d(data=switch_for_cohens,
                          ci=TRUE, ci.type='perc', nboot=1000)
 
 # now compare the groups for setting error bias
-grp_bias = with(bias_se, t.test(se_bias_flt~train_type, na.rm=TRUE))
+grp_bias = with(bias_se, t.test(se_bias~train_type, na.rm=TRUE))
 grp_bias_d = cohens_d(data=bias_se,
-                      formula=se_bias_flt~train_type, paired=FALSE,
+                      formula=se_bias~train_type, paired=FALSE,
                       ci=TRUE, ci.type='perc', nboot=1000)
 # now compute the correlation
 r_se_bias_cor = with(bias_se, 
-                  cor.test(se_bias_flt, log_r_flt, 
+                  cor.test(se_bias, log_r_flt, 
                            method='spearman'))
 
 ts_ts <- tibble(fx = c('sw', 'group-bias'),
@@ -1249,4 +1250,3 @@ write.csv(ts_se_r_cor_info,
           row.names=FALSE)
 kable(ts_se_r_cor_info, digits=2)
 ```
-

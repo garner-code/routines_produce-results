@@ -110,7 +110,7 @@ plt_r_se_bias_cor_4paper_andtlks <- function(plt_sv_nm,
 
 plot_r_se_bias_cor <- function(bias_se){
   
-  with(bias_se, plot(x=log_r_flt, y=se_bias_flt, pch=19,
+  with(bias_se, plot(x=log_r_flt, y=se_bias, pch=19,
                      frame.plot=F, 
                      ylim=c(0.1, 0.9),
                      xlim=c(0.8, 3.6),
@@ -126,9 +126,9 @@ plot_r_se_bias_cor <- function(bias_se){
        labels = paste(seq(0.8, 3.6, by = 0.8)))
   axis(2, at = seq(0.1, 0.9, by = 0.2), 
        labels=paste(seq(0.1, 0.9, by = 0.2)))
-  with(bias_se, points(x=log_r_flt, y=se_bias_flt, pch=1))
+  with(bias_se, points(x=log_r_flt, y=se_bias, pch=1))
   # draw regression line
   #mod <- lm(k4_flt ~ log_r_flt, data=bias)
   #abline(mod, col = "darkgrey", lwd = 1)
-  text(x=2, y=0.15, labels="r(68)=-0.52***", cex = 1)
+  text(x=2, y=0.15, labels="r(96)=-0.53***", cex = 1)
 }
