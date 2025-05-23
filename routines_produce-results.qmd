@@ -848,6 +848,8 @@ summary(with(betas_r, lm(r ~ mu_flt + scs_flt + cntx_flt)))
 
 Now the cherry on top. We ask whether the extent to which you became routine (the lower your r score) predicts your difficulty being flexible, or corresponds to you being better at task switching.
 
+### Learning transfer/flexibility
+
 First steps are to wrangle the routine and group x transfer task data, and looking at learning onset for each group and task as a boxplot. Note that from visual inspection of qqplots, I decided to log transform the data, to improve normality. ThenI take the ratio of the scores from each task and correlate with the routine score, then an inferential test of the things.
 
 ```{r}
@@ -888,7 +890,7 @@ dvs <- c('comp', 'part', 'k4', 'log_r')
 onset_dat <- cbind(onset_dat,
          do.call(cbind, lapply(dvs, remove_outliers, betas=onset_dat)))
 
-
+write.csv(onset_dat, paste(data_path, 'exp_lt_onsetwr.csv', sep=''), row.names=FALSE)
 ```
 
 Now that I have the wrangled data, I will make 3 subplots and then combine them. The first is the main effect of partial v transfer, the second is the percentage difference by group, and the third is the correlation between r and the k4 bias measure.
@@ -903,10 +905,10 @@ tmp <- onset_dat %>% select(sub, comp, part, train_type) %>%
 
 col_scheme = c('#7570b3', '#e7298a')
 
+k4_by_grp_fname = paste(fig_path,'k4_by_grp', sep='')
 trn_bp_wdth = z_p_wdth
 trn_bp_hgt = z_p_hgt
-plt_tran_bp_4paper_andtlks(paste(fig_path, 
-                                 'k4_by_grp', sep=''),
+plt_tran_bp_4paper_andtlks(k4_by_grp_fname,
                 trn_bp_wdth,
                 trn_bp_hgt,
                 tmp,
@@ -935,7 +937,8 @@ fig_lab = 'B'
 bs_wdth = trn_bp_wdth/2
 bs_hgt = trn_bp_hgt
 
-plt_bias_by_grp_4paper_andtlks(paste(fig_path, 'bias-by-grp', sep=''),
+bias_by_grp_fname = paste(fig_path, 'bias-by-grp', sep='')
+plt_bias_by_grp_4paper_andtlks(bias_by_grp_fname,
                                bs_wdth, bs_hgt,
                                bias,
                                this_form,
@@ -950,6 +953,300 @@ And now, the last piece, the correlation between the bias score and the logged r
 
 ```{r}
 
-
+lt_bias_corr_fname = paste(fig_path, 'lt-bias_r_corr', sep='')
+plt_r_bias_cor_4paper_andtlks(lt_bias_corr_fname,
+                              bs_wdth, bs_hgt,
+                              bias,
+                              'C')
 
 ```
+
+![Transfer bias correlates with routine score.](figs/lt-bias_r_corr_4tlks.svg){fig-align="cent"}
+
+Now put them all together into one mega plot!
+
+```{r}
+
+fnms = c(k4_by_grp_fname, bias_by_grp_fname, lt_bias_corr_fname)
+
+ims = lapply(fnms, function(x) image_read_pdf(paste(x, '.pdf', sep='')))
+
+bottom <- image_append(c(ims[[2]],ims[[3]]))
+multi <- image_append(c(ims[[1]], bottom), stack=TRUE)
+pdf(paste(fig_path, 'LT_results.pdf', sep=''), 
+    width=trn_bp_wdth,
+    height=bs_hgt*2)
+plot(multi)
+dev.off()
+
+```
+
+Ahhh. Done. Now for stats, I only want the difference in complete vs partial, the difference in the bias between groups, and the correlation between the r and the bias.
+
+```{r}
+
+# learning transfer inferences
+me_transfer = with(onset_dat, t.test(comp_flt, part_flt, 
+                                     paired=TRUE, na.rm=TRUE))
+transfer_for_cohens <- onset_dat %>% select(sub, comp_flt, part_flt) %>%
+                         na.omit() %>%
+                         pivot_longer(cols=c('comp_flt', 'part_flt'), names_to='cond',
+                                             values_to='n') 
+me_transfer_d = cohens_d(data=transfer_for_cohens,
+                         formula=n~cond, paired=TRUE,
+                         ci=TRUE, ci.type='perc', nboot=1000)
+grp_bias = with(onset_dat, t.test(k4_flt~train_type, na.rm=TRUE))
+grp_bias_d = cohens_d(data=onset_dat %>% na.omit(k4_flt),
+                      formula=k4_flt~train_type, paired=FALSE,
+                      ci=TRUE, ci.type='perc', nboot=1000)
+r_bias_cor = with(onset_dat, cor.test(k4_flt, log_r_flt, na.rm=TRUE))
+
+
+lt_ts <- tibble(fx = c('transfer', 'group-bias'),
+                t = c(me_transfer$statistic, grp_bias$statistic),
+                df = c(me_transfer$parameter, grp_bias$parameter),
+                p = c(me_transfer$p.value, grp_bias$p.value),
+                mu_a = c(me_transfer$estimate[1], grp_bias$estimate[1]),
+                mu_b = c(me_transfer$estimate[2], grp_bias$estimate[2]),
+                l_fx = c(me_transfer$conf.int[1], grp_bias$conf.int[1]),
+                u_fx = c(me_transfer$conf.int[2], grp_bias$conf.int[2]),
+                d = c(me_transfer_d$effsize, grp_bias_d$effsize),
+                dl = c(me_transfer_d$conf.low, grp_bias_d$conf.low),
+                du = c(me_transfer_d$conf.high, grp_bias_d$conf.high),
+                n1 = c(me_transfer_d$n1, grp_bias_d$n1),
+                n2 = c(me_transfer_d$n2, grp_bias_d$n2))
+write.csv(lt_ts, paste(res_path, 'lt_inf_tests.csv', sep=''), row.names=FALSE)
+kable(lt_ts, digits=2)
+```
+
+And now save and print the correlation -
+
+```{r}
+
+lt_r_cor_info <- tibble(r=r_bias_cor$estimate,
+                        l=r_bias_cor$conf.int[1],
+                        u=r_bias_cor$conf.int[2],
+                        t=r_bias_cor$statistic,
+                        df=r_bias_cor$parameter,
+                        p=r_bias_cor$p.value)
+write.csv(lt_r_cor_info, paste(res_path, 'lt-r_corr.csv', sep=''), row.names=FALSE)
+kable(lt_r_cor_info, digits=2)
+```
+
+Note to self - may want to also show accuracy data to demonstrate the robustness of the effect.
+
+### Task switching
+
+And now we ask exactly the same kinds of questions about task switching performance.
+
+```{r}
+
+# wrangle data
+r_dat <- read.csv(paste(data_path, 'exp_ts_rscore.csv', sep=''))
+ts_dat <- read.csv(paste(data_path, 'exp_ts_avg.csv', sep='')) %>% 
+  filter(ses==3) %>%
+  select(sub, context, switch, train_type, setting_errors,
+         rt_correct, accuracy) %>% 
+  group_by(sub, switch, train_type) %>%
+  summarise(se=mean(setting_errors),
+            rt=mean(rt_correct),
+            acc=mean(accuracy)) %>%
+  ungroup() %>%
+  mutate(train_type=recode(train_type, `1` = 'stable', `2` = 'variable'),
+         switch=recode(switch, `0` = 'stay', `1` = 'switch'))
+
+# now I temporarily make a wider format dataframe so I can make the bias scores
+tmp <- ts_dat %>% pivot_wider(id_cols=c(sub,train_type),
+                              names_from=switch,
+                              values_from=c(se, rt, acc)) %>%
+                  mutate(se_bias = se_switch/(se_stay+se_switch),
+                         rt_bias = rt_switch/(rt_stay+rt_switch),
+                         acc_bias = acc_switch/(acc_stay+acc_switch))
+# now join key variables to other dataframe and remove the tmp one
+ts_dat <- inner_join(ts_dat, tmp %>% select(sub, se_bias, rt_bias, acc_bias), by='sub')
+rm(tmp)
+# now join to the r dat and log the r variable
+ts_dat <- inner_join(ts_dat, r_dat, by='sub') %>%
+            mutate(log_r = log(r))
+
+# Now I have the data, I want to replace any outliers with NA
+dvs <- c('se', 'rt', 'acc', 'se_bias', 'rt_bias', 'acc_bias', 'log_r')
+ts_dat <- cbind(ts_dat,
+                do.call(cbind, lapply(dvs, remove_outliers, betas=ts_dat)))
+write.csv(ts_dat, paste(data_path, 'exp_lt_tswr.csv', sep=''), row.names=FALSE)
+```
+
+Now I make 3 very similar plots as I did for learning transfer. But I have to do this twice for the task switching data - once for setting errors and once for RT
+
+```{r}
+
+# setting errors plot
+ts_dat_4_plt <- ts_dat %>% 
+  select(sub, train_type, switch, se_flt)
+
+col_scheme = c('#7570b3', '#e7298a')
+
+ts_bp_g_se_fname = paste(fig_path, 'se_by_grp', sep='')
+ts_bp_wdth = trn_bp_wdth 
+ts_bp_hgt = trn_bp_hgt 
+plt_ts_bp_4paper_andtlks(ts_bp_g_se_fname,
+                         ts_bp_wdth, ts_bp_hgt,
+                         ts_dat_4_plt,
+                         'se_flt ~ switch + train_type',
+                         col_scheme,
+                         ylabel='set errors',
+                         ylims=c(0, 0.14),
+                         yticks=seq(0, 0.14, by = 0.04),
+                         fig_lab='A')
+```
+
+![Task-switching stage setting errors, by group.](figs/se_by_grp_4tlks.svg){fig-align="cent"}
+
+And now the RTs:
+
+```{r}
+
+# setting errors plot
+ts_dat_4_plt <- ts_dat %>% 
+  select(sub, train_type, switch, rt_flt)
+
+col_scheme = c('#7570b3', '#e7298a')
+
+ts_bp_g_rt_fname = paste(fig_path, 'rt_by_grp', sep='')
+
+plt_ts_bp_4paper_andtlks(ts_bp_g_rt_fname,
+                         ts_bp_wdth, ts_bp_hgt,
+                         ts_dat_4_plt,
+                         'rt_flt ~ switch + train_type',
+                         col_scheme,
+                         ylabel='RT',
+                         ylims=c(0.4, 1.8),
+                         yticks=seq(0.4, 1.8, by = 0.4),
+                         fig_lab='A')
+
+```
+
+![Task-switching stage RT, by group.](figs/rt_by_grp_4tlks.svg){fig-align="cent"}
+
+I will now focus on setting errors as we can see there is very little going on with RTs.
+
+```{r}
+
+bias_se <- ts_dat %>% select(sub, train_type, se_bias_flt) %>%
+               na.omit() %>% unique()
+col_scheme <- c('#1b9e77','#d95f02')
+this_form = 'se_bias_flt ~ train_type'
+ylabel = 'switch se bias'
+fig_lab = 'B'
+
+bs_wdth = ts_bp_wdth/2
+bs_hgt = ts_bp_hgt
+
+se_bias_by_grp_fname = paste(fig_path, 'exp_ts_se-bias-by-grp', sep='')
+plt_bias_by_grp_4paper_andtlks(se_bias_by_grp_fname,
+                               bs_wdth, bs_hgt,
+                               bias_se,
+                               this_form,
+                               col_scheme,
+                               ylabel,
+                               fig_lab)
+```
+
+![Setting error bias by group.](figs/exp_ts_se-bias-by-grp_4tlks.svg){fig-align="cent"}
+
+And now I plot the correlation between the setting error bias and the routine score -
+
+```{r}
+
+bias_se <- inner_join(bias_se, 
+                      ts_dat %>% select(sub, log_r_flt), by='sub') %>%
+            unique()
+
+se_bias_corr_fname = paste(fig_path, 'ts-se-bias_r_corr', sep='')
+plt_r_se_bias_cor_4paper_andtlks(se_bias_corr_fname,
+                                 bs_wdth, bs_hgt,
+                                 bias_se,
+                                'C')
+```
+
+![Setting error bias correlates with routine score.](figs/ts-se-bias_r_corr_4tlks.svg){fig-align="cent"}
+And now I put these figures together for the paper -
+
+```{r}
+
+fnms = c(ts_bp_g_se_fname, se_bias_by_grp_fname, se_bias_corr_fname)
+
+ims = lapply(fnms, function(x) image_read_pdf(paste(x, '.pdf', sep='')))
+
+bottom <- image_append(c(ims[[2]],ims[[3]]))
+multi <- image_append(c(ims[[1]], bottom), stack=TRUE)
+pdf(paste(fig_path, 'TS_results.pdf', sep=''), 
+    width=trn_bp_wdth,
+    height=bs_hgt*2)
+plot(multi)
+dev.off()
+
+```
+All the figures are done! Now I'll just get the inferential stats for setting errors, and that. is. it.
+
+```{r}
+
+# learning transfer inferences
+# first get the switch setting errors to compare between
+sw4t_dat <- ts_dat %>% select(sub, train_type, switch, se_flt) %>%
+  pivot_wider(names_from=switch, values_from = se_flt) %>%
+  na.omit()
+
+switch_t = with(sw4t_dat, 
+                t.test(x=stay, y=switch, paired=TRUE, na.rm=TRUE))
+
+switch_for_cohens <- sw4t_dat %>% 
+  pivot_longer(cols=c('stay', 'switch'), 
+               names_to='cond',
+               values_to='n') 
+switch_d = cohens_d(data=switch_for_cohens,
+                         formula=n~cond, paired=TRUE,
+                         ci=TRUE, ci.type='perc', nboot=1000)
+
+# now compare the groups for setting error bias
+grp_bias = with(bias_se, t.test(se_bias_flt~train_type, na.rm=TRUE))
+grp_bias_d = cohens_d(data=bias_se,
+                      formula=se_bias_flt~train_type, paired=FALSE,
+                      ci=TRUE, ci.type='perc', nboot=1000)
+# now compute the correlation
+r_se_bias_cor = with(bias_se, 
+                  cor.test(se_bias_flt, log_r_flt, 
+                           method='spearman'))
+
+ts_ts <- tibble(fx = c('sw', 'group-bias'),
+                t = c(switch_t$statistic, grp_bias$statistic),
+                df = c(switch_t$parameter, grp_bias$parameter),
+                p = c(switch_t$p.value, grp_bias$p.value),
+                mu_a = c(switch_t$estimate[1], grp_bias$estimate[1]),
+                mu_b = c(switch_t$estimate[2], grp_bias$estimate[2]),
+                l_fx = c(switch_t$conf.int[1], grp_bias$conf.int[1]),
+                u_fx = c(switch_t$conf.int[2], grp_bias$conf.int[2]),
+                d = c(switch_d$effsize, grp_bias_d$effsize),
+                dl = c(switch_d$conf.low, grp_bias_d$conf.low),
+                du = c(switch_d$conf.high, grp_bias_d$conf.high),
+                n1 = c(switch_d$n1, grp_bias_d$n1),
+                n2 = c(switch_d$n2, grp_bias_d$n2))
+write.csv(ts_ts, paste(res_path, 'ts-se_inf_tests.csv', sep=''), row.names=FALSE)
+kable(ts_ts, digits=2)
+```
+
+And now I just print out the correlation results.
+
+```{r}
+
+
+ts_se_r_cor_info <- tibble(r=r_se_bias_cor$estimate,
+                           S=r_se_bias_cor$statistic,
+                           df=nrow(bias_se)-2,
+                           p=r_se_bias_cor$p.value)
+write.csv(ts_se_r_cor_info, 
+          paste(res_path, 'ts_se-r_corr.csv', sep=''),
+          row.names=FALSE)
+kable(ts_se_r_cor_info, digits=2)
+```
+
