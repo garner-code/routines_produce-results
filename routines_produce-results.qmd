@@ -469,8 +469,6 @@ dev.off()
 
 It looks like there is an interaction between group and switch (in fact we know there is, from Emily & Dinuk's analysis). Here I replicate their results: -
 
-ble(tj_aov_dat, digits=2)
-
 ```{r, results='hide'}
 
 # first set the factors to be factors
@@ -837,9 +835,7 @@ ggpairs(betas_r %>% select(mu_flt, scs_flt, cntx_flt, r),
 
 ```
 
-What this plot tells us is that the more that the probability of context increases your log odds of hitting a door from the other context, the less that the probability of success given context influences the probability of hitting a door from the other context. This is good. It tells us that the parameters trade off against each other in a way we would expect.
-(Note that I don't include sw and swr, for visual clarity. Comfortingly, the correlations
-between these parameters and the others were not significant (nor with the routine scores.))
+What this plot tells us is that the more that the probability of context increases your log odds of hitting a door from the other context, the less that the probability of success given context influences the probability of hitting a door from the other context. This is good. It tells us that the parameters trade off against each other in a way we would expect. (Note that I don't include sw and swr, for visual clarity. Comfortingly, the correlations between these parameters and the others were not significant (nor with the routine scores.))
 
 To understand the relationship between R scores and the remaining predictors, here is an optional lm to run. I am not concluding much from it as everything is calculated on the same data, but it does tell us that we can't trust the direction of the first order correlations with r, so I am not going to over interpret the direction here. But we do see that these predictors correlate with the routine score.
 
@@ -852,7 +848,7 @@ summary(with(betas_r, lm(r ~ mu_flt + scs_flt + cntx_flt)))
 
 Now the cherry on top. We ask whether the extent to which you became routine (the lower your r score) predicts your difficulty being flexible, or corresponds to you being better at task switching.
 
-First steps are to wrangle the routine and group x transfer task data, and looking at learning onset for each group and task as a boxplot. Note that from visual inspection of qqplots, I decided to log transform the data, to improve normality.  ThenI take the ratio of the scores from each task and correlate with the routine score, then an inferential test of the things.
+First steps are to wrangle the routine and group x transfer task data, and looking at learning onset for each group and task as a boxplot. Note that from visual inspection of qqplots, I decided to log transform the data, to improve normality. ThenI take the ratio of the scores from each task and correlate with the routine score, then an inferential test of the things.
 
 ```{r}
 
@@ -861,20 +857,99 @@ r_dat <- read.csv(paste(data_path, 'exp_lt_rscore.csv', sep=''))
 onset_dat <- read.csv(paste(data_path, 'exp_lt_maggi-k4.csv', sep='')) %>% 
   select(sid, ses, transfer, k4_onset) %>% 
   filter(ses == 3) %>%
-  group_by(sid, ses) %>% 
-  summarise(k4_ratio = k4_onset[transfer == 1] / k4_onset[transfer == 2])
+  mutate(transfer=recode(transfer, `1` = 'comp', `2` = 'part')) %>%
+  pivot_wider(names_from=transfer, values_from=k4_onset) %>% 
+  mutate(k4 = part / (comp + part))
 names(onset_dat)[names(onset_dat) == "sid"] = "sub"
+# proportion makes it more normal
 
-# some participants never learned, so we lose anyone who has a k4 ratio of 0,
+# some participants never learned, so we lose anyone who has a k4 of NaN,
 # as that means their score was Inf
-onset_dat <- onset_dat %>% filter(k4_ratio != 0)
+onset_dat <- onset_dat %>% na.omit() %>%
+                filter(is.finite(comp))# this gets rid of most, but still one to get rid of
 
 # now join to the r dat
 onset_dat <- inner_join(onset_dat, r_dat, by='sub')
 
 # now I log my variables, and I load the avg data so that I can get the training 
 # group variale
-onset_dat <- onset_dat %>% mutate(log_r = log(r), log_k4 = log(k4_ratio))
+onset_dat <- onset_dat %>% mutate(log_r = log(r))
+grp_inf <- read.csv(paste(data_path, 'exp_lt_avg.csv', sep='')) %>% 
+  filter(ses == 3) %>%
+  select(sub, train_type) %>%
+  unique()
+onset_dat <- inner_join(onset_dat, grp_inf, by='sub') %>%
+                mutate(train_type=recode(train_type, `1`= 'stable', 
+                                         `2` = 'variable'))
+rm(grp_inf)
+
+# Now I have the data, I want to replace any outliers with NA
+dvs <- c('comp', 'part', 'k4', 'log_r')
+onset_dat <- cbind(onset_dat,
+         do.call(cbind, lapply(dvs, remove_outliers, betas=onset_dat)))
+
+
+```
+
+Now that I have the wrangled data, I will make 3 subplots and then combine them. The first is the main effect of partial v transfer, the second is the percentage difference by group, and the third is the correlation between r and the k4 bias measure.
+
+```{r}
+
+# first, I make the comp/part data longer so I can plot it
+tmp <- onset_dat %>% select(sub, comp, part, train_type) %>%
+          pivot_longer(cols=c('comp', 'part'), 
+                       values_to = 'k4_on',
+                       names_to='transfer')
+
+col_scheme = c('#7570b3', '#e7298a')
+
+trn_bp_wdth = z_p_wdth
+trn_bp_hgt = z_p_hgt
+plt_tran_bp_4paper_andtlks(paste(fig_path, 
+                                 'k4_by_grp', sep=''),
+                trn_bp_wdth,
+                trn_bp_hgt,
+                tmp,
+                'k4_on ~ transfer*train_type', 
+                col_scheme,
+                'k4 on',
+                fig_lab = 'A')
+
+```
+
+Lets show it here, so you can see the data -
+
+![Knowledge onset of 4 doors in the transfer tasks, by group.](figs/k4_by_grp_4tlks.svg){fig-align="cent"}
+
+Now I want to plot the bias score, by group.
+
+```{r}
+
+bias <- onset_dat %>% select(sub, train_type, log_r_flt, k4_flt) %>%
+               na.omit()
+col_scheme <- c('#1b9e77','#d95f02')
+this_form = 'k4_flt ~ train_type'
+ylabel = 'transfer bias'
+fig_lab = 'B'
+
+bs_wdth = trn_bp_wdth/2
+bs_hgt = trn_bp_hgt
+
+plt_bias_by_grp_4paper_andtlks(paste(fig_path, 'bias-by-grp', sep=''),
+                               bs_wdth, bs_hgt,
+                               bias,
+                               this_form,
+                               col_scheme,
+                               ylabel,
+                               fig_lab)
+```
+
+![Transfer bias score, by group.](figs/bias-by-grp_4tlks.svg){fig-align="cent"}
+
+And now, the last piece, the correlation between the bias score and the logged routine variability score.
+
+```{r}
+
 
 
 ```
