@@ -39,7 +39,7 @@ get_coefs_plts_acrss_exps <- function(data_path){
   
   #### this function generates the plots for
   #### both experiments and arranges them nicely
-  par(mar = c(1,3,3,1))
+  par(mar = c(1,4,3,1))
   gen_coefs_plts(paste(data_path,
                        'betas_lt_first-level_cln.csv',
                        sep=''),
@@ -47,7 +47,7 @@ get_coefs_plts_acrss_exps <- function(data_path){
                  leg = TRUE,
                  x_on = FALSE)
   fig_label('A')
-  par(mar = c(3,3,1,1))
+  par(mar = c(3,4,1,1))
   gen_coefs_plts(paste(data_path,
                        'betas_ts_first-level_cln.csv',
                        sep=''),
@@ -81,13 +81,13 @@ gen_coefs_plts <- function(fname,
 
   # set colours and other aesthetics here
   cols <- c('#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99')
-  ylab = 'est'
+  ylabel = 'log odds'
   
   plot_coefs_scnd_lvl(dat = dat, 
                       plot_formula = 'est ~ parameter + train_type',
                       cols = cols,
                       leg = leg,
-                      ylab = 'est',
+                      ylab = ylabel,
                       x_on = x_on)
 }
 
@@ -95,7 +95,7 @@ plot_coefs_scnd_lvl <- function(dat,
                                 plot_formula,
                                 cols,
                                 leg,
-                                ylab,
+                                ylabel,
                                 x_on){
   
   with(dat,
@@ -106,7 +106,7 @@ plot_coefs_scnd_lvl <- function(dat,
                ylim=c(-7,3),
                yaxt = 'n',
                xaxt='n',
-               ylab=ylab,
+               ylab=ylabel,
                xlab=''))
   abline(h=0, lty=2, col='darkgrey')
   if (leg){
@@ -114,7 +114,7 @@ plot_coefs_scnd_lvl <- function(dat,
     text(9, 3, adj=0.5, 'variable', cex=1.5)
   }
   if (x_on){
-    axis(1, at=c(1:5), labels=c('mu', 'sw', 'sw_r', 'scs', 'cntx'))    
+    axis(1, at=c(1:5), labels=c('mu', 'sw', 'sw_r', 'p_sc', 'p_ts'))    
   }
   axis(2, at=seq(-6, 2, by=2), labels=paste(seq(-6, 2, by=2)))
 }

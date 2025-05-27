@@ -7,7 +7,7 @@ format:
 editor: visual
 ---
 
-## Produce the results for 'Towards a normative theory of routines'
+## Produce the results for 'Towards the definition and measurement of routines and their impact on cognitive control'
 
 This notebook provides a computationally reproducible record of the analysis and figure generation for the paper 'Towards a normative theory of routines' (or whatever we wind up deciding to call it.
 
@@ -438,7 +438,8 @@ gen_jumps_plot(jumps,
                j_wdth, j_hgt,
                paste(fig_path, 'task-jumps', sep=''),
                fig_labs = c('C', 'D'),
-               ylabel = 'jumps')
+               ylabel = 'jumps',
+               ylims=c(0,5))
 
 ```
 
@@ -590,7 +591,8 @@ gen_jumps_plot(errors,
                j_wdth, j_hgt,
                paste(fig_path, 'general-errors', sep=''),
                fig_labs = c('A', 'B'),
-               ylabel = 'errors')
+               ylabel = 'errors',
+               ylims=c(0,1))
 
 
 ```
@@ -829,10 +831,12 @@ sum(mhl.dist > cut_off) # we keep all the data
 # prepare for the pairs plot
 betas_r$train_type <- as.factor(betas_r$train_type)
 levels(betas_r$train_type) <- c('stable', 'variable')
-ggpairs(betas_r %>% select(mu_flt, scs_flt, cntx_flt, r),
+svg(paste(fig_path, 'pairs4backup.svg', sep=''), height=7, width=7)
+g <- ggpairs(betas_r %>% select(mu_flt, scs_flt, cntx_flt, r),
         mapping=ggplot2::aes(colour = betas_r$train_type),
         upper = list(continuous = wrap("cor", method = "spearman")))
-
+print(g)
+dev.off()
 ```
 
 What this plot tells us is that the more that the probability of context increases your log odds of hitting a door from the other context, the less that the probability of success given context influences the probability of hitting a door from the other context. This is good. It tells us that the parameters trade off against each other in a way we would expect. (Note that I don't include sw and swr, for visual clarity. Comfortingly, the correlations between these parameters and the others were not significant (nor with the routine scores.))

@@ -125,8 +125,8 @@ window.Quarto = {
 </header>
 
 
-<section id="produce-the-results-for-towards-a-normative-theory-of-routines" class="level2">
-<h2 class="anchored" data-anchor-id="produce-the-results-for-towards-a-normative-theory-of-routines">Produce the results for ‘Towards a normative theory of routines’</h2>
+<section id="produce-the-results-for-towards-the-definition-and-measurement-of-routines-and-their-impact-on-cognitive-control" class="level2">
+<h2 class="anchored" data-anchor-id="produce-the-results-for-towards-the-definition-and-measurement-of-routines-and-their-impact-on-cognitive-control">Produce the results for ‘Towards the definition and measurement of routines and their impact on cognitive control’</h2>
 <p>This notebook provides a computationally reproducible record of the analysis and figure generation for the paper ‘Towards a normative theory of routines’ (or whatever we wind up deciding to call it.</p>
 <section id="settings-and-other-things" class="level3">
 <h3 class="anchored" data-anchor-id="settings-and-other-things">Settings and other things</h3>
@@ -693,8 +693,8 @@ argument.</code></pre>
 <td style="text-align: right;">-0.74</td>
 <td style="text-align: right;">-0.19</td>
 <td style="text-align: right;">-0.68</td>
-<td style="text-align: right;">-1.10</td>
-<td style="text-align: right;">-0.29</td>
+<td style="text-align: right;">-1.09</td>
+<td style="text-align: right;">-0.30</td>
 <td style="text-align: left;">log r</td>
 <td style="text-align: left;">lt</td>
 </tr>
@@ -706,8 +706,8 @@ argument.</code></pre>
 <td style="text-align: right;">-0.72</td>
 <td style="text-align: right;">-0.21</td>
 <td style="text-align: right;">-0.74</td>
-<td style="text-align: right;">-1.16</td>
-<td style="text-align: right;">-0.37</td>
+<td style="text-align: right;">-1.14</td>
+<td style="text-align: right;">-0.38</td>
 <td style="text-align: left;">log r</td>
 <td style="text-align: left;">ts</td>
 </tr>
@@ -759,7 +759,8 @@ the `.groups` argument.</code></pre>
 <span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>               j_wdth, j_hgt,</span>
 <span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>               <span class="fu">paste</span>(fig_path, <span class="st">'task-jumps'</span>, <span class="at">sep=</span><span class="st">''</span>),</span>
 <span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">fig_labs =</span> <span class="fu">c</span>(<span class="st">'C'</span>, <span class="st">'D'</span>),</span>
-<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">ylabel =</span> <span class="st">'jumps'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">ylabel =</span> <span class="st">'jumps'</span>,</span>
+<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">ylims=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Now lets see the fig in all its glory -</p>
@@ -1150,7 +1151,8 @@ the `.groups` argument.</code></pre>
 <span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>               j_wdth, j_hgt,</span>
 <span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>               <span class="fu">paste</span>(fig_path, <span class="st">'general-errors'</span>, <span class="at">sep=</span><span class="st">''</span>),</span>
 <span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">fig_labs =</span> <span class="fu">c</span>(<span class="st">'A'</span>, <span class="st">'B'</span>),</span>
-<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">ylabel =</span> <span class="st">'errors'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">ylabel =</span> <span class="st">'errors'</span>,</span>
+<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">ylims=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>png 
@@ -1521,16 +1523,16 @@ Figure&nbsp;2: Showing the betas by group and parameter
 <div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare for the pairs plot</span></span>
 <span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>betas_r<span class="sc">$</span>train_type <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(betas_r<span class="sc">$</span>train_type)</span>
 <span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(betas_r<span class="sc">$</span>train_type) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'stable'</span>, <span class="st">'variable'</span>)</span>
-<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(betas_r <span class="sc">%&gt;%</span> <span class="fu">select</span>(mu_flt, scs_flt, cntx_flt, r),</span>
-<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">mapping=</span>ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">colour =</span> betas_r<span class="sc">$</span>train_type),</span>
-<span id="cb84-6"><a href="#cb84-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">upper =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="fu">wrap</span>(<span class="st">"cor"</span>, <span class="at">method =</span> <span class="st">"spearman"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a><span class="fu">svg</span>(<span class="fu">paste</span>(fig_path, <span class="st">'pairs4backup.svg'</span>, <span class="at">sep=</span><span class="st">''</span>), <span class="at">height=</span><span class="dv">7</span>, <span class="at">width=</span><span class="dv">7</span>)</span>
+<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">ggpairs</span>(betas_r <span class="sc">%&gt;%</span> <span class="fu">select</span>(mu_flt, scs_flt, cntx_flt, r),</span>
+<span id="cb84-6"><a href="#cb84-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">mapping=</span>ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">colour =</span> betas_r<span class="sc">$</span>train_type),</span>
+<span id="cb84-7"><a href="#cb84-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">upper =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="fu">wrap</span>(<span class="st">"cor"</span>, <span class="at">method =</span> <span class="st">"spearman"</span>)))</span>
+<span id="cb84-8"><a href="#cb84-8" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(g)</span>
+<span id="cb84-9"><a href="#cb84-9" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="routines_produce-results_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>png 
+  2 </code></pre>
 </div>
 </div>
 <p>What this plot tells us is that the more that the probability of context increases your log odds of hitting a door from the other context, the less that the probability of success given context influences the probability of hitting a door from the other context. This is good. It tells us that the parameters trade off against each other in a way we would expect. (Note that I don’t include sw and swr, for visual clarity. Comfortingly, the correlations between these parameters and the others were not significant (nor with the routine scores.))</p>
@@ -1538,7 +1540,7 @@ Figure&nbsp;2: Showing the betas by group and parameter
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">with</span>(betas_r, <span class="fu">lm</span>(r <span class="sc">~</span> mu_flt <span class="sc">+</span> scs_flt <span class="sc">+</span> cntx_flt)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">with</span>(betas_r, <span class="fu">lm</span>(r <span class="sc">~</span> mu_flt <span class="sc">+</span> scs_flt <span class="sc">+</span> cntx_flt)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -1551,41 +1553,41 @@ Figure&nbsp;2: Showing the betas by group and parameter
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="co"># wrangle data</span></span>
-<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>r_dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste</span>(data_path, <span class="st">'exp_lt_rscore.csv'</span>, <span class="at">sep=</span><span class="st">''</span>))</span>
-<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>onset_dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste</span>(data_path, <span class="st">'exp_lt_maggi-k4.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sid, ses, transfer, k4_onset) <span class="sc">%&gt;%</span> </span>
-<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ses <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb86-6"><a href="#cb86-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">transfer=</span><span class="fu">recode</span>(transfer, <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'comp'</span>, <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'part'</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb86-7"><a href="#cb86-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>transfer, <span class="at">values_from=</span>k4_onset) <span class="sc">%&gt;%</span> </span>
-<span id="cb86-8"><a href="#cb86-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">k4 =</span> part <span class="sc">/</span> (comp <span class="sc">+</span> part))</span>
-<span id="cb86-9"><a href="#cb86-9" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(onset_dat)[<span class="fu">names</span>(onset_dat) <span class="sc">==</span> <span class="st">"sid"</span>] <span class="ot">=</span> <span class="st">"sub"</span></span>
-<span id="cb86-10"><a href="#cb86-10" aria-hidden="true" tabindex="-1"></a><span class="co"># proportion makes it more normal</span></span>
-<span id="cb86-11"><a href="#cb86-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-12"><a href="#cb86-12" aria-hidden="true" tabindex="-1"></a><span class="co"># some participants never learned, so we lose anyone who has a k4 of NaN,</span></span>
-<span id="cb86-13"><a href="#cb86-13" aria-hidden="true" tabindex="-1"></a><span class="co"># as that means their score was Inf</span></span>
-<span id="cb86-14"><a href="#cb86-14" aria-hidden="true" tabindex="-1"></a>onset_dat <span class="ot">&lt;-</span> onset_dat <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb86-15"><a href="#cb86-15" aria-hidden="true" tabindex="-1"></a>                <span class="fu">filter</span>(<span class="fu">is.finite</span>(comp))<span class="co"># this gets rid of most, but still one to get rid of</span></span>
-<span id="cb86-16"><a href="#cb86-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-17"><a href="#cb86-17" aria-hidden="true" tabindex="-1"></a><span class="co"># now join to the r dat</span></span>
-<span id="cb86-18"><a href="#cb86-18" aria-hidden="true" tabindex="-1"></a>onset_dat <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(onset_dat, r_dat, <span class="at">by=</span><span class="st">'sub'</span>)</span>
-<span id="cb86-19"><a href="#cb86-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-20"><a href="#cb86-20" aria-hidden="true" tabindex="-1"></a><span class="co"># now I log my variables, and I load the avg data so that I can get the training </span></span>
-<span id="cb86-21"><a href="#cb86-21" aria-hidden="true" tabindex="-1"></a><span class="co"># group variale</span></span>
-<span id="cb86-22"><a href="#cb86-22" aria-hidden="true" tabindex="-1"></a>onset_dat <span class="ot">&lt;-</span> onset_dat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">log_r =</span> <span class="fu">log</span>(r))</span>
-<span id="cb86-23"><a href="#cb86-23" aria-hidden="true" tabindex="-1"></a>grp_inf <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste</span>(data_path, <span class="st">'exp_lt_avg.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb86-24"><a href="#cb86-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ses <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb86-25"><a href="#cb86-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub, train_type) <span class="sc">%&gt;%</span></span>
-<span id="cb86-26"><a href="#cb86-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span>
-<span id="cb86-27"><a href="#cb86-27" aria-hidden="true" tabindex="-1"></a>onset_dat <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(onset_dat, grp_inf, <span class="at">by=</span><span class="st">'sub'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb86-28"><a href="#cb86-28" aria-hidden="true" tabindex="-1"></a>                <span class="fu">mutate</span>(<span class="at">train_type=</span><span class="fu">recode</span>(train_type, <span class="st">`</span><span class="at">1</span><span class="st">`</span><span class="ot">=</span> <span class="st">'stable'</span>, </span>
-<span id="cb86-29"><a href="#cb86-29" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'variable'</span>))</span>
-<span id="cb86-30"><a href="#cb86-30" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(grp_inf)</span>
-<span id="cb86-31"><a href="#cb86-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-32"><a href="#cb86-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Now I have the data, I want to replace any outliers with NA</span></span>
-<span id="cb86-33"><a href="#cb86-33" aria-hidden="true" tabindex="-1"></a>dvs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'comp'</span>, <span class="st">'part'</span>, <span class="st">'k4'</span>, <span class="st">'log_r'</span>)</span>
-<span id="cb86-34"><a href="#cb86-34" aria-hidden="true" tabindex="-1"></a>onset_dat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(onset_dat,</span>
-<span id="cb86-35"><a href="#cb86-35" aria-hidden="true" tabindex="-1"></a>         <span class="fu">do.call</span>(cbind, <span class="fu">lapply</span>(dvs, remove_outliers, <span class="at">betas=</span>onset_dat)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># wrangle data</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>r_dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste</span>(data_path, <span class="st">'exp_lt_rscore.csv'</span>, <span class="at">sep=</span><span class="st">''</span>))</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>onset_dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste</span>(data_path, <span class="st">'exp_lt_maggi-k4.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sid, ses, transfer, k4_onset) <span class="sc">%&gt;%</span> </span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ses <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">transfer=</span><span class="fu">recode</span>(transfer, <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'comp'</span>, <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'part'</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>transfer, <span class="at">values_from=</span>k4_onset) <span class="sc">%&gt;%</span> </span>
+<span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">k4 =</span> part <span class="sc">/</span> (comp <span class="sc">+</span> part))</span>
+<span id="cb87-9"><a href="#cb87-9" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(onset_dat)[<span class="fu">names</span>(onset_dat) <span class="sc">==</span> <span class="st">"sid"</span>] <span class="ot">=</span> <span class="st">"sub"</span></span>
+<span id="cb87-10"><a href="#cb87-10" aria-hidden="true" tabindex="-1"></a><span class="co"># proportion makes it more normal</span></span>
+<span id="cb87-11"><a href="#cb87-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-12"><a href="#cb87-12" aria-hidden="true" tabindex="-1"></a><span class="co"># some participants never learned, so we lose anyone who has a k4 of NaN,</span></span>
+<span id="cb87-13"><a href="#cb87-13" aria-hidden="true" tabindex="-1"></a><span class="co"># as that means their score was Inf</span></span>
+<span id="cb87-14"><a href="#cb87-14" aria-hidden="true" tabindex="-1"></a>onset_dat <span class="ot">&lt;-</span> onset_dat <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb87-15"><a href="#cb87-15" aria-hidden="true" tabindex="-1"></a>                <span class="fu">filter</span>(<span class="fu">is.finite</span>(comp))<span class="co"># this gets rid of most, but still one to get rid of</span></span>
+<span id="cb87-16"><a href="#cb87-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-17"><a href="#cb87-17" aria-hidden="true" tabindex="-1"></a><span class="co"># now join to the r dat</span></span>
+<span id="cb87-18"><a href="#cb87-18" aria-hidden="true" tabindex="-1"></a>onset_dat <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(onset_dat, r_dat, <span class="at">by=</span><span class="st">'sub'</span>)</span>
+<span id="cb87-19"><a href="#cb87-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-20"><a href="#cb87-20" aria-hidden="true" tabindex="-1"></a><span class="co"># now I log my variables, and I load the avg data so that I can get the training </span></span>
+<span id="cb87-21"><a href="#cb87-21" aria-hidden="true" tabindex="-1"></a><span class="co"># group variale</span></span>
+<span id="cb87-22"><a href="#cb87-22" aria-hidden="true" tabindex="-1"></a>onset_dat <span class="ot">&lt;-</span> onset_dat <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">log_r =</span> <span class="fu">log</span>(r))</span>
+<span id="cb87-23"><a href="#cb87-23" aria-hidden="true" tabindex="-1"></a>grp_inf <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste</span>(data_path, <span class="st">'exp_lt_avg.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb87-24"><a href="#cb87-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ses <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb87-25"><a href="#cb87-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub, train_type) <span class="sc">%&gt;%</span></span>
+<span id="cb87-26"><a href="#cb87-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span>
+<span id="cb87-27"><a href="#cb87-27" aria-hidden="true" tabindex="-1"></a>onset_dat <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(onset_dat, grp_inf, <span class="at">by=</span><span class="st">'sub'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb87-28"><a href="#cb87-28" aria-hidden="true" tabindex="-1"></a>                <span class="fu">mutate</span>(<span class="at">train_type=</span><span class="fu">recode</span>(train_type, <span class="st">`</span><span class="at">1</span><span class="st">`</span><span class="ot">=</span> <span class="st">'stable'</span>, </span>
+<span id="cb87-29"><a href="#cb87-29" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'variable'</span>))</span>
+<span id="cb87-30"><a href="#cb87-30" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(grp_inf)</span>
+<span id="cb87-31"><a href="#cb87-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-32"><a href="#cb87-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Now I have the data, I want to replace any outliers with NA</span></span>
+<span id="cb87-33"><a href="#cb87-33" aria-hidden="true" tabindex="-1"></a>dvs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'comp'</span>, <span class="st">'part'</span>, <span class="st">'k4'</span>, <span class="st">'log_r'</span>)</span>
+<span id="cb87-34"><a href="#cb87-34" aria-hidden="true" tabindex="-1"></a>onset_dat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(onset_dat,</span>
+<span id="cb87-35"><a href="#cb87-35" aria-hidden="true" tabindex="-1"></a>         <span class="fu">do.call</span>(cbind, <span class="fu">lapply</span>(dvs, remove_outliers, <span class="at">betas=</span>onset_dat)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Using an external vector in selections was deprecated in tidyselect 1.1.0.
@@ -1639,32 +1641,32 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(onset_dat, <span class="fu">paste</span>(data_path, <span class="st">'exp_lt_onsetwr.csv'</span>, <span class="at">sep=</span><span class="st">''</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(onset_dat, <span class="fu">paste</span>(data_path, <span class="st">'exp_lt_onsetwr.csv'</span>, <span class="at">sep=</span><span class="st">''</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Now that I have the wrangled data, I will make 3 subplots and then combine them. The first is the main effect of partial v transfer, the second is the percentage difference by group, and the third is the correlation between r and the k4 bias measure.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first, I make the comp/part data longer so I can plot it</span></span>
-<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> onset_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(sub, comp, part, train_type) <span class="sc">%&gt;%</span></span>
-<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>          <span class="fu">pivot_longer</span>(<span class="at">cols=</span><span class="fu">c</span>(<span class="st">'comp'</span>, <span class="st">'part'</span>), </span>
-<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">values_to =</span> <span class="st">'k4_on'</span>,</span>
-<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">names_to=</span><span class="st">'transfer'</span>)</span>
-<span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a>col_scheme <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'#7570b3'</span>, <span class="st">'#e7298a'</span>)</span>
-<span id="cb90-8"><a href="#cb90-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb90-9"><a href="#cb90-9" aria-hidden="true" tabindex="-1"></a>k4_by_grp_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path,<span class="st">'k4_by_grp'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb90-10"><a href="#cb90-10" aria-hidden="true" tabindex="-1"></a>trn_bp_wdth <span class="ot">=</span> z_p_wdth</span>
-<span id="cb90-11"><a href="#cb90-11" aria-hidden="true" tabindex="-1"></a>trn_bp_hgt <span class="ot">=</span> z_p_hgt</span>
-<span id="cb90-12"><a href="#cb90-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plt_tran_bp_4paper_andtlks</span>(k4_by_grp_fname,</span>
-<span id="cb90-13"><a href="#cb90-13" aria-hidden="true" tabindex="-1"></a>                trn_bp_wdth,</span>
-<span id="cb90-14"><a href="#cb90-14" aria-hidden="true" tabindex="-1"></a>                trn_bp_hgt,</span>
-<span id="cb90-15"><a href="#cb90-15" aria-hidden="true" tabindex="-1"></a>                tmp,</span>
-<span id="cb90-16"><a href="#cb90-16" aria-hidden="true" tabindex="-1"></a>                <span class="st">'k4_on ~ transfer*train_type'</span>, </span>
-<span id="cb90-17"><a href="#cb90-17" aria-hidden="true" tabindex="-1"></a>                col_scheme,</span>
-<span id="cb90-18"><a href="#cb90-18" aria-hidden="true" tabindex="-1"></a>                <span class="st">'k4 on'</span>,</span>
-<span id="cb90-19"><a href="#cb90-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">fig_lab =</span> <span class="st">'A'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first, I make the comp/part data longer so I can plot it</span></span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> onset_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(sub, comp, part, train_type) <span class="sc">%&gt;%</span></span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>          <span class="fu">pivot_longer</span>(<span class="at">cols=</span><span class="fu">c</span>(<span class="st">'comp'</span>, <span class="st">'part'</span>), </span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">values_to =</span> <span class="st">'k4_on'</span>,</span>
+<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">names_to=</span><span class="st">'transfer'</span>)</span>
+<span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-7"><a href="#cb91-7" aria-hidden="true" tabindex="-1"></a>col_scheme <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'#7570b3'</span>, <span class="st">'#e7298a'</span>)</span>
+<span id="cb91-8"><a href="#cb91-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-9"><a href="#cb91-9" aria-hidden="true" tabindex="-1"></a>k4_by_grp_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path,<span class="st">'k4_by_grp'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb91-10"><a href="#cb91-10" aria-hidden="true" tabindex="-1"></a>trn_bp_wdth <span class="ot">=</span> z_p_wdth</span>
+<span id="cb91-11"><a href="#cb91-11" aria-hidden="true" tabindex="-1"></a>trn_bp_hgt <span class="ot">=</span> z_p_hgt</span>
+<span id="cb91-12"><a href="#cb91-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plt_tran_bp_4paper_andtlks</span>(k4_by_grp_fname,</span>
+<span id="cb91-13"><a href="#cb91-13" aria-hidden="true" tabindex="-1"></a>                trn_bp_wdth,</span>
+<span id="cb91-14"><a href="#cb91-14" aria-hidden="true" tabindex="-1"></a>                trn_bp_hgt,</span>
+<span id="cb91-15"><a href="#cb91-15" aria-hidden="true" tabindex="-1"></a>                tmp,</span>
+<span id="cb91-16"><a href="#cb91-16" aria-hidden="true" tabindex="-1"></a>                <span class="st">'k4_on ~ transfer*train_type'</span>, </span>
+<span id="cb91-17"><a href="#cb91-17" aria-hidden="true" tabindex="-1"></a>                col_scheme,</span>
+<span id="cb91-18"><a href="#cb91-18" aria-hidden="true" tabindex="-1"></a>                <span class="st">'k4 on'</span>,</span>
+<span id="cb91-19"><a href="#cb91-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">fig_lab =</span> <span class="st">'A'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>png 
@@ -1682,24 +1684,24 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>bias <span class="ot">&lt;-</span> onset_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(sub, train_type, log_r_flt, k4_flt) <span class="sc">%&gt;%</span></span>
-<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>               <span class="fu">na.omit</span>()</span>
-<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>col_scheme <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'#1b9e77'</span>,<span class="st">'#d95f02'</span>)</span>
-<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>this_form <span class="ot">=</span> <span class="st">'k4_flt ~ train_type'</span></span>
-<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>ylabel <span class="ot">=</span> <span class="st">'transfer bias'</span></span>
-<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a>fig_lab <span class="ot">=</span> <span class="st">'B'</span></span>
-<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a>bs_wdth <span class="ot">=</span> trn_bp_wdth<span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb92-9"><a href="#cb92-9" aria-hidden="true" tabindex="-1"></a>bs_hgt <span class="ot">=</span> trn_bp_hgt</span>
-<span id="cb92-10"><a href="#cb92-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb92-11"><a href="#cb92-11" aria-hidden="true" tabindex="-1"></a>bias_by_grp_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'bias-by-grp'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb92-12"><a href="#cb92-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plt_bias_by_grp_4paper_andtlks</span>(bias_by_grp_fname,</span>
-<span id="cb92-13"><a href="#cb92-13" aria-hidden="true" tabindex="-1"></a>                               bs_wdth, bs_hgt,</span>
-<span id="cb92-14"><a href="#cb92-14" aria-hidden="true" tabindex="-1"></a>                               bias,</span>
-<span id="cb92-15"><a href="#cb92-15" aria-hidden="true" tabindex="-1"></a>                               this_form,</span>
-<span id="cb92-16"><a href="#cb92-16" aria-hidden="true" tabindex="-1"></a>                               col_scheme,</span>
-<span id="cb92-17"><a href="#cb92-17" aria-hidden="true" tabindex="-1"></a>                               ylabel,</span>
-<span id="cb92-18"><a href="#cb92-18" aria-hidden="true" tabindex="-1"></a>                               fig_lab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>bias <span class="ot">&lt;-</span> onset_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(sub, train_type, log_r_flt, k4_flt) <span class="sc">%&gt;%</span></span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>               <span class="fu">na.omit</span>()</span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>col_scheme <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'#1b9e77'</span>,<span class="st">'#d95f02'</span>)</span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>this_form <span class="ot">=</span> <span class="st">'k4_flt ~ train_type'</span></span>
+<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>ylabel <span class="ot">=</span> <span class="st">'transfer bias'</span></span>
+<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a>fig_lab <span class="ot">=</span> <span class="st">'B'</span></span>
+<span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-8"><a href="#cb93-8" aria-hidden="true" tabindex="-1"></a>bs_wdth <span class="ot">=</span> trn_bp_wdth<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb93-9"><a href="#cb93-9" aria-hidden="true" tabindex="-1"></a>bs_hgt <span class="ot">=</span> trn_bp_hgt</span>
+<span id="cb93-10"><a href="#cb93-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-11"><a href="#cb93-11" aria-hidden="true" tabindex="-1"></a>bias_by_grp_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'bias-by-grp'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb93-12"><a href="#cb93-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plt_bias_by_grp_4paper_andtlks</span>(bias_by_grp_fname,</span>
+<span id="cb93-13"><a href="#cb93-13" aria-hidden="true" tabindex="-1"></a>                               bs_wdth, bs_hgt,</span>
+<span id="cb93-14"><a href="#cb93-14" aria-hidden="true" tabindex="-1"></a>                               bias,</span>
+<span id="cb93-15"><a href="#cb93-15" aria-hidden="true" tabindex="-1"></a>                               this_form,</span>
+<span id="cb93-16"><a href="#cb93-16" aria-hidden="true" tabindex="-1"></a>                               col_scheme,</span>
+<span id="cb93-17"><a href="#cb93-17" aria-hidden="true" tabindex="-1"></a>                               ylabel,</span>
+<span id="cb93-18"><a href="#cb93-18" aria-hidden="true" tabindex="-1"></a>                               fig_lab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>png 
@@ -1716,11 +1718,11 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>lt_bias_corr_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'lt-bias_r_corr'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plt_r_bias_cor_4paper_andtlks</span>(lt_bias_corr_fname,</span>
-<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>                              bs_wdth, bs_hgt,</span>
-<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>                              bias,</span>
-<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>                              <span class="st">'C'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>lt_bias_corr_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'lt-bias_r_corr'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plt_r_bias_cor_4paper_andtlks</span>(lt_bias_corr_fname,</span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>                              bs_wdth, bs_hgt,</span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>                              bias,</span>
+<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a>                              <span class="st">'C'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>png 
@@ -1737,17 +1739,17 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>fnms <span class="ot">=</span> <span class="fu">c</span>(k4_by_grp_fname, bias_by_grp_fname, lt_bias_corr_fname)</span>
-<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a>ims <span class="ot">=</span> <span class="fu">lapply</span>(fnms, <span class="cf">function</span>(x) <span class="fu">image_read_pdf</span>(<span class="fu">paste</span>(x, <span class="st">'.pdf'</span>, <span class="at">sep=</span><span class="st">''</span>)))</span>
-<span id="cb96-4"><a href="#cb96-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb96-5"><a href="#cb96-5" aria-hidden="true" tabindex="-1"></a>bottom <span class="ot">&lt;-</span> <span class="fu">image_append</span>(<span class="fu">c</span>(ims[[<span class="dv">2</span>]],ims[[<span class="dv">3</span>]]))</span>
-<span id="cb96-6"><a href="#cb96-6" aria-hidden="true" tabindex="-1"></a>multi <span class="ot">&lt;-</span> <span class="fu">image_append</span>(<span class="fu">c</span>(ims[[<span class="dv">1</span>]], bottom), <span class="at">stack=</span><span class="cn">TRUE</span>)</span>
-<span id="cb96-7"><a href="#cb96-7" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="fu">paste</span>(fig_path, <span class="st">'LT_results.pdf'</span>, <span class="at">sep=</span><span class="st">''</span>), </span>
-<span id="cb96-8"><a href="#cb96-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">width=</span>trn_bp_wdth,</span>
-<span id="cb96-9"><a href="#cb96-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">height=</span>bs_hgt<span class="sc">*</span><span class="dv">2</span>)</span>
-<span id="cb96-10"><a href="#cb96-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(multi)</span>
-<span id="cb96-11"><a href="#cb96-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>fnms <span class="ot">=</span> <span class="fu">c</span>(k4_by_grp_fname, bias_by_grp_fname, lt_bias_corr_fname)</span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>ims <span class="ot">=</span> <span class="fu">lapply</span>(fnms, <span class="cf">function</span>(x) <span class="fu">image_read_pdf</span>(<span class="fu">paste</span>(x, <span class="st">'.pdf'</span>, <span class="at">sep=</span><span class="st">''</span>)))</span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a>bottom <span class="ot">&lt;-</span> <span class="fu">image_append</span>(<span class="fu">c</span>(ims[[<span class="dv">2</span>]],ims[[<span class="dv">3</span>]]))</span>
+<span id="cb97-6"><a href="#cb97-6" aria-hidden="true" tabindex="-1"></a>multi <span class="ot">&lt;-</span> <span class="fu">image_append</span>(<span class="fu">c</span>(ims[[<span class="dv">1</span>]], bottom), <span class="at">stack=</span><span class="cn">TRUE</span>)</span>
+<span id="cb97-7"><a href="#cb97-7" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="fu">paste</span>(fig_path, <span class="st">'LT_results.pdf'</span>, <span class="at">sep=</span><span class="st">''</span>), </span>
+<span id="cb97-8"><a href="#cb97-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">width=</span>trn_bp_wdth,</span>
+<span id="cb97-9"><a href="#cb97-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">height=</span>bs_hgt<span class="sc">*</span><span class="dv">2</span>)</span>
+<span id="cb97-10"><a href="#cb97-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(multi)</span>
+<span id="cb97-11"><a href="#cb97-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>png 
@@ -1758,38 +1760,38 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="co"># learning transfer inferences</span></span>
-<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>me_transfer <span class="ot">=</span> <span class="fu">with</span>(onset_dat, <span class="fu">t.test</span>(comp_flt, part_flt, </span>
-<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">paired=</span><span class="cn">TRUE</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
-<span id="cb98-4"><a href="#cb98-4" aria-hidden="true" tabindex="-1"></a>transfer_for_cohens <span class="ot">&lt;-</span> onset_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(sub, comp_flt, part_flt) <span class="sc">%&gt;%</span></span>
-<span id="cb98-5"><a href="#cb98-5" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb98-6"><a href="#cb98-6" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">pivot_longer</span>(<span class="at">cols=</span><span class="fu">c</span>(<span class="st">'comp_flt'</span>, <span class="st">'part_flt'</span>), <span class="at">names_to=</span><span class="st">'cond'</span>,</span>
-<span id="cb98-7"><a href="#cb98-7" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">values_to=</span><span class="st">'n'</span>) </span>
-<span id="cb98-8"><a href="#cb98-8" aria-hidden="true" tabindex="-1"></a>me_transfer_d <span class="ot">=</span> <span class="fu">cohens_d</span>(<span class="at">data=</span>transfer_for_cohens,</span>
-<span id="cb98-9"><a href="#cb98-9" aria-hidden="true" tabindex="-1"></a>                         <span class="at">formula=</span>n<span class="sc">~</span>cond, <span class="at">paired=</span><span class="cn">TRUE</span>,</span>
-<span id="cb98-10"><a href="#cb98-10" aria-hidden="true" tabindex="-1"></a>                         <span class="at">ci=</span><span class="cn">TRUE</span>, <span class="at">ci.type=</span><span class="st">'perc'</span>, <span class="at">nboot=</span><span class="dv">1000</span>)</span>
-<span id="cb98-11"><a href="#cb98-11" aria-hidden="true" tabindex="-1"></a>grp_bias <span class="ot">=</span> <span class="fu">with</span>(onset_dat, <span class="fu">t.test</span>(k4_flt<span class="sc">~</span>train_type, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
-<span id="cb98-12"><a href="#cb98-12" aria-hidden="true" tabindex="-1"></a>grp_bias_d <span class="ot">=</span> <span class="fu">cohens_d</span>(<span class="at">data=</span>onset_dat <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>(k4_flt),</span>
-<span id="cb98-13"><a href="#cb98-13" aria-hidden="true" tabindex="-1"></a>                      <span class="at">formula=</span>k4_flt<span class="sc">~</span>train_type, <span class="at">paired=</span><span class="cn">FALSE</span>,</span>
-<span id="cb98-14"><a href="#cb98-14" aria-hidden="true" tabindex="-1"></a>                      <span class="at">ci=</span><span class="cn">TRUE</span>, <span class="at">ci.type=</span><span class="st">'perc'</span>, <span class="at">nboot=</span><span class="dv">1000</span>)</span>
-<span id="cb98-15"><a href="#cb98-15" aria-hidden="true" tabindex="-1"></a>r_bias_cor <span class="ot">=</span> <span class="fu">with</span>(onset_dat, <span class="fu">cor.test</span>(k4_flt, log_r_flt, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
-<span id="cb98-16"><a href="#cb98-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb98-17"><a href="#cb98-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb98-18"><a href="#cb98-18" aria-hidden="true" tabindex="-1"></a>lt_ts <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">fx =</span> <span class="fu">c</span>(<span class="st">'transfer'</span>, <span class="st">'group-bias'</span>),</span>
-<span id="cb98-19"><a href="#cb98-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">t =</span> <span class="fu">c</span>(me_transfer<span class="sc">$</span>statistic, grp_bias<span class="sc">$</span>statistic),</span>
-<span id="cb98-20"><a href="#cb98-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">df =</span> <span class="fu">c</span>(me_transfer<span class="sc">$</span>parameter, grp_bias<span class="sc">$</span>parameter),</span>
-<span id="cb98-21"><a href="#cb98-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">p =</span> <span class="fu">c</span>(me_transfer<span class="sc">$</span>p.value, grp_bias<span class="sc">$</span>p.value),</span>
-<span id="cb98-22"><a href="#cb98-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">mu_a =</span> <span class="fu">c</span>(me_transfer<span class="sc">$</span>estimate[<span class="dv">1</span>], grp_bias<span class="sc">$</span>estimate[<span class="dv">1</span>]),</span>
-<span id="cb98-23"><a href="#cb98-23" aria-hidden="true" tabindex="-1"></a>                <span class="at">mu_b =</span> <span class="fu">c</span>(me_transfer<span class="sc">$</span>estimate[<span class="dv">2</span>], grp_bias<span class="sc">$</span>estimate[<span class="dv">2</span>]),</span>
-<span id="cb98-24"><a href="#cb98-24" aria-hidden="true" tabindex="-1"></a>                <span class="at">l_fx =</span> <span class="fu">c</span>(me_transfer<span class="sc">$</span>conf.int[<span class="dv">1</span>], grp_bias<span class="sc">$</span>conf.int[<span class="dv">1</span>]),</span>
-<span id="cb98-25"><a href="#cb98-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">u_fx =</span> <span class="fu">c</span>(me_transfer<span class="sc">$</span>conf.int[<span class="dv">2</span>], grp_bias<span class="sc">$</span>conf.int[<span class="dv">2</span>]),</span>
-<span id="cb98-26"><a href="#cb98-26" aria-hidden="true" tabindex="-1"></a>                <span class="at">d =</span> <span class="fu">c</span>(me_transfer_d<span class="sc">$</span>effsize, grp_bias_d<span class="sc">$</span>effsize),</span>
-<span id="cb98-27"><a href="#cb98-27" aria-hidden="true" tabindex="-1"></a>                <span class="at">dl =</span> <span class="fu">c</span>(me_transfer_d<span class="sc">$</span>conf.low, grp_bias_d<span class="sc">$</span>conf.low),</span>
-<span id="cb98-28"><a href="#cb98-28" aria-hidden="true" tabindex="-1"></a>                <span class="at">du =</span> <span class="fu">c</span>(me_transfer_d<span class="sc">$</span>conf.high, grp_bias_d<span class="sc">$</span>conf.high),</span>
-<span id="cb98-29"><a href="#cb98-29" aria-hidden="true" tabindex="-1"></a>                <span class="at">n1 =</span> <span class="fu">c</span>(me_transfer_d<span class="sc">$</span>n1, grp_bias_d<span class="sc">$</span>n1),</span>
-<span id="cb98-30"><a href="#cb98-30" aria-hidden="true" tabindex="-1"></a>                <span class="at">n2 =</span> <span class="fu">c</span>(me_transfer_d<span class="sc">$</span>n2, grp_bias_d<span class="sc">$</span>n2))</span>
-<span id="cb98-31"><a href="#cb98-31" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(lt_ts, <span class="fu">paste</span>(res_path, <span class="st">'lt_inf_tests.csv'</span>, <span class="at">sep=</span><span class="st">''</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>)</span>
-<span id="cb98-32"><a href="#cb98-32" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(lt_ts, <span class="at">digits=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="co"># learning transfer inferences</span></span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>me_transfer <span class="ot">=</span> <span class="fu">with</span>(onset_dat, <span class="fu">t.test</span>(comp_flt, part_flt, </span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">paired=</span><span class="cn">TRUE</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
+<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a>transfer_for_cohens <span class="ot">&lt;-</span> onset_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(sub, comp_flt, part_flt) <span class="sc">%&gt;%</span></span>
+<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb99-6"><a href="#cb99-6" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">pivot_longer</span>(<span class="at">cols=</span><span class="fu">c</span>(<span class="st">'comp_flt'</span>, <span class="st">'part_flt'</span>), <span class="at">names_to=</span><span class="st">'cond'</span>,</span>
+<span id="cb99-7"><a href="#cb99-7" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">values_to=</span><span class="st">'n'</span>) </span>
+<span id="cb99-8"><a href="#cb99-8" aria-hidden="true" tabindex="-1"></a>me_transfer_d <span class="ot">=</span> <span class="fu">cohens_d</span>(<span class="at">data=</span>transfer_for_cohens,</span>
+<span id="cb99-9"><a href="#cb99-9" aria-hidden="true" tabindex="-1"></a>                         <span class="at">formula=</span>n<span class="sc">~</span>cond, <span class="at">paired=</span><span class="cn">TRUE</span>,</span>
+<span id="cb99-10"><a href="#cb99-10" aria-hidden="true" tabindex="-1"></a>                         <span class="at">ci=</span><span class="cn">TRUE</span>, <span class="at">ci.type=</span><span class="st">'perc'</span>, <span class="at">nboot=</span><span class="dv">1000</span>)</span>
+<span id="cb99-11"><a href="#cb99-11" aria-hidden="true" tabindex="-1"></a>grp_bias <span class="ot">=</span> <span class="fu">with</span>(onset_dat, <span class="fu">t.test</span>(k4_flt<span class="sc">~</span>train_type, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
+<span id="cb99-12"><a href="#cb99-12" aria-hidden="true" tabindex="-1"></a>grp_bias_d <span class="ot">=</span> <span class="fu">cohens_d</span>(<span class="at">data=</span>onset_dat <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>(k4_flt),</span>
+<span id="cb99-13"><a href="#cb99-13" aria-hidden="true" tabindex="-1"></a>                      <span class="at">formula=</span>k4_flt<span class="sc">~</span>train_type, <span class="at">paired=</span><span class="cn">FALSE</span>,</span>
+<span id="cb99-14"><a href="#cb99-14" aria-hidden="true" tabindex="-1"></a>                      <span class="at">ci=</span><span class="cn">TRUE</span>, <span class="at">ci.type=</span><span class="st">'perc'</span>, <span class="at">nboot=</span><span class="dv">1000</span>)</span>
+<span id="cb99-15"><a href="#cb99-15" aria-hidden="true" tabindex="-1"></a>r_bias_cor <span class="ot">=</span> <span class="fu">with</span>(onset_dat, <span class="fu">cor.test</span>(k4_flt, log_r_flt, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
+<span id="cb99-16"><a href="#cb99-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-17"><a href="#cb99-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-18"><a href="#cb99-18" aria-hidden="true" tabindex="-1"></a>lt_ts <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">fx =</span> <span class="fu">c</span>(<span class="st">'transfer'</span>, <span class="st">'group-bias'</span>),</span>
+<span id="cb99-19"><a href="#cb99-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">t =</span> <span class="fu">c</span>(me_transfer<span class="sc">$</span>statistic, grp_bias<span class="sc">$</span>statistic),</span>
+<span id="cb99-20"><a href="#cb99-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">df =</span> <span class="fu">c</span>(me_transfer<span class="sc">$</span>parameter, grp_bias<span class="sc">$</span>parameter),</span>
+<span id="cb99-21"><a href="#cb99-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">p =</span> <span class="fu">c</span>(me_transfer<span class="sc">$</span>p.value, grp_bias<span class="sc">$</span>p.value),</span>
+<span id="cb99-22"><a href="#cb99-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">mu_a =</span> <span class="fu">c</span>(me_transfer<span class="sc">$</span>estimate[<span class="dv">1</span>], grp_bias<span class="sc">$</span>estimate[<span class="dv">1</span>]),</span>
+<span id="cb99-23"><a href="#cb99-23" aria-hidden="true" tabindex="-1"></a>                <span class="at">mu_b =</span> <span class="fu">c</span>(me_transfer<span class="sc">$</span>estimate[<span class="dv">2</span>], grp_bias<span class="sc">$</span>estimate[<span class="dv">2</span>]),</span>
+<span id="cb99-24"><a href="#cb99-24" aria-hidden="true" tabindex="-1"></a>                <span class="at">l_fx =</span> <span class="fu">c</span>(me_transfer<span class="sc">$</span>conf.int[<span class="dv">1</span>], grp_bias<span class="sc">$</span>conf.int[<span class="dv">1</span>]),</span>
+<span id="cb99-25"><a href="#cb99-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">u_fx =</span> <span class="fu">c</span>(me_transfer<span class="sc">$</span>conf.int[<span class="dv">2</span>], grp_bias<span class="sc">$</span>conf.int[<span class="dv">2</span>]),</span>
+<span id="cb99-26"><a href="#cb99-26" aria-hidden="true" tabindex="-1"></a>                <span class="at">d =</span> <span class="fu">c</span>(me_transfer_d<span class="sc">$</span>effsize, grp_bias_d<span class="sc">$</span>effsize),</span>
+<span id="cb99-27"><a href="#cb99-27" aria-hidden="true" tabindex="-1"></a>                <span class="at">dl =</span> <span class="fu">c</span>(me_transfer_d<span class="sc">$</span>conf.low, grp_bias_d<span class="sc">$</span>conf.low),</span>
+<span id="cb99-28"><a href="#cb99-28" aria-hidden="true" tabindex="-1"></a>                <span class="at">du =</span> <span class="fu">c</span>(me_transfer_d<span class="sc">$</span>conf.high, grp_bias_d<span class="sc">$</span>conf.high),</span>
+<span id="cb99-29"><a href="#cb99-29" aria-hidden="true" tabindex="-1"></a>                <span class="at">n1 =</span> <span class="fu">c</span>(me_transfer_d<span class="sc">$</span>n1, grp_bias_d<span class="sc">$</span>n1),</span>
+<span id="cb99-30"><a href="#cb99-30" aria-hidden="true" tabindex="-1"></a>                <span class="at">n2 =</span> <span class="fu">c</span>(me_transfer_d<span class="sc">$</span>n2, grp_bias_d<span class="sc">$</span>n2))</span>
+<span id="cb99-31"><a href="#cb99-31" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(lt_ts, <span class="fu">paste</span>(res_path, <span class="st">'lt_inf_tests.csv'</span>, <span class="at">sep=</span><span class="st">''</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>)</span>
+<span id="cb99-32"><a href="#cb99-32" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(lt_ts, <span class="at">digits=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -1837,7 +1839,7 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <td style="text-align: right;">-13.31</td>
 <td style="text-align: right;">-0.71</td>
 <td style="text-align: right;">-0.97</td>
-<td style="text-align: right;">-0.49</td>
+<td style="text-align: right;">-0.50</td>
 <td style="text-align: right;">71</td>
 <td style="text-align: right;">71</td>
 </tr>
@@ -1851,8 +1853,8 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <td style="text-align: right;">0.00</td>
 <td style="text-align: right;">0.13</td>
 <td style="text-align: right;">0.49</td>
-<td style="text-align: right;">0.03</td>
-<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">1.02</td>
 <td style="text-align: right;">33</td>
 <td style="text-align: right;">35</td>
 </tr>
@@ -1864,14 +1866,14 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>lt_r_cor_info <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">r=</span>r_bias_cor<span class="sc">$</span>estimate,</span>
-<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">l=</span>r_bias_cor<span class="sc">$</span>conf.int[<span class="dv">1</span>],</span>
-<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">u=</span>r_bias_cor<span class="sc">$</span>conf.int[<span class="dv">2</span>],</span>
-<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">t=</span>r_bias_cor<span class="sc">$</span>statistic,</span>
-<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">df=</span>r_bias_cor<span class="sc">$</span>parameter,</span>
-<span id="cb99-6"><a href="#cb99-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">p=</span>r_bias_cor<span class="sc">$</span>p.value)</span>
-<span id="cb99-7"><a href="#cb99-7" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(lt_r_cor_info, <span class="fu">paste</span>(res_path, <span class="st">'lt-r_corr.csv'</span>, <span class="at">sep=</span><span class="st">''</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>)</span>
-<span id="cb99-8"><a href="#cb99-8" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(lt_r_cor_info, <span class="at">digits=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>lt_r_cor_info <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">r=</span>r_bias_cor<span class="sc">$</span>estimate,</span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">l=</span>r_bias_cor<span class="sc">$</span>conf.int[<span class="dv">1</span>],</span>
+<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">u=</span>r_bias_cor<span class="sc">$</span>conf.int[<span class="dv">2</span>],</span>
+<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">t=</span>r_bias_cor<span class="sc">$</span>statistic,</span>
+<span id="cb100-5"><a href="#cb100-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">df=</span>r_bias_cor<span class="sc">$</span>parameter,</span>
+<span id="cb100-6"><a href="#cb100-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">p=</span>r_bias_cor<span class="sc">$</span>p.value)</span>
+<span id="cb100-7"><a href="#cb100-7" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(lt_r_cor_info, <span class="fu">paste</span>(res_path, <span class="st">'lt-r_corr.csv'</span>, <span class="at">sep=</span><span class="st">''</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>)</span>
+<span id="cb100-8"><a href="#cb100-8" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(lt_r_cor_info, <span class="at">digits=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -1906,19 +1908,19 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="co"># wrangle data</span></span>
-<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>r_dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste</span>(data_path, <span class="st">'exp_ts_rscore.csv'</span>, <span class="at">sep=</span><span class="st">''</span>))</span>
-<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a>ts_dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste</span>(data_path, <span class="st">'exp_ts_avg.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ses<span class="sc">==</span><span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb100-5"><a href="#cb100-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub, context, <span class="cf">switch</span>, train_type, setting_errors,</span>
-<span id="cb100-6"><a href="#cb100-6" aria-hidden="true" tabindex="-1"></a>         rt_correct, accuracy) <span class="sc">%&gt;%</span> </span>
-<span id="cb100-7"><a href="#cb100-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sub, <span class="cf">switch</span>, train_type) <span class="sc">%&gt;%</span></span>
-<span id="cb100-8"><a href="#cb100-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">se=</span><span class="fu">mean</span>(setting_errors),</span>
-<span id="cb100-9"><a href="#cb100-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">rt=</span><span class="fu">mean</span>(rt_correct),</span>
-<span id="cb100-10"><a href="#cb100-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">acc=</span><span class="fu">mean</span>(accuracy)) <span class="sc">%&gt;%</span></span>
-<span id="cb100-11"><a href="#cb100-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb100-12"><a href="#cb100-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">train_type=</span><span class="fu">recode</span>(train_type, <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'stable'</span>, <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'variable'</span>),</span>
-<span id="cb100-13"><a href="#cb100-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">switch=</span><span class="fu">recode</span>(<span class="cf">switch</span>, <span class="st">`</span><span class="at">0</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'stay'</span>, <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'switch'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="co"># wrangle data</span></span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>r_dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste</span>(data_path, <span class="st">'exp_ts_rscore.csv'</span>, <span class="at">sep=</span><span class="st">''</span>))</span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>ts_dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste</span>(data_path, <span class="st">'exp_ts_avg.csv'</span>, <span class="at">sep=</span><span class="st">''</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ses<span class="sc">==</span><span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub, context, <span class="cf">switch</span>, train_type, setting_errors,</span>
+<span id="cb101-6"><a href="#cb101-6" aria-hidden="true" tabindex="-1"></a>         rt_correct, accuracy) <span class="sc">%&gt;%</span> </span>
+<span id="cb101-7"><a href="#cb101-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sub, <span class="cf">switch</span>, train_type) <span class="sc">%&gt;%</span></span>
+<span id="cb101-8"><a href="#cb101-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">se=</span><span class="fu">mean</span>(setting_errors),</span>
+<span id="cb101-9"><a href="#cb101-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">rt=</span><span class="fu">mean</span>(rt_correct),</span>
+<span id="cb101-10"><a href="#cb101-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">acc=</span><span class="fu">mean</span>(accuracy)) <span class="sc">%&gt;%</span></span>
+<span id="cb101-11"><a href="#cb101-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb101-12"><a href="#cb101-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">train_type=</span><span class="fu">recode</span>(train_type, <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'stable'</span>, <span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'variable'</span>),</span>
+<span id="cb101-13"><a href="#cb101-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">switch=</span><span class="fu">recode</span>(<span class="cf">switch</span>, <span class="st">`</span><span class="at">0</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'stay'</span>, <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="st">'switch'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'sub', 'switch'. You can override using the
@@ -1926,24 +1928,25 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="co"># now I temporarily make a wider format dataframe so I can make the bias scores</span></span>
-<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> ts_dat <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">id_cols=</span><span class="fu">c</span>(sub,train_type),</span>
-<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">names_from=</span><span class="cf">switch</span>,</span>
-<span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">values_from=</span><span class="fu">c</span>(se, rt, acc)) <span class="sc">%&gt;%</span></span>
-<span id="cb102-5"><a href="#cb102-5" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">mutate</span>(<span class="at">se_bias =</span> se_switch<span class="sc">/</span>(se_stay<span class="sc">+</span>se_switch),</span>
-<span id="cb102-6"><a href="#cb102-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">rt_bias =</span> rt_switch<span class="sc">/</span>(rt_stay<span class="sc">+</span>rt_switch),</span>
-<span id="cb102-7"><a href="#cb102-7" aria-hidden="true" tabindex="-1"></a>                         <span class="at">acc_bias =</span> acc_switch<span class="sc">/</span>(acc_stay<span class="sc">+</span>acc_switch))</span>
-<span id="cb102-8"><a href="#cb102-8" aria-hidden="true" tabindex="-1"></a><span class="co"># now join key variables to other dataframe and remove the tmp one</span></span>
-<span id="cb102-9"><a href="#cb102-9" aria-hidden="true" tabindex="-1"></a>ts_dat <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(ts_dat, tmp <span class="sc">%&gt;%</span> <span class="fu">select</span>(sub, se_bias, rt_bias, acc_bias), <span class="at">by=</span><span class="st">'sub'</span>)</span>
-<span id="cb102-10"><a href="#cb102-10" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(tmp)</span>
-<span id="cb102-11"><a href="#cb102-11" aria-hidden="true" tabindex="-1"></a><span class="co"># now join to the r dat and log the r variable</span></span>
-<span id="cb102-12"><a href="#cb102-12" aria-hidden="true" tabindex="-1"></a>ts_dat <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(ts_dat, r_dat, <span class="at">by=</span><span class="st">'sub'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb102-13"><a href="#cb102-13" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">log_r =</span> <span class="fu">log</span>(r))</span>
-<span id="cb102-14"><a href="#cb102-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-15"><a href="#cb102-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Now I have the data, I want to replace any outliers with NA</span></span>
-<span id="cb102-16"><a href="#cb102-16" aria-hidden="true" tabindex="-1"></a>dvs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'se'</span>, <span class="st">'rt'</span>, <span class="st">'acc'</span>, <span class="st">'se_bias'</span>, <span class="st">'rt_bias'</span>, <span class="st">'acc_bias'</span>, <span class="st">'log_r'</span>)</span>
-<span id="cb102-17"><a href="#cb102-17" aria-hidden="true" tabindex="-1"></a>ts_dat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(ts_dat,</span>
-<span id="cb102-18"><a href="#cb102-18" aria-hidden="true" tabindex="-1"></a>                <span class="fu">do.call</span>(cbind, <span class="fu">lapply</span>(dvs, remove_outliers, <span class="at">betas=</span>ts_dat)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co"># now I temporarily make a wider format dataframe so I can make the bias scores</span></span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> ts_dat <span class="sc">%&gt;%</span> <span class="fu">pivot_wider</span>(<span class="at">id_cols=</span><span class="fu">c</span>(sub,train_type),</span>
+<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">names_from=</span><span class="cf">switch</span>,</span>
+<span id="cb103-4"><a href="#cb103-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">values_from=</span><span class="fu">c</span>(se, rt, acc)) <span class="sc">%&gt;%</span></span>
+<span id="cb103-5"><a href="#cb103-5" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">mutate</span>(<span class="at">se_bias =</span> se_switch<span class="sc">/</span>(se_stay<span class="sc">+</span>se_switch),</span>
+<span id="cb103-6"><a href="#cb103-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">rt_bias =</span> rt_switch<span class="sc">/</span>(rt_stay<span class="sc">+</span>rt_switch),</span>
+<span id="cb103-7"><a href="#cb103-7" aria-hidden="true" tabindex="-1"></a>                         <span class="at">acc_bias =</span> acc_switch<span class="sc">/</span>(acc_stay<span class="sc">+</span>acc_switch))</span>
+<span id="cb103-8"><a href="#cb103-8" aria-hidden="true" tabindex="-1"></a><span class="co"># now join key variables to other dataframe and remove the tmp one</span></span>
+<span id="cb103-9"><a href="#cb103-9" aria-hidden="true" tabindex="-1"></a>ts_dat <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(ts_dat, tmp <span class="sc">%&gt;%</span> <span class="fu">select</span>(sub, se_bias, rt_bias, acc_bias), <span class="at">by=</span><span class="st">'sub'</span>)</span>
+<span id="cb103-10"><a href="#cb103-10" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(tmp)</span>
+<span id="cb103-11"><a href="#cb103-11" aria-hidden="true" tabindex="-1"></a><span class="co"># now join to the r dat and log the r variable</span></span>
+<span id="cb103-12"><a href="#cb103-12" aria-hidden="true" tabindex="-1"></a>ts_dat <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(ts_dat, r_dat, <span class="at">by=</span><span class="st">'sub'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb103-13"><a href="#cb103-13" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">log_r =</span> <span class="fu">log</span>(r))</span>
+<span id="cb103-14"><a href="#cb103-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-15"><a href="#cb103-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Now I have the data, I want to replace any outliers with NA</span></span>
+<span id="cb103-16"><a href="#cb103-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that setting errors wound up in a lot of dropped data, so I am not going to use the filtered versions of that variable</span></span>
+<span id="cb103-17"><a href="#cb103-17" aria-hidden="true" tabindex="-1"></a>dvs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'se'</span>, <span class="st">'rt'</span>, <span class="st">'acc'</span>, <span class="st">'se_bias'</span>, <span class="st">'rt_bias'</span>, <span class="st">'acc_bias'</span>, <span class="st">'log_r'</span>)</span>
+<span id="cb103-18"><a href="#cb103-18" aria-hidden="true" tabindex="-1"></a>ts_dat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(ts_dat,</span>
+<span id="cb103-19"><a href="#cb103-19" aria-hidden="true" tabindex="-1"></a>                <span class="fu">do.call</span>(cbind, <span class="fu">lapply</span>(dvs, remove_outliers, <span class="at">betas=</span>ts_dat)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -1996,31 +1999,31 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ts_dat, <span class="fu">paste</span>(data_path, <span class="st">'exp_lt_tswr.csv'</span>, <span class="at">sep=</span><span class="st">''</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ts_dat, <span class="fu">paste</span>(data_path, <span class="st">'exp_lt_tswr.csv'</span>, <span class="at">sep=</span><span class="st">''</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Now I make 3 very similar plots as I did for learning transfer. But I have to do this twice for the task switching data - once for setting errors and once for RT</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co"># setting errors plot</span></span>
-<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>ts_dat_4_plt <span class="ot">&lt;-</span> ts_dat <span class="sc">%&gt;%</span> </span>
-<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub, train_type, <span class="cf">switch</span>, se_flt)</span>
-<span id="cb104-4"><a href="#cb104-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb104-5"><a href="#cb104-5" aria-hidden="true" tabindex="-1"></a>col_scheme <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'#7570b3'</span>, <span class="st">'#e7298a'</span>)</span>
-<span id="cb104-6"><a href="#cb104-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb104-7"><a href="#cb104-7" aria-hidden="true" tabindex="-1"></a>ts_bp_g_se_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'se_by_grp'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb104-8"><a href="#cb104-8" aria-hidden="true" tabindex="-1"></a>ts_bp_wdth <span class="ot">=</span> trn_bp_wdth </span>
-<span id="cb104-9"><a href="#cb104-9" aria-hidden="true" tabindex="-1"></a>ts_bp_hgt <span class="ot">=</span> trn_bp_hgt </span>
-<span id="cb104-10"><a href="#cb104-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plt_ts_bp_4paper_andtlks</span>(ts_bp_g_se_fname,</span>
-<span id="cb104-11"><a href="#cb104-11" aria-hidden="true" tabindex="-1"></a>                         ts_bp_wdth, ts_bp_hgt,</span>
-<span id="cb104-12"><a href="#cb104-12" aria-hidden="true" tabindex="-1"></a>                         ts_dat_4_plt,</span>
-<span id="cb104-13"><a href="#cb104-13" aria-hidden="true" tabindex="-1"></a>                         <span class="st">'se_flt ~ switch + train_type'</span>,</span>
-<span id="cb104-14"><a href="#cb104-14" aria-hidden="true" tabindex="-1"></a>                         col_scheme,</span>
-<span id="cb104-15"><a href="#cb104-15" aria-hidden="true" tabindex="-1"></a>                         <span class="at">ylabel=</span><span class="st">'set errors'</span>,</span>
-<span id="cb104-16"><a href="#cb104-16" aria-hidden="true" tabindex="-1"></a>                         <span class="at">ylims=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.14</span>),</span>
-<span id="cb104-17"><a href="#cb104-17" aria-hidden="true" tabindex="-1"></a>                         <span class="at">yticks=</span><span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">0.14</span>, <span class="at">by =</span> <span class="fl">0.04</span>),</span>
-<span id="cb104-18"><a href="#cb104-18" aria-hidden="true" tabindex="-1"></a>                         <span class="at">fig_lab=</span><span class="st">'A'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="co"># setting errors plot</span></span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>ts_dat_4_plt <span class="ot">&lt;-</span> ts_dat <span class="sc">%&gt;%</span> </span>
+<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub, train_type, <span class="cf">switch</span>, se)</span>
+<span id="cb105-4"><a href="#cb105-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-5"><a href="#cb105-5" aria-hidden="true" tabindex="-1"></a>col_scheme <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'#7570b3'</span>, <span class="st">'#e7298a'</span>)</span>
+<span id="cb105-6"><a href="#cb105-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-7"><a href="#cb105-7" aria-hidden="true" tabindex="-1"></a>ts_bp_g_se_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'se_by_grp'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb105-8"><a href="#cb105-8" aria-hidden="true" tabindex="-1"></a>ts_bp_wdth <span class="ot">=</span> trn_bp_wdth </span>
+<span id="cb105-9"><a href="#cb105-9" aria-hidden="true" tabindex="-1"></a>ts_bp_hgt <span class="ot">=</span> trn_bp_hgt </span>
+<span id="cb105-10"><a href="#cb105-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plt_ts_bp_4paper_andtlks</span>(ts_bp_g_se_fname,</span>
+<span id="cb105-11"><a href="#cb105-11" aria-hidden="true" tabindex="-1"></a>                         ts_bp_wdth, ts_bp_hgt,</span>
+<span id="cb105-12"><a href="#cb105-12" aria-hidden="true" tabindex="-1"></a>                         ts_dat_4_plt,</span>
+<span id="cb105-13"><a href="#cb105-13" aria-hidden="true" tabindex="-1"></a>                         <span class="st">'se ~ switch + train_type'</span>,</span>
+<span id="cb105-14"><a href="#cb105-14" aria-hidden="true" tabindex="-1"></a>                         col_scheme,</span>
+<span id="cb105-15"><a href="#cb105-15" aria-hidden="true" tabindex="-1"></a>                         <span class="at">ylabel=</span><span class="st">'set errors'</span>,</span>
+<span id="cb105-16"><a href="#cb105-16" aria-hidden="true" tabindex="-1"></a>                         <span class="at">ylims=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.2</span>), <span class="co"># sort axes</span></span>
+<span id="cb105-17"><a href="#cb105-17" aria-hidden="true" tabindex="-1"></a>                         <span class="at">yticks=</span><span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">0.2</span>, <span class="at">by =</span> <span class="fl">0.04</span>),</span>
+<span id="cb105-18"><a href="#cb105-18" aria-hidden="true" tabindex="-1"></a>                         <span class="at">fig_lab=</span><span class="st">'A'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>png 
@@ -2037,23 +2040,23 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="co"># setting errors plot</span></span>
-<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>ts_dat_4_plt <span class="ot">&lt;-</span> ts_dat <span class="sc">%&gt;%</span> </span>
-<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub, train_type, <span class="cf">switch</span>, rt_flt)</span>
-<span id="cb106-4"><a href="#cb106-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb106-5"><a href="#cb106-5" aria-hidden="true" tabindex="-1"></a>col_scheme <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'#7570b3'</span>, <span class="st">'#e7298a'</span>)</span>
-<span id="cb106-6"><a href="#cb106-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb106-7"><a href="#cb106-7" aria-hidden="true" tabindex="-1"></a>ts_bp_g_rt_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'rt_by_grp'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb106-8"><a href="#cb106-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb106-9"><a href="#cb106-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plt_ts_bp_4paper_andtlks</span>(ts_bp_g_rt_fname,</span>
-<span id="cb106-10"><a href="#cb106-10" aria-hidden="true" tabindex="-1"></a>                         ts_bp_wdth, ts_bp_hgt,</span>
-<span id="cb106-11"><a href="#cb106-11" aria-hidden="true" tabindex="-1"></a>                         ts_dat_4_plt,</span>
-<span id="cb106-12"><a href="#cb106-12" aria-hidden="true" tabindex="-1"></a>                         <span class="st">'rt_flt ~ switch + train_type'</span>,</span>
-<span id="cb106-13"><a href="#cb106-13" aria-hidden="true" tabindex="-1"></a>                         col_scheme,</span>
-<span id="cb106-14"><a href="#cb106-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">ylabel=</span><span class="st">'RT'</span>,</span>
-<span id="cb106-15"><a href="#cb106-15" aria-hidden="true" tabindex="-1"></a>                         <span class="at">ylims=</span><span class="fu">c</span>(<span class="fl">0.4</span>, <span class="fl">1.8</span>),</span>
-<span id="cb106-16"><a href="#cb106-16" aria-hidden="true" tabindex="-1"></a>                         <span class="at">yticks=</span><span class="fu">seq</span>(<span class="fl">0.4</span>, <span class="fl">1.8</span>, <span class="at">by =</span> <span class="fl">0.4</span>),</span>
-<span id="cb106-17"><a href="#cb106-17" aria-hidden="true" tabindex="-1"></a>                         <span class="at">fig_lab=</span><span class="st">'A'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="co"># setting errors plot</span></span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>ts_dat_4_plt <span class="ot">&lt;-</span> ts_dat <span class="sc">%&gt;%</span> </span>
+<span id="cb107-3"><a href="#cb107-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(sub, train_type, <span class="cf">switch</span>, rt_flt)</span>
+<span id="cb107-4"><a href="#cb107-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-5"><a href="#cb107-5" aria-hidden="true" tabindex="-1"></a>col_scheme <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'#7570b3'</span>, <span class="st">'#e7298a'</span>)</span>
+<span id="cb107-6"><a href="#cb107-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-7"><a href="#cb107-7" aria-hidden="true" tabindex="-1"></a>ts_bp_g_rt_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'rt_by_grp'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb107-8"><a href="#cb107-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-9"><a href="#cb107-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plt_ts_bp_4paper_andtlks</span>(ts_bp_g_rt_fname,</span>
+<span id="cb107-10"><a href="#cb107-10" aria-hidden="true" tabindex="-1"></a>                         ts_bp_wdth, ts_bp_hgt,</span>
+<span id="cb107-11"><a href="#cb107-11" aria-hidden="true" tabindex="-1"></a>                         ts_dat_4_plt,</span>
+<span id="cb107-12"><a href="#cb107-12" aria-hidden="true" tabindex="-1"></a>                         <span class="st">'rt_flt ~ switch + train_type'</span>,</span>
+<span id="cb107-13"><a href="#cb107-13" aria-hidden="true" tabindex="-1"></a>                         col_scheme,</span>
+<span id="cb107-14"><a href="#cb107-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">ylabel=</span><span class="st">'RT'</span>,</span>
+<span id="cb107-15"><a href="#cb107-15" aria-hidden="true" tabindex="-1"></a>                         <span class="at">ylims=</span><span class="fu">c</span>(<span class="fl">0.4</span>, <span class="fl">1.8</span>),</span>
+<span id="cb107-16"><a href="#cb107-16" aria-hidden="true" tabindex="-1"></a>                         <span class="at">yticks=</span><span class="fu">seq</span>(<span class="fl">0.4</span>, <span class="fl">1.8</span>, <span class="at">by =</span> <span class="fl">0.4</span>),</span>
+<span id="cb107-17"><a href="#cb107-17" aria-hidden="true" tabindex="-1"></a>                         <span class="at">fig_lab=</span><span class="st">'A'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>png 
@@ -2070,24 +2073,24 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>bias_se <span class="ot">&lt;-</span> ts_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(sub, train_type, se_bias_flt) <span class="sc">%&gt;%</span></span>
-<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>               <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span> <span class="fu">unique</span>()</span>
-<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>col_scheme <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'#1b9e77'</span>,<span class="st">'#d95f02'</span>)</span>
-<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a>this_form <span class="ot">=</span> <span class="st">'se_bias_flt ~ train_type'</span></span>
-<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a>ylabel <span class="ot">=</span> <span class="st">'switch se bias'</span></span>
-<span id="cb108-6"><a href="#cb108-6" aria-hidden="true" tabindex="-1"></a>fig_lab <span class="ot">=</span> <span class="st">'B'</span></span>
-<span id="cb108-7"><a href="#cb108-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb108-8"><a href="#cb108-8" aria-hidden="true" tabindex="-1"></a>bs_wdth <span class="ot">=</span> ts_bp_wdth<span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb108-9"><a href="#cb108-9" aria-hidden="true" tabindex="-1"></a>bs_hgt <span class="ot">=</span> ts_bp_hgt</span>
-<span id="cb108-10"><a href="#cb108-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb108-11"><a href="#cb108-11" aria-hidden="true" tabindex="-1"></a>se_bias_by_grp_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'exp_ts_se-bias-by-grp'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb108-12"><a href="#cb108-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plt_bias_by_grp_4paper_andtlks</span>(se_bias_by_grp_fname,</span>
-<span id="cb108-13"><a href="#cb108-13" aria-hidden="true" tabindex="-1"></a>                               bs_wdth, bs_hgt,</span>
-<span id="cb108-14"><a href="#cb108-14" aria-hidden="true" tabindex="-1"></a>                               bias_se,</span>
-<span id="cb108-15"><a href="#cb108-15" aria-hidden="true" tabindex="-1"></a>                               this_form,</span>
-<span id="cb108-16"><a href="#cb108-16" aria-hidden="true" tabindex="-1"></a>                               col_scheme,</span>
-<span id="cb108-17"><a href="#cb108-17" aria-hidden="true" tabindex="-1"></a>                               ylabel,</span>
-<span id="cb108-18"><a href="#cb108-18" aria-hidden="true" tabindex="-1"></a>                               fig_lab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>bias_se <span class="ot">&lt;-</span> ts_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(sub, train_type, se_bias) <span class="sc">%&gt;%</span></span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>               <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span> <span class="fu">unique</span>()</span>
+<span id="cb109-3"><a href="#cb109-3" aria-hidden="true" tabindex="-1"></a>col_scheme <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'#1b9e77'</span>,<span class="st">'#d95f02'</span>)</span>
+<span id="cb109-4"><a href="#cb109-4" aria-hidden="true" tabindex="-1"></a>this_form <span class="ot">=</span> <span class="st">'se_bias ~ train_type'</span></span>
+<span id="cb109-5"><a href="#cb109-5" aria-hidden="true" tabindex="-1"></a>ylabel <span class="ot">=</span> <span class="st">'switch se bias'</span></span>
+<span id="cb109-6"><a href="#cb109-6" aria-hidden="true" tabindex="-1"></a>fig_lab <span class="ot">=</span> <span class="st">'B'</span></span>
+<span id="cb109-7"><a href="#cb109-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb109-8"><a href="#cb109-8" aria-hidden="true" tabindex="-1"></a>bs_wdth <span class="ot">=</span> ts_bp_wdth<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb109-9"><a href="#cb109-9" aria-hidden="true" tabindex="-1"></a>bs_hgt <span class="ot">=</span> ts_bp_hgt</span>
+<span id="cb109-10"><a href="#cb109-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb109-11"><a href="#cb109-11" aria-hidden="true" tabindex="-1"></a>se_bias_by_grp_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'exp_ts_se-bias-by-grp'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb109-12"><a href="#cb109-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plt_bias_by_grp_4paper_andtlks</span>(se_bias_by_grp_fname,</span>
+<span id="cb109-13"><a href="#cb109-13" aria-hidden="true" tabindex="-1"></a>                               bs_wdth, bs_hgt,</span>
+<span id="cb109-14"><a href="#cb109-14" aria-hidden="true" tabindex="-1"></a>                               bias_se,</span>
+<span id="cb109-15"><a href="#cb109-15" aria-hidden="true" tabindex="-1"></a>                               this_form,</span>
+<span id="cb109-16"><a href="#cb109-16" aria-hidden="true" tabindex="-1"></a>                               col_scheme,</span>
+<span id="cb109-17"><a href="#cb109-17" aria-hidden="true" tabindex="-1"></a>                               ylabel,</span>
+<span id="cb109-18"><a href="#cb109-18" aria-hidden="true" tabindex="-1"></a>                               fig_lab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>png 
@@ -2104,15 +2107,15 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>bias_se <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(bias_se, </span>
-<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>                      ts_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(sub, log_r_flt), <span class="at">by=</span><span class="st">'sub'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a>            <span class="fu">unique</span>()</span>
-<span id="cb110-4"><a href="#cb110-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb110-5"><a href="#cb110-5" aria-hidden="true" tabindex="-1"></a>se_bias_corr_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'ts-se-bias_r_corr'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb110-6"><a href="#cb110-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plt_r_se_bias_cor_4paper_andtlks</span>(se_bias_corr_fname,</span>
-<span id="cb110-7"><a href="#cb110-7" aria-hidden="true" tabindex="-1"></a>                                 bs_wdth, bs_hgt,</span>
-<span id="cb110-8"><a href="#cb110-8" aria-hidden="true" tabindex="-1"></a>                                 bias_se,</span>
-<span id="cb110-9"><a href="#cb110-9" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'C'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>bias_se <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(bias_se, </span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>                      ts_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(sub, log_r_flt), <span class="at">by=</span><span class="st">'sub'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>            <span class="fu">unique</span>()</span>
+<span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-5"><a href="#cb111-5" aria-hidden="true" tabindex="-1"></a>se_bias_corr_fname <span class="ot">=</span> <span class="fu">paste</span>(fig_path, <span class="st">'ts-se-bias_r_corr'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb111-6"><a href="#cb111-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plt_r_se_bias_cor_4paper_andtlks</span>(se_bias_corr_fname,</span>
+<span id="cb111-7"><a href="#cb111-7" aria-hidden="true" tabindex="-1"></a>                                 bs_wdth, bs_hgt,</span>
+<span id="cb111-8"><a href="#cb111-8" aria-hidden="true" tabindex="-1"></a>                                 bias_se,</span>
+<span id="cb111-9"><a href="#cb111-9" aria-hidden="true" tabindex="-1"></a>                                <span class="st">'C'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>png 
@@ -2123,17 +2126,17 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>fnms <span class="ot">=</span> <span class="fu">c</span>(ts_bp_g_se_fname, se_bias_by_grp_fname, se_bias_corr_fname)</span>
-<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a>ims <span class="ot">=</span> <span class="fu">lapply</span>(fnms, <span class="cf">function</span>(x) <span class="fu">image_read_pdf</span>(<span class="fu">paste</span>(x, <span class="st">'.pdf'</span>, <span class="at">sep=</span><span class="st">''</span>)))</span>
-<span id="cb112-4"><a href="#cb112-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb112-5"><a href="#cb112-5" aria-hidden="true" tabindex="-1"></a>bottom <span class="ot">&lt;-</span> <span class="fu">image_append</span>(<span class="fu">c</span>(ims[[<span class="dv">2</span>]],ims[[<span class="dv">3</span>]]))</span>
-<span id="cb112-6"><a href="#cb112-6" aria-hidden="true" tabindex="-1"></a>multi <span class="ot">&lt;-</span> <span class="fu">image_append</span>(<span class="fu">c</span>(ims[[<span class="dv">1</span>]], bottom), <span class="at">stack=</span><span class="cn">TRUE</span>)</span>
-<span id="cb112-7"><a href="#cb112-7" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="fu">paste</span>(fig_path, <span class="st">'TS_results.pdf'</span>, <span class="at">sep=</span><span class="st">''</span>), </span>
-<span id="cb112-8"><a href="#cb112-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">width=</span>trn_bp_wdth,</span>
-<span id="cb112-9"><a href="#cb112-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">height=</span>bs_hgt<span class="sc">*</span><span class="dv">2</span>)</span>
-<span id="cb112-10"><a href="#cb112-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(multi)</span>
-<span id="cb112-11"><a href="#cb112-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>fnms <span class="ot">=</span> <span class="fu">c</span>(ts_bp_g_se_fname, se_bias_by_grp_fname, se_bias_corr_fname)</span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a>ims <span class="ot">=</span> <span class="fu">lapply</span>(fnms, <span class="cf">function</span>(x) <span class="fu">image_read_pdf</span>(<span class="fu">paste</span>(x, <span class="st">'.pdf'</span>, <span class="at">sep=</span><span class="st">''</span>)))</span>
+<span id="cb113-4"><a href="#cb113-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb113-5"><a href="#cb113-5" aria-hidden="true" tabindex="-1"></a>bottom <span class="ot">&lt;-</span> <span class="fu">image_append</span>(<span class="fu">c</span>(ims[[<span class="dv">2</span>]],ims[[<span class="dv">3</span>]]))</span>
+<span id="cb113-6"><a href="#cb113-6" aria-hidden="true" tabindex="-1"></a>multi <span class="ot">&lt;-</span> <span class="fu">image_append</span>(<span class="fu">c</span>(ims[[<span class="dv">1</span>]], bottom), <span class="at">stack=</span><span class="cn">TRUE</span>)</span>
+<span id="cb113-7"><a href="#cb113-7" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="fu">paste</span>(fig_path, <span class="st">'TS_results.pdf'</span>, <span class="at">sep=</span><span class="st">''</span>), </span>
+<span id="cb113-8"><a href="#cb113-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">width=</span>trn_bp_wdth,</span>
+<span id="cb113-9"><a href="#cb113-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">height=</span>bs_hgt<span class="sc">*</span><span class="dv">2</span>)</span>
+<span id="cb113-10"><a href="#cb113-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(multi)</span>
+<span id="cb113-11"><a href="#cb113-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>png 
@@ -2144,65 +2147,71 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="co"># learning transfer inferences</span></span>
-<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a><span class="co"># first get the switch setting errors to compare between</span></span>
-<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a>sw4t_dat <span class="ot">&lt;-</span> ts_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(sub, train_type, <span class="cf">switch</span>, se_flt) <span class="sc">%&gt;%</span></span>
-<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from=</span><span class="cf">switch</span>, <span class="at">values_from =</span> se_flt) <span class="sc">%&gt;%</span></span>
-<span id="cb114-5"><a href="#cb114-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span>
-<span id="cb114-6"><a href="#cb114-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb114-7"><a href="#cb114-7" aria-hidden="true" tabindex="-1"></a>switch_t <span class="ot">=</span> <span class="fu">with</span>(sw4t_dat, </span>
-<span id="cb114-8"><a href="#cb114-8" aria-hidden="true" tabindex="-1"></a>                <span class="fu">t.test</span>(<span class="at">x=</span>stay, <span class="at">y=</span><span class="cf">switch</span>, <span class="at">paired=</span><span class="cn">TRUE</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
-<span id="cb114-9"><a href="#cb114-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb114-10"><a href="#cb114-10" aria-hidden="true" tabindex="-1"></a>switch_for_cohens <span class="ot">&lt;-</span> sw4t_dat <span class="sc">%&gt;%</span> </span>
-<span id="cb114-11"><a href="#cb114-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols=</span><span class="fu">c</span>(<span class="st">'stay'</span>, <span class="st">'switch'</span>), </span>
-<span id="cb114-12"><a href="#cb114-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to=</span><span class="st">'cond'</span>,</span>
-<span id="cb114-13"><a href="#cb114-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to=</span><span class="st">'n'</span>) </span>
-<span id="cb114-14"><a href="#cb114-14" aria-hidden="true" tabindex="-1"></a>switch_d <span class="ot">=</span> <span class="fu">cohens_d</span>(<span class="at">data=</span>switch_for_cohens,</span>
-<span id="cb114-15"><a href="#cb114-15" aria-hidden="true" tabindex="-1"></a>                         <span class="at">formula=</span>n<span class="sc">~</span>cond, <span class="at">paired=</span><span class="cn">TRUE</span>,</span>
-<span id="cb114-16"><a href="#cb114-16" aria-hidden="true" tabindex="-1"></a>                         <span class="at">ci=</span><span class="cn">TRUE</span>, <span class="at">ci.type=</span><span class="st">'perc'</span>, <span class="at">nboot=</span><span class="dv">1000</span>)</span>
-<span id="cb114-17"><a href="#cb114-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb114-18"><a href="#cb114-18" aria-hidden="true" tabindex="-1"></a><span class="co"># now compare the groups for setting error bias</span></span>
-<span id="cb114-19"><a href="#cb114-19" aria-hidden="true" tabindex="-1"></a>grp_bias <span class="ot">=</span> <span class="fu">with</span>(bias_se, <span class="fu">t.test</span>(se_bias_flt<span class="sc">~</span>train_type, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
-<span id="cb114-20"><a href="#cb114-20" aria-hidden="true" tabindex="-1"></a>grp_bias_d <span class="ot">=</span> <span class="fu">cohens_d</span>(<span class="at">data=</span>bias_se,</span>
-<span id="cb114-21"><a href="#cb114-21" aria-hidden="true" tabindex="-1"></a>                      <span class="at">formula=</span>se_bias_flt<span class="sc">~</span>train_type, <span class="at">paired=</span><span class="cn">FALSE</span>,</span>
-<span id="cb114-22"><a href="#cb114-22" aria-hidden="true" tabindex="-1"></a>                      <span class="at">ci=</span><span class="cn">TRUE</span>, <span class="at">ci.type=</span><span class="st">'perc'</span>, <span class="at">nboot=</span><span class="dv">1000</span>)</span>
-<span id="cb114-23"><a href="#cb114-23" aria-hidden="true" tabindex="-1"></a><span class="co"># now compute the correlation</span></span>
-<span id="cb114-24"><a href="#cb114-24" aria-hidden="true" tabindex="-1"></a>r_se_bias_cor <span class="ot">=</span> <span class="fu">with</span>(bias_se, </span>
-<span id="cb114-25"><a href="#cb114-25" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">cor.test</span>(se_bias_flt, log_r_flt, </span>
-<span id="cb114-26"><a href="#cb114-26" aria-hidden="true" tabindex="-1"></a>                           <span class="at">method=</span><span class="st">'spearman'</span>))</span>
-<span id="cb114-27"><a href="#cb114-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb114-28"><a href="#cb114-28" aria-hidden="true" tabindex="-1"></a>ts_ts <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">fx =</span> <span class="fu">c</span>(<span class="st">'sw'</span>, <span class="st">'group-bias'</span>),</span>
-<span id="cb114-29"><a href="#cb114-29" aria-hidden="true" tabindex="-1"></a>                <span class="at">t =</span> <span class="fu">c</span>(switch_t<span class="sc">$</span>statistic, grp_bias<span class="sc">$</span>statistic),</span>
-<span id="cb114-30"><a href="#cb114-30" aria-hidden="true" tabindex="-1"></a>                <span class="at">df =</span> <span class="fu">c</span>(switch_t<span class="sc">$</span>parameter, grp_bias<span class="sc">$</span>parameter),</span>
-<span id="cb114-31"><a href="#cb114-31" aria-hidden="true" tabindex="-1"></a>                <span class="at">p =</span> <span class="fu">c</span>(switch_t<span class="sc">$</span>p.value, grp_bias<span class="sc">$</span>p.value),</span>
-<span id="cb114-32"><a href="#cb114-32" aria-hidden="true" tabindex="-1"></a>                <span class="at">mu_a =</span> <span class="fu">c</span>(switch_t<span class="sc">$</span>estimate[<span class="dv">1</span>], grp_bias<span class="sc">$</span>estimate[<span class="dv">1</span>]),</span>
-<span id="cb114-33"><a href="#cb114-33" aria-hidden="true" tabindex="-1"></a>                <span class="at">mu_b =</span> <span class="fu">c</span>(switch_t<span class="sc">$</span>estimate[<span class="dv">2</span>], grp_bias<span class="sc">$</span>estimate[<span class="dv">2</span>]),</span>
-<span id="cb114-34"><a href="#cb114-34" aria-hidden="true" tabindex="-1"></a>                <span class="at">l_fx =</span> <span class="fu">c</span>(switch_t<span class="sc">$</span>conf.int[<span class="dv">1</span>], grp_bias<span class="sc">$</span>conf.int[<span class="dv">1</span>]),</span>
-<span id="cb114-35"><a href="#cb114-35" aria-hidden="true" tabindex="-1"></a>                <span class="at">u_fx =</span> <span class="fu">c</span>(switch_t<span class="sc">$</span>conf.int[<span class="dv">2</span>], grp_bias<span class="sc">$</span>conf.int[<span class="dv">2</span>]),</span>
-<span id="cb114-36"><a href="#cb114-36" aria-hidden="true" tabindex="-1"></a>                <span class="at">d =</span> <span class="fu">c</span>(switch_d<span class="sc">$</span>effsize, grp_bias_d<span class="sc">$</span>effsize),</span>
-<span id="cb114-37"><a href="#cb114-37" aria-hidden="true" tabindex="-1"></a>                <span class="at">dl =</span> <span class="fu">c</span>(switch_d<span class="sc">$</span>conf.low, grp_bias_d<span class="sc">$</span>conf.low),</span>
-<span id="cb114-38"><a href="#cb114-38" aria-hidden="true" tabindex="-1"></a>                <span class="at">du =</span> <span class="fu">c</span>(switch_d<span class="sc">$</span>conf.high, grp_bias_d<span class="sc">$</span>conf.high),</span>
-<span id="cb114-39"><a href="#cb114-39" aria-hidden="true" tabindex="-1"></a>                <span class="at">n1 =</span> <span class="fu">c</span>(switch_d<span class="sc">$</span>n1, grp_bias_d<span class="sc">$</span>n1),</span>
-<span id="cb114-40"><a href="#cb114-40" aria-hidden="true" tabindex="-1"></a>                <span class="at">n2 =</span> <span class="fu">c</span>(switch_d<span class="sc">$</span>n2, grp_bias_d<span class="sc">$</span>n2))</span>
-<span id="cb114-41"><a href="#cb114-41" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ts_ts, <span class="fu">paste</span>(res_path, <span class="st">'ts-se_inf_tests.csv'</span>, <span class="at">sep=</span><span class="st">''</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>)</span>
-<span id="cb114-42"><a href="#cb114-42" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(ts_ts, <span class="at">digits=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="co"># learning transfer inferences</span></span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a><span class="co"># first get the switch setting errors to compare between</span></span>
+<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a>sw4t_dat <span class="ot">&lt;-</span> ts_dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(sub, train_type, <span class="cf">switch</span>, se) <span class="sc">%&gt;%</span></span>
+<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from=</span><span class="cf">switch</span>, <span class="at">values_from =</span> se) <span class="sc">%&gt;%</span></span>
+<span id="cb115-5"><a href="#cb115-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span>
+<span id="cb115-6"><a href="#cb115-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-7"><a href="#cb115-7" aria-hidden="true" tabindex="-1"></a>switch_t <span class="ot">=</span> <span class="fu">with</span>(sw4t_dat, </span>
+<span id="cb115-8"><a href="#cb115-8" aria-hidden="true" tabindex="-1"></a>                <span class="fu">t.test</span>(<span class="at">x=</span>stay, <span class="at">y=</span><span class="cf">switch</span>, <span class="at">paired=</span><span class="cn">TRUE</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
+<span id="cb115-9"><a href="#cb115-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-10"><a href="#cb115-10" aria-hidden="true" tabindex="-1"></a>switch_for_cohens <span class="ot">&lt;-</span> sw4t_dat <span class="sc">%&gt;%</span> </span>
+<span id="cb115-11"><a href="#cb115-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols=</span><span class="fu">c</span>(<span class="st">'stay'</span>, <span class="st">'switch'</span>), </span>
+<span id="cb115-12"><a href="#cb115-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to=</span><span class="st">'cond'</span>,</span>
+<span id="cb115-13"><a href="#cb115-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to=</span><span class="st">'n'</span>) </span>
+<span id="cb115-14"><a href="#cb115-14" aria-hidden="true" tabindex="-1"></a>switch_d <span class="ot">=</span> <span class="fu">cohens_d</span>(<span class="at">data=</span>switch_for_cohens,</span>
+<span id="cb115-15"><a href="#cb115-15" aria-hidden="true" tabindex="-1"></a>                         <span class="at">formula=</span>n<span class="sc">~</span>cond, <span class="at">paired=</span><span class="cn">TRUE</span>,</span>
+<span id="cb115-16"><a href="#cb115-16" aria-hidden="true" tabindex="-1"></a>                         <span class="at">ci=</span><span class="cn">TRUE</span>, <span class="at">ci.type=</span><span class="st">'perc'</span>, <span class="at">nboot=</span><span class="dv">1000</span>)</span>
+<span id="cb115-17"><a href="#cb115-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-18"><a href="#cb115-18" aria-hidden="true" tabindex="-1"></a><span class="co"># now compare the groups for setting error bias</span></span>
+<span id="cb115-19"><a href="#cb115-19" aria-hidden="true" tabindex="-1"></a>grp_bias <span class="ot">=</span> <span class="fu">with</span>(bias_se, <span class="fu">t.test</span>(se_bias<span class="sc">~</span>train_type, <span class="at">na.rm=</span><span class="cn">TRUE</span>))</span>
+<span id="cb115-20"><a href="#cb115-20" aria-hidden="true" tabindex="-1"></a>grp_bias_d <span class="ot">=</span> <span class="fu">cohens_d</span>(<span class="at">data=</span>bias_se,</span>
+<span id="cb115-21"><a href="#cb115-21" aria-hidden="true" tabindex="-1"></a>                      <span class="at">formula=</span>se_bias<span class="sc">~</span>train_type, <span class="at">paired=</span><span class="cn">FALSE</span>,</span>
+<span id="cb115-22"><a href="#cb115-22" aria-hidden="true" tabindex="-1"></a>                      <span class="at">ci=</span><span class="cn">TRUE</span>, <span class="at">ci.type=</span><span class="st">'perc'</span>, <span class="at">nboot=</span><span class="dv">1000</span>)</span>
+<span id="cb115-23"><a href="#cb115-23" aria-hidden="true" tabindex="-1"></a><span class="co"># now compute the correlation</span></span>
+<span id="cb115-24"><a href="#cb115-24" aria-hidden="true" tabindex="-1"></a>r_se_bias_cor <span class="ot">=</span> <span class="fu">with</span>(bias_se, </span>
+<span id="cb115-25"><a href="#cb115-25" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">cor.test</span>(se_bias, log_r_flt, </span>
+<span id="cb115-26"><a href="#cb115-26" aria-hidden="true" tabindex="-1"></a>                           <span class="at">method=</span><span class="st">'spearman'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in cor.test.default(se_bias, log_r_flt, method = "spearman"): Cannot
+compute exact p-value with ties</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>ts_ts <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">fx =</span> <span class="fu">c</span>(<span class="st">'sw'</span>, <span class="st">'group-bias'</span>),</span>
+<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">t =</span> <span class="fu">c</span>(switch_t<span class="sc">$</span>statistic, grp_bias<span class="sc">$</span>statistic),</span>
+<span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">df =</span> <span class="fu">c</span>(switch_t<span class="sc">$</span>parameter, grp_bias<span class="sc">$</span>parameter),</span>
+<span id="cb117-4"><a href="#cb117-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">p =</span> <span class="fu">c</span>(switch_t<span class="sc">$</span>p.value, grp_bias<span class="sc">$</span>p.value),</span>
+<span id="cb117-5"><a href="#cb117-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">mu_a =</span> <span class="fu">c</span>(switch_t<span class="sc">$</span>estimate[<span class="dv">1</span>], grp_bias<span class="sc">$</span>estimate[<span class="dv">1</span>]),</span>
+<span id="cb117-6"><a href="#cb117-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">mu_b =</span> <span class="fu">c</span>(switch_t<span class="sc">$</span>estimate[<span class="dv">2</span>], grp_bias<span class="sc">$</span>estimate[<span class="dv">2</span>]),</span>
+<span id="cb117-7"><a href="#cb117-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">l_fx =</span> <span class="fu">c</span>(switch_t<span class="sc">$</span>conf.int[<span class="dv">1</span>], grp_bias<span class="sc">$</span>conf.int[<span class="dv">1</span>]),</span>
+<span id="cb117-8"><a href="#cb117-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">u_fx =</span> <span class="fu">c</span>(switch_t<span class="sc">$</span>conf.int[<span class="dv">2</span>], grp_bias<span class="sc">$</span>conf.int[<span class="dv">2</span>]),</span>
+<span id="cb117-9"><a href="#cb117-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">d =</span> <span class="fu">c</span>(switch_d<span class="sc">$</span>effsize, grp_bias_d<span class="sc">$</span>effsize),</span>
+<span id="cb117-10"><a href="#cb117-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">dl =</span> <span class="fu">c</span>(switch_d<span class="sc">$</span>conf.low, grp_bias_d<span class="sc">$</span>conf.low),</span>
+<span id="cb117-11"><a href="#cb117-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">du =</span> <span class="fu">c</span>(switch_d<span class="sc">$</span>conf.high, grp_bias_d<span class="sc">$</span>conf.high),</span>
+<span id="cb117-12"><a href="#cb117-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">n1 =</span> <span class="fu">c</span>(switch_d<span class="sc">$</span>n1, grp_bias_d<span class="sc">$</span>n1),</span>
+<span id="cb117-13"><a href="#cb117-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">n2 =</span> <span class="fu">c</span>(switch_d<span class="sc">$</span>n2, grp_bias_d<span class="sc">$</span>n2))</span>
+<span id="cb117-14"><a href="#cb117-14" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ts_ts, <span class="fu">paste</span>(res_path, <span class="st">'ts-se_inf_tests.csv'</span>, <span class="at">sep=</span><span class="st">''</span>), <span class="at">row.names=</span><span class="cn">FALSE</span>)</span>
+<span id="cb117-15"><a href="#cb117-15" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(ts_ts, <span class="at">digits=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 14%">
-<col style="width: 8%">
-<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 5%">
+<col style="width: 7%">
 <col style="width: 6%">
-<col style="width: 8%">
-<col style="width: 6%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 8%">
-<col style="width: 4%">
-<col style="width: 4%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 5%">
+<col style="width: 5%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -2224,33 +2233,33 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">sw</td>
-<td style="text-align: right;">-8.57</td>
-<td style="text-align: right;">56.00</td>
-<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">-8.24</td>
+<td style="text-align: right;">99.00</td>
+<td style="text-align: right;">0.0</td>
 <td style="text-align: right;">-0.03</td>
 <td style="text-align: right;">NA</td>
-<td style="text-align: right;">-0.04</td>
 <td style="text-align: right;">-0.03</td>
-<td style="text-align: right;">-1.14</td>
-<td style="text-align: right;">-1.45</td>
-<td style="text-align: right;">-0.92</td>
-<td style="text-align: right;">57</td>
-<td style="text-align: right;">57</td>
+<td style="text-align: right;">-0.02</td>
+<td style="text-align: right;">-0.82</td>
+<td style="text-align: right;">-1.15</td>
+<td style="text-align: right;">-0.58</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">group-bias</td>
-<td style="text-align: right;">1.77</td>
-<td style="text-align: right;">65.16</td>
-<td style="text-align: right;">0.08</td>
-<td style="text-align: right;">0.75</td>
-<td style="text-align: right;">0.68</td>
+<td style="text-align: right;">1.66</td>
+<td style="text-align: right;">95.02</td>
+<td style="text-align: right;">0.1</td>
+<td style="text-align: right;">0.81</td>
+<td style="text-align: right;">0.74</td>
 <td style="text-align: right;">-0.01</td>
-<td style="text-align: right;">0.14</td>
-<td style="text-align: right;">0.42</td>
-<td style="text-align: right;">-0.04</td>
-<td style="text-align: right;">0.94</td>
-<td style="text-align: right;">31</td>
-<td style="text-align: right;">39</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.34</td>
+<td style="text-align: right;">-0.07</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">48</td>
 </tr>
 </tbody>
 </table>
@@ -2260,14 +2269,14 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a>ts_se_r_cor_info <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">r=</span>r_se_bias_cor<span class="sc">$</span>estimate,</span>
-<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">S=</span>r_se_bias_cor<span class="sc">$</span>statistic,</span>
-<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">df=</span><span class="fu">nrow</span>(bias_se)<span class="sc">-</span><span class="dv">2</span>,</span>
-<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">p=</span>r_se_bias_cor<span class="sc">$</span>p.value)</span>
-<span id="cb115-5"><a href="#cb115-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ts_se_r_cor_info, </span>
-<span id="cb115-6"><a href="#cb115-6" aria-hidden="true" tabindex="-1"></a>          <span class="fu">paste</span>(res_path, <span class="st">'ts_se-r_corr.csv'</span>, <span class="at">sep=</span><span class="st">''</span>),</span>
-<span id="cb115-7"><a href="#cb115-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">row.names=</span><span class="cn">FALSE</span>)</span>
-<span id="cb115-8"><a href="#cb115-8" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(ts_se_r_cor_info, <span class="at">digits=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a>ts_se_r_cor_info <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">r=</span>r_se_bias_cor<span class="sc">$</span>estimate,</span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">S=</span>r_se_bias_cor<span class="sc">$</span>statistic,</span>
+<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">df=</span><span class="fu">nrow</span>(bias_se)<span class="sc">-</span><span class="dv">2</span>,</span>
+<span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">p=</span>r_se_bias_cor<span class="sc">$</span>p.value)</span>
+<span id="cb118-5"><a href="#cb118-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ts_se_r_cor_info, </span>
+<span id="cb118-6"><a href="#cb118-6" aria-hidden="true" tabindex="-1"></a>          <span class="fu">paste</span>(res_path, <span class="st">'ts_se-r_corr.csv'</span>, <span class="at">sep=</span><span class="st">''</span>),</span>
+<span id="cb118-7"><a href="#cb118-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">row.names=</span><span class="cn">FALSE</span>)</span>
+<span id="cb118-8"><a href="#cb118-8" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(ts_se_r_cor_info, <span class="at">digits=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -2281,9 +2290,9 @@ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</co
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">-0.52</td>
-<td style="text-align: right;">79468</td>
-<td style="text-align: right;">68</td>
+<td style="text-align: right;">-0.53</td>
+<td style="text-align: right;">225428.5</td>
+<td style="text-align: right;">96</td>
 <td style="text-align: right;">0</td>
 </tr>
 </tbody>

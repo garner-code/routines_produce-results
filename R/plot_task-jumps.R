@@ -5,7 +5,8 @@ gen_jumps_plot <- function(data,
                             p_wdth, p_hgt,
                             plt_sv_nm,
                             fig_labs,
-                            ylabel){
+                            ylabel,
+                            ylims){
   
 #  fig_labs = c("C", "D")
   ###########################################################
@@ -23,7 +24,7 @@ gen_jumps_plot <- function(data,
       leg = FALSE
       ylab = ''
     }
-    plot_task_jumps(data, plot_formula, exp_strs[i], cols, leg, ylab)
+    plot_task_jumps(data, plot_formula, exp_strs[i], cols, leg, ylab, ylims)
     fig_label(fig_labs[i])
   }
   dev.off()
@@ -39,7 +40,7 @@ gen_jumps_plot <- function(data,
       leg = FALSE
       ylab = ''
     }
-    plot_task_jumps(data, plot_formula, exp_strs[i], cols, leg, ylab)
+    plot_task_jumps(data, plot_formula, exp_strs[i], cols, leg, ylab, ylims)
     fig_label(fig_labs[i])
   }
   dev.off()
@@ -57,7 +58,7 @@ gen_jumps_plot <- function(data,
       leg = FALSE
       ylab = ''
     }
-    plot_task_jumps(data, plot_formula, exp_strs[i], cols, leg, ylab)
+    plot_task_jumps(data, plot_formula, exp_strs[i], cols, leg, ylab, ylims)
     fig_label(fig_labs[i])
   }
   dev.off()
@@ -73,7 +74,7 @@ gen_jumps_plot <- function(data,
       leg = FALSE
       ylab = ''
     }
-    plot_task_jumps(data, plot_formula, exp_strs[i], cols, leg, ylab)
+    plot_task_jumps(data, plot_formula, exp_strs[i], cols, leg, ylab, ylims)
     fig_label(fig_labs[i])
   }
   dev.off()
@@ -85,7 +86,8 @@ plot_task_jumps <- function(data,
                             exp_str,
                             cols,
                             leg = TRUE,
-                            ylab){
+                            ylab,
+                            ylims){
   # use this function to create the appropriate box plot
   data$train_type <- as.factor(data$train_type)
   levels(data$train_type) <- c('stable', 'variable')
@@ -94,14 +96,14 @@ plot_task_jumps <- function(data,
   with(data %>% filter(exp == 'ts'),
        boxplot(as.formula(plot_formula),
                frame=F,
-               ylim=c(0,5),
                yaxt = 'n',
                xaxt='n',
                col=rep(cols,2),
                ylab=ylab,
+               ylim=ylims,
                xlab='group'))
   axis(1, at = c(1.5, 3.5), labels=c('stab','var'))
-  axis(2, at = c(0, 5))
+  axis(2, at = ylims)
   if (leg){
     legend('topleft', c('st','sw'), fill=col_scheme, bty='n')
   }
