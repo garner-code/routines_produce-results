@@ -437,8 +437,9 @@ gen_jumps_plot(jumps,
                col_scheme,
                j_wdth, j_hgt,
                paste(fig_path, 'task-jumps', sep=''),
-               fig_labs = c('C', 'D'),
+               fig_labs = c('A', 'B'),
                ylabel = 'jumps',
+               xlabel = 'group',
                ylims=c(0,5))
 
 ```
@@ -590,14 +591,36 @@ gen_jumps_plot(errors,
                col_scheme,
                j_wdth, j_hgt,
                paste(fig_path, 'general-errors', sep=''),
-               fig_labs = c('A', 'B'),
+               fig_labs = c('C', 'D'),
                ylabel = 'errors',
-               ylims=c(0,1))
+               ylims=c(0,1),
+               xlabel = 'group')
 
 
 ```
 
 ![Fig 5: People in the two groups showed the same levels of out of task errors](figs/general-errors_4tlks.svg){fig-align="cent"}
+
+Next, I will put the task jumps and error figures together, for the first paper.
+
+```{r}
+
+fnms = c(paste(fig_path, 'task-jumps', sep=''), 
+         paste(fig_path, 'general-errors', sep=''))
+
+ims = lapply(fnms, function(x) image_read_pdf(paste(x, '.pdf', sep='')))
+
+multi <- c(ims[[1]]) %>%
+         image_append() %>%
+        c(ims[[2]]) %>%
+         image_append(stack=TRUE)
+plt_hgt = j_hgt*2 # get the height of the traj plot
+plt_wdth = j_wdth
+pdf(paste(fig_path, 'jumps-and-errors.pdf', sep=''), width=plt_wdth,
+    height=plt_hgt)
+plot(multi)
+dev.off()
+```
 
 Now I analyse errors in the same way as I did task jumps. Note that after correcting for multiple tests, only the main effect of switch is consistently significant across the two experiments.
 
@@ -907,7 +930,7 @@ tmp <- onset_dat %>% select(sub, comp, part, train_type) %>%
                        values_to = 'k4_on',
                        names_to='transfer')
 
-col_scheme = c('#7570b3', '#e7298a')
+col_scheme = c('#ccba72ff', '#4c5454ff')
 
 k4_by_grp_fname = paste(fig_path,'k4_by_grp', sep='')
 trn_bp_wdth = z_p_wdth
@@ -918,9 +941,21 @@ plt_tran_bp_4paper_andtlks(k4_by_grp_fname,
                 tmp,
                 'k4_on ~ transfer*train_type', 
                 col_scheme,
-                'k4 on',
+                'learning duration',
+                c(0, 260),
                 fig_lab = 'A')
 
+```
+
+Now I will make a comparable plot for accuracy data. This will be combined into the above as one fig, for the first paper.
+
+```{r}
+
+acc <- read.csv(paste(data_path, 'exp_lt_avg.csv', sep='')) %>% filter(ses == 3) %>%
+  select(sub, train_type, transfer, accuracy)
+
+
+           
 ```
 
 Lets show it here, so you can see the data -
