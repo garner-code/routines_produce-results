@@ -117,10 +117,10 @@ plot_task_jumps <- function(data,
                ylab=ylab,
                ylim=ylims,
                xlab=xlab))
-  axis(1, at = c(1.5, 4.5), labels=c('stab','var'))
+  axis(1, at = c(1.5, 4.5), labels=c('Sta','Var'))
   axis(2, at = ylims)
   if (leg){
-    legend('topleft', c('st','sw'), fill=col_scheme, bty='n')
+    legend('topleft', c('St','Sw'), fill=col_scheme, bty='n')
   }
 }
 

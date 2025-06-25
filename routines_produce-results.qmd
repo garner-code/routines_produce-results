@@ -438,8 +438,8 @@ gen_jumps_plot(jumps,
                j_wdth, j_hgt,
                paste(fig_path, 'task-jumps', sep=''),
                fig_labs = c('A', 'B'),
-               ylabel = 'jumps',
-               xlabel = 'group',
+               ylabel = 'Jumps',
+               xlabel = 'Group',
                ylims=c(0,5))
 
 ```
@@ -592,9 +592,9 @@ gen_jumps_plot(errors,
                j_wdth, j_hgt,
                paste(fig_path, 'general-errors', sep=''),
                fig_labs = c('C', 'D'),
-               ylabel = 'errors',
+               ylabel = 'Errors',
                ylims=c(0,1),
-               xlabel = 'group')
+               xlabel = 'Group')
 
 
 ```
@@ -941,24 +941,11 @@ plt_tran_bp_4paper_andtlks(k4_by_grp_fname,
                 tmp,
                 'k4_on ~ transfer*train_type', 
                 col_scheme,
-                'learning duration',
-                c(0, 260),
+                'onset',
+                c(0, 200),
                 fig_lab = 'A')
 
 ```
-
-Now I will make a comparable plot for accuracy data. This will be combined into the above as one fig, for the first paper.
-
-```{r}
-
-acc <- read.csv(paste(data_path, 'exp_lt_avg.csv', sep='')) %>% filter(ses == 3) %>%
-  select(sub, train_type, transfer, accuracy)
-
-
-           
-```
-
-Lets show it here, so you can see the data -
 
 ![Knowledge onset of 4 doors in the transfer tasks, by group.](figs/k4_by_grp_4tlks.svg){fig-align="cent"}
 
@@ -1085,11 +1072,12 @@ r_dat <- read.csv(paste(data_path, 'exp_ts_rscore.csv', sep=''))
 ts_dat <- read.csv(paste(data_path, 'exp_ts_avg.csv', sep='')) %>% 
   filter(ses==3) %>%
   select(sub, context, switch, train_type, setting_errors,
-         rt_correct, accuracy) %>% 
+         rt_correct, accuracy, general_errors) %>% 
   group_by(sub, switch, train_type) %>%
   summarise(se=mean(setting_errors),
             rt=mean(rt_correct),
-            acc=mean(accuracy)) %>%
+            acc=mean(accuracy),
+            ge=mean(general_errors)) %>%
   ungroup() %>%
   mutate(train_type=recode(train_type, `1` = 'stable', `2` = 'variable'),
          switch=recode(switch, `0` = 'stay', `1` = 'switch'))
@@ -1227,11 +1215,18 @@ dev.off()
 
 ```
 
-All the figures are done! Now I'll just get the inferential stats for setting errors, and that. is. it.
+All the figures are done!
+
+Now I'll get the inferential stats for rt and setting errors, controlling for general errors.
 
 ```{r}
 
-# learning transfer inferences
+ts_4_anc <- ts_dat %>% select(sub, train_type, switch, se, rt, ge) 
+
+```
+
+```{r}
+
 # first get the switch setting errors to compare between
 sw4t_dat <- ts_dat %>% select(sub, train_type, switch, se) %>%
   pivot_wider(names_from=switch, values_from = se) %>%
