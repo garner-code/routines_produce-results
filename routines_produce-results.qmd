@@ -1122,10 +1122,10 @@ plt_ts_bp_4paper_andtlks(ts_bp_g_se_fname,
                          ts_dat_4_plt,
                          'se ~ switch + train_type',
                          col_scheme,
-                         ylabel='set errors',
+                         ylabel='Set Errors',
                          ylims=c(0, 0.2), # sort axes
                          yticks=seq(0, 0.2, by = 0.04),
-                         fig_lab='A')
+                         fig_lab='B')
 ```
 
 ![Task-switching stage setting errors, by group.](figs/se_by_grp_4tlks.svg){fig-align="cent"}
@@ -1155,6 +1155,28 @@ plt_ts_bp_4paper_andtlks(ts_bp_g_rt_fname,
 ```
 
 ![Task-switching stage RT, by group.](figs/rt_by_grp_4tlks.svg){fig-align="cent"}
+
+
+Now I will put rts and setting errors together to make one figure - to demonstrate that there is little going on with both of them.
+
+```{r}
+fnms = c( paste(fig_path, 'rt_by_grp', sep=''), 
+          paste(fig_path, 'se_by_grp', sep=''))
+
+ims = lapply(fnms, function(x) image_read_pdf(paste(x, '.pdf', sep='')))
+
+multi <- c(ims[[1]]) %>%
+         image_append() %>%
+        c(ims[[2]]) %>%
+         image_append(stack=TRUE)
+plt_hgt = j_hgt*2 # get the height of the traj plot
+plt_wdth = j_wdth
+pdf(paste(fig_path, 'rt-and-se.pdf', sep=''), width=plt_wdth,
+    height=plt_hgt)
+plot(multi)
+dev.off()
+```
+
 
 I will now focus on setting errors as we can see there is very little going on with RTs.
 
@@ -1217,13 +1239,6 @@ dev.off()
 
 All the figures are done!
 
-Now I'll get the inferential stats for rt and setting errors, controlling for general errors.
-
-```{r}
-
-ts_4_anc <- ts_dat %>% select(sub, train_type, switch, se, rt, ge) 
-
-```
 
 ```{r}
 
