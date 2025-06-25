@@ -54,9 +54,9 @@ tran_grp_bp <- function(dat, this_form, col_scheme, ylabel, ylim, xlab_cex){
                xaxt='n',
                xlab='',
                notch=TRUE))
-  axis(1, at=c(1.5, 4), labels=c('stab', 'var'))
+  axis(1, at=c(1.5, 4), labels=c('Sta', 'Var'))
   axis(2, at=seq(0, max(ylim), by=50), labels=paste(seq(0, max(ylim), by=50)))
-  mtext('group', side=1, line=2, las=1, cex=xlab_cex)
+  mtext('Group', side=1, line=2, las=1, cex=xlab_cex)
   legend(0.25, 230, c('I','M'), fill=col_scheme, bty='n')
 }
 
@@ -111,7 +111,7 @@ trn_bias <- function(dat,
                ylab=ylabel,
                yaxt='n',
                xaxt='n',
-               xlab='group',
+               xlab='Group',
                ylim=c(0,1)))
   axis(1, at=c(1,2), labels=c('stab', 'var'))
   axis(2, at=seq(0,1, by=0.25), labels=paste(seq(0,1, by=0.25)))

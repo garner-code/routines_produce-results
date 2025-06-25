@@ -941,7 +941,7 @@ plt_tran_bp_4paper_andtlks(k4_by_grp_fname,
                 tmp,
                 'k4_on ~ transfer*train_type', 
                 col_scheme,
-                'onset',
+                'Onset',
                 c(0, 200),
                 fig_lab = 'A')
 
