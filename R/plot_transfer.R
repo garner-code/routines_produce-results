@@ -45,14 +45,14 @@ tran_grp_bp <- function(dat, this_form, col_scheme, ylabel, xlab_cex){
   with(dat, 
        boxplot(as.formula(this_form),
                frame=F,
-               at=c(1:2, 4:5),
+               at=c(1:2, 3.5:4.5),
                col=col_scheme,
                ylab=ylabel,
                ylim=c(0, 260),
                yaxt='n',
                xaxt='n',
                xlab=''))
-  axis(1, at=c(1.5, 4.5), labels=c('stab', 'var'))
+  axis(1, at=c(1.5, 4), labels=c('stab', 'var'))
   axis(2, at=seq(0, 260, by=50), labels=paste(seq(0, 260, by=50)))
   mtext('group', side=1, line=2, las=1, cex=xlab_cex)
   legend('topleft', c('c','p'), fill=col_scheme, bty='n')

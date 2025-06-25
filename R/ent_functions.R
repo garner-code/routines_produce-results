@@ -215,7 +215,7 @@ get_p_context <- function(dat, subN){
   
   # we need to assign an appropriate 'previous context' to trial 1, so lets take the context
   # from which they first select a target door
-  cntx_a_tgts <- unique(tmp$door[tmp$context == 1 & tmp$door_cc > 0]) ## how does this not return 4 values?
+  cntx_a_tgts <- unique(tmp$door[tmp$context == 1 & tmp$door_cc > 0]) 
   cntx_b_tgts <- unique(tmp$door[tmp$context == 2 & tmp$door_cc > 0])
   tgts <- matrix(c(cntx_a_tgts, cntx_b_tgts), ncol=2)
   frst_tgt_door <- tmp$door[which(tmp$door_cc == 1 | tmp$door_oc == 1)[1]]
