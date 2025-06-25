@@ -437,8 +437,9 @@ gen_jumps_plot(jumps,
                col_scheme,
                j_wdth, j_hgt,
                paste(fig_path, 'task-jumps', sep=''),
-               fig_labs = c('C', 'D'),
-               ylabel = 'jumps',
+               fig_labs = c('A', 'B'),
+               ylabel = 'Jumps',
+               xlabel = 'Group',
                ylims=c(0,5))
 
 ```
@@ -590,14 +591,36 @@ gen_jumps_plot(errors,
                col_scheme,
                j_wdth, j_hgt,
                paste(fig_path, 'general-errors', sep=''),
-               fig_labs = c('A', 'B'),
-               ylabel = 'errors',
-               ylims=c(0,1))
+               fig_labs = c('C', 'D'),
+               ylabel = 'Errors',
+               ylims=c(0,1),
+               xlabel = 'Group')
 
 
 ```
 
 ![Fig 5: People in the two groups showed the same levels of out of task errors](figs/general-errors_4tlks.svg){fig-align="cent"}
+
+Next, I will put the task jumps and error figures together, for the first paper.
+
+```{r}
+
+fnms = c(paste(fig_path, 'task-jumps', sep=''), 
+         paste(fig_path, 'general-errors', sep=''))
+
+ims = lapply(fnms, function(x) image_read_pdf(paste(x, '.pdf', sep='')))
+
+multi <- c(ims[[1]]) %>%
+         image_append() %>%
+        c(ims[[2]]) %>%
+         image_append(stack=TRUE)
+plt_hgt = j_hgt*2 # get the height of the traj plot
+plt_wdth = j_wdth
+pdf(paste(fig_path, 'jumps-and-errors.pdf', sep=''), width=plt_wdth,
+    height=plt_hgt)
+plot(multi)
+dev.off()
+```
 
 Now I analyse errors in the same way as I did task jumps. Note that after correcting for multiple tests, only the main effect of switch is consistently significant across the two experiments.
 
@@ -907,7 +930,7 @@ tmp <- onset_dat %>% select(sub, comp, part, train_type) %>%
                        values_to = 'k4_on',
                        names_to='transfer')
 
-col_scheme = c('#7570b3', '#e7298a')
+col_scheme = c('#ccba72ff', '#4c5454ff')
 
 k4_by_grp_fname = paste(fig_path,'k4_by_grp', sep='')
 trn_bp_wdth = z_p_wdth
@@ -918,12 +941,11 @@ plt_tran_bp_4paper_andtlks(k4_by_grp_fname,
                 tmp,
                 'k4_on ~ transfer*train_type', 
                 col_scheme,
-                'k4 on',
+                'onset',
+                c(0, 200),
                 fig_lab = 'A')
 
 ```
-
-Lets show it here, so you can see the data -
 
 ![Knowledge onset of 4 doors in the transfer tasks, by group.](figs/k4_by_grp_4tlks.svg){fig-align="cent"}
 
@@ -1050,11 +1072,12 @@ r_dat <- read.csv(paste(data_path, 'exp_ts_rscore.csv', sep=''))
 ts_dat <- read.csv(paste(data_path, 'exp_ts_avg.csv', sep='')) %>% 
   filter(ses==3) %>%
   select(sub, context, switch, train_type, setting_errors,
-         rt_correct, accuracy) %>% 
+         rt_correct, accuracy, general_errors) %>% 
   group_by(sub, switch, train_type) %>%
   summarise(se=mean(setting_errors),
             rt=mean(rt_correct),
-            acc=mean(accuracy)) %>%
+            acc=mean(accuracy),
+            ge=mean(general_errors)) %>%
   ungroup() %>%
   mutate(train_type=recode(train_type, `1` = 'stable', `2` = 'variable'),
          switch=recode(switch, `0` = 'stay', `1` = 'switch'))
@@ -1192,11 +1215,18 @@ dev.off()
 
 ```
 
-All the figures are done! Now I'll just get the inferential stats for setting errors, and that. is. it.
+All the figures are done!
+
+Now I'll get the inferential stats for rt and setting errors, controlling for general errors.
 
 ```{r}
 
-# learning transfer inferences
+ts_4_anc <- ts_dat %>% select(sub, train_type, switch, se, rt, ge) 
+
+```
+
+```{r}
+
 # first get the switch setting errors to compare between
 sw4t_dat <- ts_dat %>% select(sub, train_type, switch, se) %>%
   pivot_wider(names_from=switch, values_from = se) %>%
