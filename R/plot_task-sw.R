@@ -6,7 +6,8 @@ plt_ts_bp_4paper_andtlks <- function(plt_sv_nm,
                                      ylabel,
                                      ylims,
                                      yticks,
-                                     fig_lab){
+                                     fig_lab,
+                                     legend_on){
   
   # for paper
   ###### make the coefs plots for paper 
@@ -15,7 +16,7 @@ plt_ts_bp_4paper_andtlks <- function(plt_sv_nm,
   par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=1)
   ts_grp_bp(dat, this_form, col_scheme, 
             ylims, ylabel, yticks,
-            xlab_cex=2/3)
+            xlab_cex=1, legend_on)
   fig_label(fig_lab)
   dev.off()
   
@@ -24,7 +25,7 @@ plt_ts_bp_4paper_andtlks <- function(plt_sv_nm,
   par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=1)
   ts_grp_bp(dat, this_form, col_scheme, 
             ylims, ylabel, yticks,
-            xlab_cex=2/3)
+            xlab_cex=1, legend_on)
   fig_label(fig_lab)
   dev.off()
   
@@ -36,7 +37,7 @@ plt_ts_bp_4paper_andtlks <- function(plt_sv_nm,
   par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=1.5)
   ts_grp_bp(dat, this_form, col_scheme, 
             ylims, ylabel, yticks,
-            xlab_cex=1.5)
+            xlab_cex=1.5, legend_on)
   fig_label(fig_lab)
   dev.off()
   
@@ -45,7 +46,7 @@ plt_ts_bp_4paper_andtlks <- function(plt_sv_nm,
   par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=1.5)
   ts_grp_bp(dat, this_form, col_scheme, 
             ylims, ylabel, yticks,
-            xlab_cex=1.5)
+            xlab_cex=1.5, legend_on)
   fig_label(fig_lab)
   dev.off()
 }
@@ -54,7 +55,8 @@ ts_grp_bp <- function(dat, this_form, col_scheme,
                       ylims,
                       ylabel,
                       yticks,
-                      xlab_cex){
+                      xlab_cex,
+                      legend_on){
   
   with(dat, 
        boxplot(as.formula(this_form),
@@ -69,7 +71,9 @@ ts_grp_bp <- function(dat, this_form, col_scheme,
   axis(1, at=c(1.5, 4), labels=c('Sta', 'Var'))
   axis(2, at=yticks, labels=paste(yticks))
   mtext('Group', side=1, line=2, las=1, cex=xlab_cex)
-  legend('topleft', c('St','Sw'), fill=col_scheme, bty='n')
+  if (legend_on){
+    legend('topleft', c('St','Sw'), fill=col_scheme, bty='n')
+  }
 }
 
 plt_r_se_bias_cor_4paper_andtlks <- function(plt_sv_nm,
