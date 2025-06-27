@@ -12,7 +12,7 @@ plt_ts_bp_4paper_andtlks <- function(plt_sv_nm,
   ###### make the coefs plots for paper 
   pdf(paste(plt_sv_nm, '.pdf', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54)
-  par(mar=c(4,4,2,1), las=2, cex=2/3)
+  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=1)
   ts_grp_bp(dat, this_form, col_scheme, 
             ylims, ylabel, yticks,
             xlab_cex=2/3)
@@ -21,7 +21,7 @@ plt_ts_bp_4paper_andtlks <- function(plt_sv_nm,
   
   pdf(paste(plt_sv_nm, '.svg', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54)
-  par(mar=c(4,4,2,1), las=2, cex=2/3)
+  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=1)
   ts_grp_bp(dat, this_form, col_scheme, 
             ylims, ylabel, yticks,
             xlab_cex=2/3)
@@ -33,7 +33,7 @@ plt_ts_bp_4paper_andtlks <- function(plt_sv_nm,
   tlk_scl = 2
   pdf(paste(plt_sv_nm, '_4tlks.pdf', sep=''), # for talks
       width = p_wdth/2.54*tlk_scl, height = p_hgt/2.54*tlk_scl)
-  par(mar=c(4,4,2,1), las=2, cex=1.5)
+  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=1.5)
   ts_grp_bp(dat, this_form, col_scheme, 
             ylims, ylabel, yticks,
             xlab_cex=1.5)
@@ -42,7 +42,7 @@ plt_ts_bp_4paper_andtlks <- function(plt_sv_nm,
   
   svg(paste(plt_sv_nm, '_4tlks.svg', sep=''), # for talks
       width = p_wdth/2.54*tlk_scl, height = p_hgt/2.54*tlk_scl)
-  par(mar=c(4,4,2,1), las=2, cex=1.5)
+  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=1.5)
   ts_grp_bp(dat, this_form, col_scheme, 
             ylims, ylabel, yticks,
             xlab_cex=1.5)
@@ -79,14 +79,14 @@ plt_r_se_bias_cor_4paper_andtlks <- function(plt_sv_nm,
   # for the manuscript
   pdf(paste(plt_sv_nm, '.pdf', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54)
-  par(mar=c(4,4,2,1), las=2, cex=2/3)
+  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=2/3)
   plot_r_se_bias_cor(bias_se)
   fig_label(fig_lab)
   dev.off()
   
   svg(paste(plt_sv_nm, '.svg', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54)
-  par(mar=c(4,4,2,1), las=2, cex=2/3)
+  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=2/3)
   plot_r_se_bias_cor(bias_se)
   fig_label(fig_lab)
   dev.off()
@@ -95,14 +95,14 @@ plt_r_se_bias_cor_4paper_andtlks <- function(plt_sv_nm,
   tlk_scl = 2
   pdf(paste(plt_sv_nm, '_4tlks.pdf', sep=''), # for talks
       width = p_wdth/2.54*tlk_scl, height = p_hgt/2.54*tlk_scl)
-  par(mar=c(4,4,2,1), las=2, cex=1.5)
+  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=1.5)
   plot_r_se_bias_cor(bias_se)
   fig_label(fig_lab)
   dev.off()
   
   svg(paste(plt_sv_nm, '_4tlks.svg', sep=''), # for talks
       width = p_wdth/2.54*tlk_scl, height = p_hgt/2.54*tlk_scl)
-  par(mar=c(4,4,2,1), las=2, cex=1.5)
+  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=1.5)
   plot_r_se_bias_cor(bias_se)
   fig_label(fig_lab)
   dev.off()

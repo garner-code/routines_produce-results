@@ -61,6 +61,10 @@ req_functions <- list.files(function_loc)
 sapply(req_functions, function(x) source(paste(here::here(function_loc),
                                                x, sep="/")))
 
+# # now some font settings
+library(extrafont)
+#font_import() # run this once only, comment out after first time
+loadfonts(device='pdf')
 ```
 
 ## Q1. Can we produce routines in a consistent way across sessions and conditions?
@@ -933,7 +937,7 @@ tmp <- onset_dat %>% select(sub, comp, part, train_type) %>%
 col_scheme = c('#ccba72ff', '#4c5454ff')
 
 k4_by_grp_fname = paste(fig_path,'k4_by_grp', sep='')
-trn_bp_wdth = z_p_wdth
+trn_bp_wdth = z_p_wdth*.8
 trn_bp_hgt = z_p_hgt
 plt_tran_bp_4paper_andtlks(k4_by_grp_fname,
                 trn_bp_wdth,
@@ -955,12 +959,12 @@ Now I want to plot the bias score, by group.
 
 bias <- onset_dat %>% select(sub, train_type, log_r_flt, k4_flt) %>%
                na.omit()
-col_scheme <- c('#1b9e77','#d95f02')
+col_scheme <- wesanderson::wes_palette('IsleofDogs1')[5:6]
 this_form = 'k4_flt ~ train_type'
-ylabel = 'transfer bias'
+ylabel = 'Bias'
 fig_lab = 'B'
 
-bs_wdth = trn_bp_wdth/2
+bs_wdth = z_p_wdth*.5
 bs_hgt = trn_bp_hgt
 
 bias_by_grp_fname = paste(fig_path, 'bias-by-grp', sep='')
@@ -974,6 +978,26 @@ plt_bias_by_grp_4paper_andtlks(bias_by_grp_fname,
 ```
 
 ![Transfer bias score, by group.](figs/bias-by-grp_4tlks.svg){fig-align="cent"}
+
+Now, combine the boxplot and the bias scores into one figure.
+
+```{r}
+fnms = c( paste(fig_path, 'k4_by_grp', sep=''), 
+          paste(fig_path, 'bias-by-grp', sep=''))
+
+ims = lapply(fnms, function(x) image_read_pdf(paste(x, '.pdf', sep='')))
+
+multi <- c(ims[[1]]) %>%
+         image_append() %>%
+        c(ims[[2]]) %>%
+         image_append()
+plt_hgt = trn_bp_hgt # get the height of the traj plot
+plt_wdth = trn_bp_wdth+bs_wdth
+pdf(paste(fig_path, 'k4_bias.pdf', sep=''), width=plt_wdth,
+    height=plt_hgt)
+plot(multi)
+dev.off()
+```
 
 And now, the last piece, the correlation between the bias score and the logged routine variability score.
 
@@ -1122,10 +1146,11 @@ plt_ts_bp_4paper_andtlks(ts_bp_g_se_fname,
                          ts_dat_4_plt,
                          'se ~ switch + train_type',
                          col_scheme,
-                         ylabel='Set Errors',
-                         ylims=c(0, 0.2), # sort axes
-                         yticks=seq(0, 0.2, by = 0.04),
-                         fig_lab='B')
+                         ylabel='Set-Errors',
+                         ylims=c(0, 0.6), # sort axes
+                         yticks=seq(0, 0.6, by = 0.2),
+                         fig_lab='C',
+                         legend_on=TRUE)
 ```
 
 ![Task-switching stage setting errors, by group.](figs/se_by_grp_4tlks.svg){fig-align="cent"}
@@ -1150,14 +1175,63 @@ plt_ts_bp_4paper_andtlks(ts_bp_g_rt_fname,
                          ylabel='RT',
                          ylims=c(0.4, 1.8),
                          yticks=seq(0.4, 1.8, by = 0.4),
-                         fig_lab='A')
+                         fig_lab='A',
+                         legend_on=FALSE)
 
 ```
 
 ![Task-switching stage RT, by group.](figs/rt_by_grp_4tlks.svg){fig-align="cent"}
 
+Now plot bias scores for both setting errors and RTs
 
-Now I will put rts and setting errors together to make one figure - to demonstrate that there is little going on with both of them.
+```{r}
+
+bias_se <- ts_dat %>% select(sub, train_type, se_bias) %>%
+               na.omit() %>% unique()
+col_scheme <- wesanderson::wes_palette('IsleofDogs1')[5:6]
+this_form = 'se_bias ~ train_type'
+ylabel = 'SE-Bias'
+fig_lab = 'D'
+
+bs_wdth = ts_bp_wdth/2
+bs_hgt = ts_bp_hgt
+
+se_bias_by_grp_fname = paste(fig_path, 'exp_ts_se-bias-by-grp', sep='')
+plt_bias_by_grp_4paper_andtlks(se_bias_by_grp_fname,
+                               bs_wdth, bs_hgt,
+                               bias_se,
+                               this_form,
+                               col_scheme,
+                               ylabel,
+                               fig_lab)
+```
+
+![Setting error bias by group.](figs/exp_ts_se-bias-by-grp_4tlks.svg){fig-align="cent"}
+And now plot the bias score for the RT measure.
+
+```{r}
+
+bias_rt <- ts_dat %>% select(sub, train_type, rt_bias_flt) %>%
+               na.omit() %>% unique()
+col_scheme <- wesanderson::wes_palette('IsleofDogs1')[5:6]
+this_form = 'rt_bias_flt ~ train_type'
+ylabel = 'RT-Bias'
+fig_lab = 'B'
+
+bs_wdth = ts_bp_wdth/2
+bs_hgt = ts_bp_hgt
+
+rt_bias_by_grp_fname = paste(fig_path, 'exp_ts_rt-bias-by-grp', sep='')
+plt_bias_by_grp_4paper_andtlks(rt_bias_by_grp_fname,
+                               bs_wdth, bs_hgt,
+                               bias_rt,
+                               this_form,
+                               col_scheme,
+                               ylabel,
+                               fig_lab)
+```
+
+And combine into one big plot for showing the world.
 
 ```{r}
 fnms = c( paste(fig_path, 'rt_by_grp', sep=''), 
@@ -1177,32 +1251,6 @@ plot(multi)
 dev.off()
 ```
 
-
-I will now focus on setting errors as we can see there is very little going on with RTs.
-
-```{r}
-
-bias_se <- ts_dat %>% select(sub, train_type, se_bias) %>%
-               na.omit() %>% unique()
-col_scheme <- c('#1b9e77','#d95f02')
-this_form = 'se_bias ~ train_type'
-ylabel = 'switch se bias'
-fig_lab = 'B'
-
-bs_wdth = ts_bp_wdth/2
-bs_hgt = ts_bp_hgt
-
-se_bias_by_grp_fname = paste(fig_path, 'exp_ts_se-bias-by-grp', sep='')
-plt_bias_by_grp_4paper_andtlks(se_bias_by_grp_fname,
-                               bs_wdth, bs_hgt,
-                               bias_se,
-                               this_form,
-                               col_scheme,
-                               ylabel,
-                               fig_lab)
-```
-
-![Setting error bias by group.](figs/exp_ts_se-bias-by-grp_4tlks.svg){fig-align="cent"}
 
 And now I plot the correlation between the setting error bias and the routine score -
 

@@ -16,7 +16,7 @@ gen_jumps_plot <- function(data,
   # for manuscripts
   pdf(paste(plt_sv_nm, '.pdf', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54) 
-  par(mfrow = c(1,2), mar = c(4, 4, 2, 1), las=2, cex=3/4)
+  par(family="Source Sans Pro", mfrow = c(1,2), mar = c(4, 4, 2, 1), las=2, cex=3/4)
   for (i in 1:length(exp_strs)){
     if (i == 1){
       leg = TRUE
@@ -35,7 +35,7 @@ gen_jumps_plot <- function(data,
   
   svg(paste(plt_sv_nm, '.svg', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54) 
-  par(mfrow = c(1,2), mar = c(4, 4, 2, 1), las=2, cex=3/4)
+  par(family="Source Sans Pro", mfrow = c(1,2), mar = c(4, 4, 2, 1), las=2, cex=3/4)
   for (i in 1:length(exp_strs)){
     if (i == 1){
       leg = TRUE
@@ -56,7 +56,7 @@ gen_jumps_plot <- function(data,
   # for talks
   pdf(paste(plt_sv_nm, '_4tlks.pdf', sep=''), # for talks
       width = p_wdth/2.54*2.5, height = p_hgt/2.54*2.5)
-  par(mfrow = c(1,2), mar = c(4, 4, 2, 1), las=2, cex=1.5)
+  par(family="Source Sans Pro", mfrow = c(1,2), mar = c(4, 4, 2, 1), las=2, cex=1.5)
   for (i in 1:length(exp_strs)){
     if (i == 1){
       leg = TRUE
@@ -75,7 +75,7 @@ gen_jumps_plot <- function(data,
   
   svg(paste(plt_sv_nm, '_4tlks.svg', sep=''), # for talks
       width = p_wdth/2.54*2.5, height = p_hgt/2.54*2.5)
-  par(mfrow = c(1,2), mar = c(4, 4, 2, 1), las=2, cex=1.5)
+  par(family="Source Sans Pro", mfrow = c(1,2), mar = c(4, 4, 2, 1), las=2, cex=1.5)
   for (i in 1:length(exp_strs)){
     if (i == 1){
       leg = TRUE
