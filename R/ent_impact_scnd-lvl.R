@@ -53,6 +53,9 @@ apply_t_tests_to_all_vars <- function(betas, exp_str, res_path){
   ts <- do.call(rbind, lapply(against_zero, turnt2tib_onesamp))
   ts$fx <- vars_2_test
   ts <- inner_join(ts, turnd2tib(against_zero_d), by='fx')
+  ts <- ts %>%
+    mutate(across(where(is.numeric) & !all_of("p"), ~ round(.x, 2)),
+           p = round(p, 3))
   write.csv(ts, paste(res_path, 'exp_', exp_str,
                       '_betas-scnd-lvl_inf-ag-0.csv', sep=''),
             row.names=FALSE)
@@ -62,6 +65,9 @@ apply_t_tests_to_all_vars <- function(betas, exp_str, res_path){
   twosamp_ts$fx <- vars_2_test
   twosamp_ts <- inner_join(twosamp_ts, turnd2tib_twosamp(btwn_grp_d),
                            by='fx')
+  twosamp_ts <- twosamp_ts %>% 
+    mutate(across(where(is.numeric) & !all_of("p"), ~ round(.x, 2)),
+           p = round(p, 3))
   write.csv(twosamp_ts, paste(res_path, 'exp_', exp_str,
                         '_betas-scnd-lvl_inf-grp.csv', sep=''),
             row.names=FALSE)

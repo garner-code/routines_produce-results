@@ -56,6 +56,16 @@ null0 <- t.test(zdat_cl$mu_z, mu=0, alternative="less")
 
 # and against -2
 null2 <- t.test(zdat_cl$mu_z, mu=-2, alternative="less")
-z_t_stats <- do.call(rbind, lapply(list(null0, null2), function(x) unlist(x)))
-write.csv(z_t_stats, file=zs_stats_fname)
+z_t_stats <- data.frame(do.call(rbind, lapply(list(null0, null2), function(x) unlist(x))))
+z_t_stats <- z_t_stats %>% rename(t = statistic.t,
+                                  df = parameter.df,
+                                  p = p.value,
+                                  M = estimate.mean.of.x,
+                                  SE = stderr)
+cols2round <- c("t", "M", "SE")
+z_t_stats[,cols2round] <- apply(z_t_stats[,cols2round], 2, as.numeric)
+z_t_stats[,cols2round] <- apply(z_t_stats[,cols2round], 2, round, 2)
+z_t_stats[,'p'] <- round(as.numeric(z_t_stats[,'p']), 3)
+z_t_stats$id <- c("zero", "p95")
+write.csv(z_t_stats, file=zs_stats_fname, row.names=FALSE)
 }

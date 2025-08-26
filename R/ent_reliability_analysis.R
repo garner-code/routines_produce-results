@@ -61,12 +61,13 @@ reliability_analysis <- function(rel_data_fname,
   
   rel_results <- with(r_dat_w, cor.test(levodopa, placebo))
   
-  rel_results <- tibble(r = rel_results$estimate,
-                        l = rel_results$conf.int[1],
-                        u = rel_results$conf.int[2],
-                        t = rel_results$statistic,
+  rel_results <- tibble(r = round(rel_results$estimate,2),
+                        l = round(rel_results$conf.int[1],2),
+                        u = round(rel_results$conf.int[2],2),
+                        t = round(rel_results$statistic,2),
                         df = rel_results$parameter,
-                        p = rel_results$p.value)
+                        p = round(rel_results$p.value,3))
+  rel_results$id <- "cor"
   
   write.csv(rel_results, rel_analysis_save_name, row.names=FALSE)
 }

@@ -9,7 +9,7 @@ editor: visual
 
 ## Produce the results for 'Towards the definition and measurement of routines and their impact on cognitive control'
 
-This notebook provides a computationally reproducible record of the analysis and figure generation for the paper 'Towards a normative theory of routines' (or whatever we wind up deciding to call it.
+This notebook provides a computationally reproducible record of the analysis and figure generation for the paper 'Towards a normative theory of routines' (or whatever we wind up deciding to call it).
 
 ### Settings and other things
 
@@ -35,7 +35,7 @@ routines_produce-results/
 
 First, load required packages and set the relative paths for data and other required things...
 
-```{r, fold=TRUE, results='hide'}
+```{r, fold=TRUE, message=FALSE, results='hide'}
 options(tidyverse.quiet = TRUE)
 library(tidyverse)
 library(grid)
@@ -174,23 +174,23 @@ z_comps <- function(exp_str, data_path){
 
 lapply(exp_strs, z_comps, data_path=data_path)
   
-  
 ```
 
 Lets look at those stats!
 
 ```{r}
 
-z_stats <- lapply(c('lt', 'ts'), 
+z_stats <- do.call(rbind, lapply(c('lt', 'ts'), 
                 function(x) read.csv(paste(res_path, 'exp_', x, '_zs_cl_inf-test.csv', sep=''), 
-                                     header=T))
+                                     header=T)))
 
-fmt = 'In line with the hypothesis that we could elicit routines with the task, routine z-scores were significantly lower than would be expected by chance in the first experiment, i.e. a z-score of -2 (t(%d) = %.2f, p< %.2f), and this replicated across experiments (t(%d) = %.2f, p< %.2f)'
-z_results <- sprintf(fmt, z_stats[[1]]$parameter.df[[2]], z_stats[[1]]$statistic.t[2], z_stats[[1]]$p.value,
-        z_stats[[2]]$parameter.df[[2]], z_stats[[2]]$statistic.t[2], z_stats[[2]]$p.value)
 
+#| label: distribution of z scores (routine score against permuted null)
+#| tbl-cap: "distribution of z scores (routine score against permuted null)"
+kable(z_stats %>% select(!data.name), digits=2)
 
 ```
+
 
 Now we want to visualise the z-scores, but we will also compare them to the performance of a perfectly performing but perfectly random agent, whose choices are similar constrained like the participant nulls (i.e. the same door cannot be picked twice in a row).
 
@@ -305,7 +305,7 @@ ims = lapply(fnms, function(x) image_read_pdf(paste(x, '.pdf', sep='')))
 
 multi <- c(ims[[2]], ims[[3]]) %>%
          image_append() %>%
-        c(ims[[1]]) %>%
+        c(ims[[1]]) %>% # might want to adjust the size of this
          image_append(stack=TRUE)
 traj_hght = (w/6*2)+.5 # get the height of the traj plot
 pdf(paste(fig_path, 'FigA.pdf', sep=''), width=z_p_wdth+r_p_wdth,
@@ -373,15 +373,15 @@ grp_cohens <- lapply(exp_strs, get_cohens, rdat=rdat)
 
 prnt_t <- function(t_res, d_res){
   
-  tibble(t = t_res$statistic,
-         df = t_res$parameter,
-         p = t_res$p.value,
-         mu_diff = t_res$estimate[1] - t_res$estimate[2],
-         mu_l = t_res$conf.int[1],
-         mu_u = t_res$conf.int[2],
-         d = d_res$effsize,
-         d_l = d_res$conf.low,
-         d_u = d_res$conf.high,
+  tibble(t = round(t_res$statistic, 2),
+         df = round(t_res$parameter, 2),
+         p = round(t_res$p.value, 3),
+         mu_diff = round(t_res$estimate[1] - t_res$estimate[2], 2),
+         mu_l = round(t_res$conf.int[1], 2),
+         mu_u = round(t_res$conf.int[2], 2),
+         d = round(d_res$effsize, 2),
+         d_l = round(d_res$conf.low, 2),
+         d_u = round(d_res$conf.high, 2),
          dv = 'log r')
 }
 
@@ -393,7 +393,7 @@ grp_r_comp <- do.call(rbind,
 grp_r_comp$exp <- exp_strs
 
 # now save as a csv file 
-write.csv(paste(res_path, 'grp_r_ts.csv', sep=''), row.names=FALSE)
+write.csv(grp_r_comp, paste(res_path, 'grp_r_ts.csv', sep=''), row.names=FALSE)
 
 ```
 
@@ -473,6 +473,8 @@ dev.off()
 
 ```
 
+Note that general errors are low, and that information can be called in from ....
+
 It looks like there is an interaction between group and switch (in fact we know there is, from Emily & Dinuk's analysis). Here I replicate their results: -
 
 ```{r, results='hide'}
@@ -502,14 +504,15 @@ convert_aov_to_df <- function(aovl, exp_str){
          effect = rownames(ref),
          numDF = ref$`num Df`,
          denDF = ref$`den Df`,
-         Fstat = ref$F,
-         ges = ref$ges,
-         p = ref$`Pr(>F)`)
+         Fstat = round(ref$F, 2),
+         ges = round(ref$ges, 2),
+         p = round(ref$`Pr(>F)`, 2))
 }
 tj_aov_dat <- do.call(rbind, 
                       lapply(1:length(exp_strs),
                              function(x) convert_aov_to_df(tj_aovs[[x]],
                                                            exp_strs[x])))
+tj_aov_dat$id <- with(tj_aov_dat, paste(exp, effect, sep="_"))
 write.csv(tj_aov_dat, paste(res_path, 'task-jumps_aov.csv'), row.names=FALSE)
 
 ```
@@ -534,6 +537,9 @@ me_grp <- lapply(tj_aovs, function(x) summary(emmeans(x, 'train_type')))
 me_grp <- do.call(rbind, me_grp)
 me_grp$exp <- rep(exp_strs, each=length(unique(me_grp$train_type)))
 names(me_grp) <- c('group', 'emmean', 'se', 'df', 'l', 'u', 'exp')
+me_grp$id <- with(me_grp, paste(exp, group, sep="_"))
+cols2round <- c("emmean", "se", "l", "u")
+me_grp[,cols2round] <- apply(me_grp[,cols2round], 2, round, 2)
 write.csv(me_grp, paste(res_path, '/task-jumps_ph_me-grp.csv', sep=''))
 
 ```
@@ -545,7 +551,7 @@ write.csv(me_grp, paste(res_path, '/task-jumps_ph_me-grp.csv', sep=''))
 kable(me_grp, digits=2)
 ```
 
-And the simple effects of switch, at each level of group:
+And get the mean estimates for each switch by group condition -
 
 ```{r}
 
@@ -556,19 +562,22 @@ sw_by_tt <- do.call(rbind, lapply(simp_fx, function(x) summary(x[[1]])))
 sw_by_tt$exp <- rep(c('lt','ts'), each = 4)
 names(sw_by_tt) <- c('group', 'switch', 'emmean', 
                      'se', 'df', 'l', 'u', 'exp')
+sw_by_tt$id <- with(sw_by_tt, paste(exp, group, switch, sep="_"))
+sw_by_tt[,cols2round] <- apply(sw_by_tt[,cols2round], 2, round, 2)
 write.csv(sw_by_tt, file=paste(res_path, 'task-jumps_ph_se-sw.csv', sep=''), row.names=FALSE)
-
 
 ```
 
 ```{r}
 
-#| label: simple effects of switch at each level of group
-#| tbl-cap: "simple effects of switch at each level of group"
+#| label: estimated means for each level of group x switch 
+#| tbl-cap: "estimated means for each level of group x switch"
 kable(sw_by_tt)
 ```
 
-We can conclude at this point that frequent switching makes people more variable in the order in which they perform their behaviours, and that this might be because they are jumping between the two tasks more frequently. This may be because they are mixing up the two tasks more. We also want to rule out general confusion. To do this, we look at responses that come from neither task.
+Decide whether to add further post-hoc info.
+
+We can conclude at this point that frequent switching makes people more variable in the order in which they perform their behaviours, and that this might be because they are jumping between the two tasks more frequently. This may be because they are mixing up the two tasks more. We also want to rule out general confusion. To do this, we look at responses that come from neither task. Note, this figure can go in the supplemental info.
 
 ```{r}
 
@@ -605,26 +614,6 @@ gen_jumps_plot(errors,
 
 ![Fig 5: People in the two groups showed the same levels of out of task errors](figs/general-errors_4tlks.svg){fig-align="cent"}
 
-Next, I will put the task jumps and error figures together, for the first paper.
-
-```{r}
-
-fnms = c(paste(fig_path, 'task-jumps', sep=''), 
-         paste(fig_path, 'general-errors', sep=''))
-
-ims = lapply(fnms, function(x) image_read_pdf(paste(x, '.pdf', sep='')))
-
-multi <- c(ims[[1]]) %>%
-         image_append() %>%
-        c(ims[[2]]) %>%
-         image_append(stack=TRUE)
-plt_hgt = j_hgt*2 # get the height of the traj plot
-plt_wdth = j_wdth
-pdf(paste(fig_path, 'jumps-and-errors.pdf', sep=''), width=plt_wdth,
-    height=plt_hgt)
-plot(multi)
-dev.off()
-```
 
 Now I analyse errors in the same way as I did task jumps. Note that after correcting for multiple tests, only the main effect of switch is consistently significant across the two experiments.
 
@@ -649,6 +638,7 @@ er_aov_dat <- do.call(rbind,
                       lapply(1:length(exp_strs),
                              function(x) convert_aov_to_df(er_aovs[[x]],
                                                            exp_strs[x])))
+er_aov_dat$id <- with(er_aov_dat, paste(exp, effect, sep="_"))
 write.csv(er_aov_dat, paste(res_path, 'gen-errs_aov.csv'), row.names=FALSE)
 
 ```
@@ -668,6 +658,11 @@ me_sw_er <- lapply(er_aovs, function(x) summary(emmeans(x, 'switch')))
 me_sw_er <- do.call(rbind, me_sw_er)
 me_sw_er$exp <- rep(exp_strs, each=length(unique(errors$train_type)))
 names(me_sw_er) <- c('switch', 'emmean', 'se', 'df', 'l', 'u', 'exp')
+
+me_sw_er$id <- with(me_sw_er, paste(exp, switch, sep="_"))
+cols2round <- c("emmean", "se", "l", "u")
+me_sw_er[,cols2round] <- apply(me_sw_er[,cols2round], 2, round, 2)
+
 write.csv(me_sw_er, paste(res_path, '/gen-errs_ph_sw.csv', sep=''))
 ```
 
@@ -835,7 +830,7 @@ Showing the betas by group and parameter
 
 So it looks like all of the tested factors contributed to the increase of other context door selections, which differed by groups (who differed by routine). It looks like the variable group was generally more confused than the other group, with a small suggestion that they may have also been matching to the probability of the context.
 
-As an exploratory plot, I plot routine scores against beta coefficients, to check the correlations between them appear to do what we think -
+As an exploratory plot, I plot routine scores against beta coefficients, to check the correlations between them appear to do what we think - this is possibly one for the supplemental
 
 ```{r}
 
@@ -881,7 +876,7 @@ Now the cherry on top. We ask whether the extent to which you became routine (th
 
 ### Learning transfer/flexibility
 
-First steps are to wrangle the routine and group x transfer task data, and looking at learning onset for each group and task as a boxplot. Note that from visual inspection of qqplots, I decided to log transform the data, to improve normality. ThenI take the ratio of the scores from each task and correlate with the routine score, then an inferential test of the things.
+First steps are to wrangle the routine and group x transfer task data, and looking at learning onset for each group and task as a boxplot. Note that from visual inspection of qqplots, I decided to log transform the data, to improve normality. Then I take the ratio of the scores from each task and correlate with the routine score, then an inferential test of the things. Last, I add mean accuracy from training, to see if that changes the effect (note to self, maybe do a path analysis if required).
 
 ```{r}
 
@@ -920,6 +915,14 @@ rm(grp_inf)
 dvs <- c('comp', 'part', 'k4', 'log_r')
 onset_dat <- cbind(onset_dat,
          do.call(cbind, lapply(dvs, remove_outliers, betas=onset_dat)))
+
+# and last, I want to get the accuracy/general error data from the training phase,
+trn_dat <- read.csv(paste(data_path, 'exp_lt_avg.csv', sep='')) %>% 
+              filter(ses == 2) %>%
+              select(sub, switch, accuracy, setting_errors, general_errors) %>%
+              group_by(sub) %>%
+              summarise(across(where(is.numeric), ~mean(.x, na.rm=T))) 
+onset_dat <- inner_join(onset_dat, trn_dat, by="sub")
 
 write.csv(onset_dat, paste(data_path, 'exp_lt_onsetwr.csv', sep=''), row.names=FALSE)
 ```
@@ -1050,7 +1053,7 @@ grp_bias_d = cohens_d(data=onset_dat %>% na.omit(k4_flt),
                       formula=k4_flt~train_type, paired=FALSE,
                       ci=TRUE, ci.type='perc', nboot=1000)
 r_bias_cor = with(onset_dat, cor.test(k4_flt, log_r_flt, na.rm=TRUE))
-
+# lm controlling for accuracy
 
 lt_ts <- tibble(fx = c('transfer', 'group-bias'),
                 t = c(me_transfer$statistic, grp_bias$statistic),
@@ -1206,8 +1209,7 @@ plt_bias_by_grp_4paper_andtlks(se_bias_by_grp_fname,
                                fig_lab)
 ```
 
-![Setting error bias by group.](figs/exp_ts_se-bias-by-grp_4tlks.svg){fig-align="cent"}
-And now plot the bias score for the RT measure.
+![Setting error bias by group.](figs/exp_ts_se-bias-by-grp_4tlks.svg){fig-align="cent"} And now plot the bias score for the RT measure.
 
 ```{r}
 
@@ -1250,7 +1252,6 @@ plot(multi)
 dev.off()
 ```
 
-
 And now I plot the correlation between the setting error bias and the routine score -
 
 ```{r}
@@ -1285,7 +1286,6 @@ dev.off()
 ```
 
 All the figures are done!
-
 
 ```{r}
 
