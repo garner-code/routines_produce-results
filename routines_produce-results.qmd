@@ -1052,8 +1052,6 @@ grp_bias = with(onset_dat, t.test(k4_flt~train_type, na.rm=TRUE))
 grp_bias_d = cohens_d(data=onset_dat %>% na.omit(k4_flt),
                       formula=k4_flt~train_type, paired=FALSE,
                       ci=TRUE, ci.type='perc', nboot=1000)
-r_bias_cor = with(onset_dat, cor.test(k4_flt, log_r_flt, na.rm=TRUE))
-# lm controlling for accuracy
 
 lt_ts <- tibble(fx = c('transfer', 'group-bias'),
                 t = c(me_transfer$statistic, grp_bias$statistic),
@@ -1067,30 +1065,37 @@ lt_ts <- tibble(fx = c('transfer', 'group-bias'),
                 dl = c(me_transfer_d$conf.low, grp_bias_d$conf.low),
                 du = c(me_transfer_d$conf.high, grp_bias_d$conf.high),
                 n1 = c(me_transfer_d$n1, grp_bias_d$n1),
-                n2 = c(me_transfer_d$n2, grp_bias_d$n2))
+                n2 = c(me_transfer_d$n2, grp_bias_d$n2)) %>%
+            mutate(across(where(is.numeric) & !matches("p"), ~round(.x, 2))) 
+lt_ts <- lt_ts %>% mutate(p = round(p, 3))
 write.csv(lt_ts, paste(res_path, 'lt_inf_tests.csv', sep=''), row.names=FALSE)
-kable(lt_ts, digits=2)
+kable(lt_ts)
 ```
 
-And now save and print the correlation -
+And now correlate the routine score, and perform a regression where we control for general errors per group.
 
 ```{r}
 
+r_bias_cor = with(onset_dat, cor.test(k4_flt, log_r_flt, na.rm=TRUE))
+r_bias_cor_cntrl = summary(lm(k4_flt ~ log_r_flt + general_errors, data=onset_dat))
+
+# lm controlling for accuracy
 lt_r_cor_info <- tibble(r=r_bias_cor$estimate,
                         l=r_bias_cor$conf.int[1],
                         u=r_bias_cor$conf.int[2],
                         t=r_bias_cor$statistic,
                         df=r_bias_cor$parameter,
-                        p=r_bias_cor$p.value)
+                        p=r_bias_cor$p.value) %>%
+    mutate(across(where(is.numeric) & !matches("p"), ~round(.x, 2))) 
+lt_r_cor_info <- lt_r_cor_info %>% mutate(p = round(p, 3))
 write.csv(lt_r_cor_info, paste(res_path, 'lt-r_corr.csv', sep=''), row.names=FALSE)
-kable(lt_r_cor_info, digits=2)
+kable(lt_r_cor_info)
 ```
 
-Note to self - may want to also show accuracy data to demonstrate the robustness of the effect.
 
 ### Task switching
 
-And now we ask exactly the same kinds of questions about task switching performance.
+And now we ask exactly the same kinds of questions about task switching performance. Focusing on first correct RT
 
 ```{r}
 
