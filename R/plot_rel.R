@@ -13,26 +13,26 @@ plot_rel <- function(p_wdth, p_hgt,
   #### for manuscripts
   pdf(paste(rel_plt_fname, '.pdf', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54) 
-  par(mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=2/3)
+  par(family="Source Sans Pro", mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=2/3)
   do_cor_plot(rel_dat, fig_lab)
   dev.off()
   
   svg(paste(rel_plt_fname, '.svg', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54) 
-  par(mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=2/3)
+  par(family="Source Sans Pro", mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=2/3)
   do_cor_plot(rel_dat, fig_lab)
   dev.off()
   
   ## for talks
   pdf(paste(rel_plt_fname, '_4tlks', '.pdf', sep=''), # for talks
       width = p_wdth/2.54*2.5, height = p_hgt/2.54*2.5)
-  par(mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=1.5)
+  par(family="Source Sans Pro", mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=1.5)
   do_cor_plot(rel_dat, fig_lab)
   dev.off()
   
   svg(paste(rel_plt_fname, '_4tlks', '.svg', sep=''), # for talks
       width = p_wdth/2.54*2.5, height = p_hgt/2.54*2.5)
-  par(mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=1.5)
+  par(family="Source Sans Pro", mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=1.5)
   do_cor_plot(rel_dat, fig_lab)
   dev.off()
   

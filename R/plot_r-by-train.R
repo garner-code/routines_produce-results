@@ -17,26 +17,26 @@ plot_r_train <- function(p_wdth, p_hgt,
   ###### for manuscripts
   pdf(paste(r_by_g_fname, '.pdf', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54) 
-  par(mfrow = c(1,2), mar = mar_set, las=las_set, cex=cex_set)
+  par(family="Source Sans Pro", mfrow = c(1,2), mar = mar_set, las=las_set, cex=cex_set)
   do_data_and_plot(exp_strs, data_path, x_rng, y_rng, cols, breaks)
   dev.off()
   
   svg(paste(r_by_g_fname, '.svg', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54) 
-  par(mfrow = c(1,2), mar = mar_set, las=las_set, cex=cex_set)
+  par(family="Source Sans Pro", mfrow = c(1,2), mar = mar_set, las=las_set, cex=cex_set)
   do_data_and_plot(exp_strs, data_path, x_rng, y_rng, cols, breaks)
   dev.off()
   
   ###### for talks
   pdf(paste(r_by_g_fname, '_4tlks.pdf', sep=''), 
       width = p_wdth/2.54*tlk_scl, height = p_hgt/2.54*tlk_scl) 
-  par(mfrow = c(1,2), mar = mar_set, las=las_set, cex=1.5)
+  par(family="Source Sans Pro", mfrow = c(1,2), mar = mar_set, las=las_set, cex=1.5)
   do_data_and_plot(exp_strs, data_path, x_rng, y_rng, cols, breaks)
   dev.off()
   
   svg(paste(r_by_g_fname, '_4tlks.svg', sep=''), 
       width = p_wdth/2.54*tlk_scl, height = p_hgt/2.54*tlk_scl) 
-  par(mfrow = c(1,2), mar = mar_set, las=las_set, cex=1.5)
+  par(family="Source Sans Pro", mfrow = c(1,2), mar = mar_set, las=las_set, cex=1.5)
   do_data_and_plot(exp_strs, data_path, x_rng, y_rng, cols, breaks)
   dev.off()
 }
@@ -48,12 +48,12 @@ plot_r_grp_hst <- function(rdat, x_rng, y_rng, cols,
   col_scheme <- unlist(lapply(cols, adjustcolor, alpha.f=0.5))
   names(col_scheme) <- levels(rdat$train_type)
   
-  hist(with(rdat, r[train_type == "stable"]), 
+  hist(with(rdat, r[train_type == "Stable"]), 
        probability=FALSE,
-       col = col_scheme['stable'], 
+       col = col_scheme['Stable'], 
        xlim = x_rng,
        ylim = y_rng,
-       xlab = "R", ylab = ylab,
+       xlab = "TE", ylab = ylab,
        main = '',
        xaxt = "n",
        yaxt = "n",
@@ -67,8 +67,8 @@ plot_r_grp_hst <- function(rdat, x_rng, y_rng, cols,
                     col_scheme[levels(rdat$train_type)[2]]),
            bty='n') 
   }
-  hist(with(rdat, r[train_type == "variable"]), probability=FALSE, 
-       col=col_scheme['variable'], add=T, breaks = breaks)
+  hist(with(rdat, r[train_type == "Variable"]), probability=FALSE, 
+       col=col_scheme['Variable'], add=T, breaks = breaks)
 }
 
 get_dat <- function(exp_str, data_path){
@@ -76,14 +76,14 @@ get_dat <- function(exp_str, data_path){
   rdat <- read.csv(paste(data_path, 'exp_', exp_str,
                          '_r-by-grp.csv', sep=''))
   rdat$train_type <- as.factor(rdat$train_type)
-  levels(rdat$train_type) <- c("stable", "variable")
+  levels(rdat$train_type) <- c("Stable", "Variable")
   rdat
 }
 
 do_data_and_plot <- function(exp_strs, data_path, x_rng, y_rng, cols, breaks){
   # need to run this code for each plot generated, so may as well make into a function
   rdat <- get_dat(exp_strs[1], data_path)
-  plot_r_grp_hst(rdat, x_rng, y_rng, cols, 'A', leg = TRUE, breaks, ylab='f')
+  plot_r_grp_hst(rdat, x_rng, y_rng, cols, 'A', leg = TRUE, breaks, ylab='freq')
   rdat <- get_dat(exp_strs[2], data_path)
   plot_r_grp_hst(rdat, x_rng, y_rng, cols, 'B', leg = FALSE, breaks, ylab='')
 }

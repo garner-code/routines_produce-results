@@ -40,14 +40,14 @@ produce_z_plts <- function(exp_strs, col_scheme,
          col = col_scheme[exp_strs[1]], 
          xlim = c(min(zdat$mu_z), max(zs)),
          ylim = c(0,0.08),
-         xlab = "z", ylab = "freq",
+         xlab = expression(TE[z]), ylab = "freq",
          main = main_titles[1],
          xaxt = "n",
          yaxt = "n")
     axis(1, at = seq(-100, 0, by = 50))
     axis(2, at = seq(0, 0.08, by = 0.04))
     fig_label("A")
-    legend(-110, 0.08, c("A", "B"), fill = c(col_scheme[exp_strs[1]],
+    legend(-110, 0.08, c("E1", "R"), fill = c(col_scheme[exp_strs[1]],
                                             col_scheme[exp_strs[2]]),
            bty='n') 
     hist(with(zdat, mu_z[exp == exp_strs[2]]), probability=TRUE, 
@@ -57,7 +57,7 @@ produce_z_plts <- function(exp_strs, col_scheme,
     hist(zs, probability = TRUE,
          col = col_scheme["agent"],
          xlim = c(min(zdat$mu_z), max(zs)),
-         xlab = "z", ylab = "",
+         xlab = expression(TE[z]), ylab = "",
          main=main_titles[2],
          xaxt = "n",
          yaxt = "n")
@@ -71,27 +71,27 @@ produce_z_plts <- function(exp_strs, col_scheme,
   # for manuscripts
   pdf(paste(ms_z_plt_fname, '.pdf', sep=''), 
             width = p_wdth/2.54, height = p_hgt/2.54) 
-  par(mfrow = c(1,2), mar = c(5, 4, 2, 1), las=2, cex=2/3)
-  do_z_hists(main_titles = c('',''))
+  par(family="Source Sans Pro", mfrow = c(1,2), mar = c(5, 4, 2, 1), las=2, cex=2/3)
+  do_z_hists(main_titles = c('humans','agent')) #main_titles = c('','')
   dev.off()
   
   svg(paste(ms_z_plt_fname, '.svg', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54) 
-  par(mfrow = c(1,2), mar = c(5, 4, 2, 1), las=2, cex=2/3)
-  do_z_hists(main_titles = c('',''))
+  par(family="Source Sans Pro", mfrow = c(1,2), mar = c(5, 4, 2, 1), las=2, cex=2/3)
+  do_z_hists(main_titles = c('humans','agent')) # main_titles = c('','')
   dev.off()
 
 ##########################################################
   # for talks
   pdf(paste(tlk_z_plt_fname, '.pdf', sep=''), # for talks
       width = p_wdth/2.54*2.5, height = p_hgt/2.54*2.5)
-  par(mfrow = c(1,2), mar = c(5, 4, 2, 1), las=2, cex=1.5)
+  par(family="Source Sans Pro", mfrow = c(1,2), mar = c(5, 4, 2, 1), las=2, cex=1.5)
   do_z_hists(main_titles = c('humans','agents'))
   dev.off()
   
   svg(paste(tlk_z_plt_fname, '.svg', sep=''), # for talks
       width = p_wdth/2.54*2.5, height = p_hgt/2.54*2.5)
-  par(mfrow = c(1,2), mar = c(5, 4, 2, 1), las=2, cex=1.5)
+  par(family="Source Sans Pro", mfrow = c(1,2), mar = c(5, 4, 2, 1), las=2, cex=1.5)
   do_z_hists(main_titles = c('humans','agents'))
   dev.off()
 ##########################################################

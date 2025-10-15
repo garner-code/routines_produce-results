@@ -120,7 +120,7 @@ Note that the below 'function' contains hard coded, handpicked subsets of trials
 exp_str <- 'lt'
 traj_data_fname <- paste(data_path, 'exp_', exp_str, '_evt.csv', sep="")
 traj_fig_fname <- paste(fig_path, 'trajectories', sep='')
-w <- 15 # width of plot, in cm
+w <- 10 # width of plot, in cm
 traj_plt <- plot_trajectories(traj_data_fname, traj_fig_fname, w)
 
 
@@ -191,7 +191,6 @@ kable(z_stats %>% select(!data.name), digits=2)
 
 ```
 
-
 Now we want to visualise the z-scores, but we will also compare them to the performance of a perfectly performing but perfectly random agent, whose choices are similar constrained like the participant nulls (i.e. the same door cannot be picked twice in a row).
 
 Note that the below code block does not run, owing to the comp time required to generate the nulls.
@@ -246,8 +245,12 @@ names(human_v_agent_ps) <- exp_strs
 
 # make a dataframe of the results and save as a csv
 hum_z_dat <- tibble(exp = exp_strs,
+                    mu = c(round(mean(zs),2), NA),
+                    sd = c(round(sd(zs),2), NA),
                     zs = human_v_agent_zs,
                     ps = human_v_agent_ps)
+# this needs to be rounded to 2 dp.
+hum_z_dat[,c("zs", "ps")] <- apply(hum_z_dat[,c("zs", "ps")], 2, round, 2)
 write.csv(hum_z_dat, file=paste(res_path, 'human_v_agent_zs.csv', sep=''),
           row.names=FALSE)
 
@@ -303,9 +306,19 @@ fnms = c(traj_fig_fname, ms_z_plt_fname, rel_plt_fname)
 
 ims = lapply(fnms, function(x) image_read_pdf(paste(x, '.pdf', sep='')))
 
+im_info = lapply(ims, image_info)
+top_width = im_info[[2]]$width + im_info[[3]]$width
+bottom_width = im_info[[1]]$width
+
+bottom_centered <- image_extent(ims[[1]],
+                                geometry = paste0(top_width, "x", ... =  
+                                                    im_info[[1]]$height),
+                                gravity = "north",
+                                color = "none")
+
 multi <- c(ims[[2]], ims[[3]]) %>%
          image_append() %>%
-        c(ims[[1]]) %>% # might want to adjust the size of this
+        c(bottom_centered) %>% # might want to adjust the size of this
          image_append(stack=TRUE)
 traj_hght = (w/6*2)+.5 # get the height of the traj plot
 pdf(paste(fig_path, 'FigA.pdf', sep=''), width=z_p_wdth+r_p_wdth,
@@ -327,7 +340,7 @@ To answer this, we need to visualise the routine scores by training group, acros
 ```{r, results='hide'}
 # first, I need to get the routine scores matched with the training group scores
 lapply(c('lt', 'ts'), get_r_info_and_save, data_path=data_path)
-
+col_scheme = c("#ef8a62","#999999")
 plot_r_train(p_wdth = z_p_wdth, 
              p_hgt = z_p_hgt, 
              cols = col_scheme, 
@@ -373,15 +386,15 @@ grp_cohens <- lapply(exp_strs, get_cohens, rdat=rdat)
 
 prnt_t <- function(t_res, d_res){
   
-  tibble(t = round(t_res$statistic, 2),
+  tibble(t = abs(round(t_res$statistic, 2)),
          df = round(t_res$parameter, 2),
          p = round(t_res$p.value, 3),
          mu_diff = round(t_res$estimate[1] - t_res$estimate[2], 2),
          mu_l = round(t_res$conf.int[1], 2),
          mu_u = round(t_res$conf.int[2], 2),
-         d = round(d_res$effsize, 2),
-         d_l = round(d_res$conf.low, 2),
-         d_u = round(d_res$conf.high, 2),
+         d = abs(round(d_res$effsize, 2)),
+         d_l = abs(round(d_res$conf.low, 2)),
+         d_u = abs(round(d_res$conf.high, 2)),
          dv = 'log r')
 }
 
@@ -395,6 +408,22 @@ grp_r_comp$exp <- exp_strs
 # now save as a csv file 
 write.csv(grp_r_comp, paste(res_path, 'grp_r_ts.csv', sep=''), row.names=FALSE)
 
+```
+
+Now I need some descriptive statistics
+
+```{r}
+
+rdat_desc <- rdat %>% group_by(exp, train_type) %>%
+  summarise(M=mean(r),
+            SD=sd(r),
+            N=length(r),
+            SE=SD/sqrt(N))
+cols2rnd <- c("M", "SE")
+rdat_desc[cols2rnd] <- apply(rdat_desc[cols2rnd], 2, round, 2)
+rdat_desc$id = paste(rdat_desc$exp, rdat_desc$train_type, sep="_")
+
+write.csv(rdat_desc, paste(res_path, 'grp_r_desc-stats.csv', sep=''), row.names=FALSE)
 ```
 
 The results are pleasingly consistent across both experiments, so will show the inferential outcomes in a table -
@@ -613,7 +642,6 @@ gen_jumps_plot(errors,
 ```
 
 ![Fig 5: People in the two groups showed the same levels of out of task errors](figs/general-errors_4tlks.svg){fig-align="cent"}
-
 
 Now I analyse errors in the same way as I did task jumps. Note that after correcting for multiple tests, only the main effect of switch is consistently significant across the two experiments.
 
@@ -1091,7 +1119,6 @@ lt_r_cor_info <- lt_r_cor_info %>% mutate(p = round(p, 3))
 write.csv(lt_r_cor_info, paste(res_path, 'lt-r_corr.csv', sep=''), row.names=FALSE)
 kable(lt_r_cor_info)
 ```
-
 
 ### Task switching
 

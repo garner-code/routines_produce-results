@@ -55,7 +55,7 @@ write.csv(zdat_cl, file=zs_out_fname)
 null0 <- t.test(zdat_cl$mu_z, mu=0, alternative="less")
 
 # and against -2
-null2 <- t.test(zdat_cl$mu_z, mu=-2, alternative="less")
+null2 <- t.test(zdat_cl$mu_z, mu=-1.96, alternative="less")
 z_t_stats <- data.frame(do.call(rbind, lapply(list(null0, null2), function(x) unlist(x))))
 z_t_stats <- z_t_stats %>% rename(t = statistic.t,
                                   df = parameter.df,

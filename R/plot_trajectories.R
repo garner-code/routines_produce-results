@@ -104,8 +104,8 @@ tracs <- grid.arrange(all_ps[[1]], all_ps[[2]],
                       nrow=nsubs, ncol=length(all_ps)/nsubs,
                       widths = rep(2.5, length(all_ps)/nsubs), 
                       heights = rep(2.5, nsubs),
-                      left = "sub",
-                      bottom = "trials")
+                      left = textGrob("sub", gp=gpar(fontfamily="Source Sans Pro", fontsize = 12)),
+                      bottom = textGrob("epochs", gp=gpar(fontfamily="Source Sans Pro", fontsize = 12)))
 annotate_figure(tracs,
                 fig.lab='D')
 ggsave(paste(fig_save_fname, '.pdf', sep=''), tracs, 
