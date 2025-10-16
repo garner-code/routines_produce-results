@@ -45,7 +45,7 @@ plot_r_grp_hst <- function(rdat, x_rng, y_rng, cols,
                            fig_lab, leg, breaks, ylab){
   # do the actual plot
   # now set colours to be more alpha-ey
-  col_scheme <- unlist(lapply(cols, adjustcolor, alpha.f=0.5))
+  col_scheme <- unlist(lapply(cols, adjustcolor, alpha.f=0.7))
   names(col_scheme) <- levels(rdat$train_type)
   
   hist(with(rdat, r[train_type == "Stable"]), 
