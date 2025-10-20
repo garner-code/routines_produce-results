@@ -828,7 +828,26 @@ lapply(c('lt', 'ts'), apply_clean_and_analyse_betas,
 
 ```
 
-I don't present the beta inferential tests here, as there are so many, but the take home is that they all betas are significantly above zero, the mu is clearly sig between the two groups, which we know, there is some glimpse of an impact of p(scs\|cntxt), but we maybe need more data, or a model that adapts to learning rate to determine for sure.
+Now I am going to collapse across the two experiments to see if the p(success|task) holds up:
+
+```{r}
+
+read_and_label_beta_dat <- function(exp_str, fname){
+  dat <- read.csv(fname)
+  dat$exp <- exp_str
+  dat
+}
+
+beta_both <- do.call(rbind, lapply(c('lt', 'ts'), function(x) read_and_label_beta_dat(x,
+  paste(data_path, 'betas_', x, '_first-level_cln.csv',
+                              sep=''))))
+
+apply_t_tests_to_all_vars(beta_both, 'all', res_path)
+
+
+```
+
+I don't present the beta inferential tests here, as there are so many, but the take home is that they all betas are significantly above zero, the mu is clearly sig between the two groups, which we know, there is some glimpse of an impact of p(scs\|cntxt), for each experiment, and it is the only significant variable(other than mu) when both experiments are aggregated.
 
 Next step is to blot the beta coefficients by group (and analysis)
 
