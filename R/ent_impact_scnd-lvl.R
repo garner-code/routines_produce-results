@@ -61,6 +61,28 @@ apply_t_tests_to_all_vars <- function(betas, exp_str, res_path){
             row.names=FALSE)
   
   ####### now put the between grp ts together and save
+  # do also need to get the SE for each group 
+  beta_sum <- betas %>% select(c('sub', 'train_type', ends_with('flt'))) %>%
+                group_by(train_type) %>%
+                summarise(across(ends_with('flt'), 
+                  list(mean = ~mean(.x, na.rm=TRUE),
+                       sd = ~sd(.x, na.rm=TRUE),
+                       N = ~sum(!is.na(.x))))) %>%
+                pivot_longer(
+                cols = -train_type,
+                names_to = c("beta", ".value"),
+                names_pattern = "^(.*)_(mean|sd|N)$") %>%
+            mutate(SE=sd/sqrt(N)) %>%
+            mutate(train_type = case_match(train_type,
+                                           1 ~ "s",
+                                           2 ~ "v")) %>%
+            mutate(id=paste(beta, train_type, sep="_"))
+  cls2rnd <- c('mean', 'SE')
+  beta_sum[,cls2rnd] <- apply(beta_sum[,cls2rnd], 2, round, 2)
+  write.csv(beta_sum, paste(res_path, 'exp_', exp_str,
+                             '_betas-scnd-lvl_desc-grp.csv', sep=''),
+            row.names=FALSE)
+
   twosamp_ts <- do.call(rbind, lapply(btwn_grp, turnt2tib_twosamp))
   twosamp_ts$fx <- vars_2_test
   twosamp_ts <- inner_join(twosamp_ts, turnd2tib_twosamp(btwn_grp_d),

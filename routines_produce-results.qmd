@@ -828,7 +828,7 @@ lapply(c('lt', 'ts'), apply_clean_and_analyse_betas,
 
 ```
 
-Now I am going to collapse across the two experiments to see if the p(success|task) holds up:
+Now I am going to collapse across the two experiments to see if the p(success\|task) holds up:
 
 ```{r}
 
