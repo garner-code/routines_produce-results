@@ -963,6 +963,11 @@ dvs <- c('comp', 'part', 'k4', 'log_r')
 onset_dat <- cbind(onset_dat,
          do.call(cbind, lapply(dvs, remove_outliers, betas=onset_dat)))
 
+rem <- do.call(cbind, lapply(onset_dat, function(x) sum(is.na(x))))
+rem <- rem[colnames(rem) %in% c("k4_flt", "log_r_flt")]
+rem <- tibble(var=c("k4_flt", "log_r_flt"),
+              rem=rem)
+write.csv(rem, paste(res_path, 'exp_lt_k4_r_outs-rem.csv', sep=''), row.names = FALSE)
 # and last, I want to get the accuracy/general error data from the training phase,
 trn_dat <- read.csv(paste(data_path, 'exp_lt_avg.csv', sep='')) %>% 
               filter(ses == 2) %>%
@@ -1011,8 +1016,8 @@ bias <- onset_dat %>% select(sub, train_type, log_r_flt, k4_flt) %>%
                na.omit()
 col_scheme <- wesanderson::wes_palette('IsleofDogs1')[5:6]
 this_form = 'k4_flt ~ train_type'
-ylabel = 'Bias'
-fig_lab = 'B'
+ylabel = 'TB'
+fig_lab = 'A'
 
 bs_wdth = z_p_wdth*.65
 bs_hgt = trn_bp_hgt
@@ -1057,13 +1062,13 @@ lt_bias_corr_fname = paste(fig_path, 'lt-bias_r_corr', sep='')
 plt_r_bias_cor_4paper_andtlks(lt_bias_corr_fname,
                               bs_wdth, bs_hgt,
                               bias,
-                              'C')
+                              'B')
 
 ```
 
 ![Transfer bias correlates with routine score.](figs/lt-bias_r_corr_4tlks.svg){fig-align="cent"}
 
-Now put them all together into one mega plot!
+Now put the transfer bias scores
 
 ```{r}
 
@@ -1071,12 +1076,18 @@ fnms = c(k4_by_grp_fname, bias_by_grp_fname, lt_bias_corr_fname)
 
 ims = lapply(fnms, function(x) image_read_pdf(paste(x, '.pdf', sep='')))
 
-bottom <- image_append(c(ims[[2]],ims[[3]]))
-multi <- image_append(c(ims[[1]], bottom), stack=TRUE)
+bottom <- image_append(c(ims[[2]],ims[[3]])) # decided to put bottom in paper and top in supplemental
 pdf(paste(fig_path, 'LT_results.pdf', sep=''), 
     width=trn_bp_wdth,
+    height=bs_hgt)
+plot(bottom)
+dev.off()
+
+# multi <- image_append(c(ims[[1]], bottom), stack=TRUE)
+pdf(paste(fig_path, 'LT_supp.pdf', sep=''), 
+    width=trn_bp_wdth,
     height=bs_hgt*2)
-plot(multi)
+plot(ims[[1]])
 dev.off()
 
 ```
@@ -1099,6 +1110,15 @@ grp_bias = with(onset_dat, t.test(k4_flt~train_type, na.rm=TRUE))
 grp_bias_d = cohens_d(data=onset_dat %>% na.omit(k4_flt),
                       formula=k4_flt~train_type, paired=FALSE,
                       ci=TRUE, ci.type='perc', nboot=1000)
+# get mean and standard deviation of group bias scores
+bias_desc_stats <- onset_dat %>% select(sub, train_type, log_r_flt, k4_flt) %>%
+                  drop_na() %>%
+                  group_by(train_type) %>%
+                  summarise(M=mean(k4_flt),
+                            SD=sd(k4_flt),
+                            N=length(k4_flt),
+                            SE=SD/sqrt(N))
+write.csv(bias_desc_stats, paste(res_path, 'lt_bias_desc-stats.csv', sep=''), row.names=FALSE)
 
 lt_ts <- tibble(fx = c('transfer', 'group-bias'),
                 t = c(me_transfer$statistic, grp_bias$statistic),
@@ -1124,9 +1144,10 @@ And now correlate the routine score, and perform a regression where we control f
 ```{r}
 
 r_bias_cor = with(onset_dat, cor.test(k4_flt, log_r_flt, na.rm=TRUE))
+# lm controlling for accuracy
 r_bias_cor_cntrl = summary(lm(k4_flt ~ log_r_flt + general_errors, data=onset_dat))
 
-# lm controlling for accuracy
+
 lt_r_cor_info <- tibble(r=r_bias_cor$estimate,
                         l=r_bias_cor$conf.int[1],
                         u=r_bias_cor$conf.int[2],

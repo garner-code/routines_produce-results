@@ -125,14 +125,14 @@ plt_r_bias_cor_4paper_andtlks <- function(plt_sv_nm,
   # for the manuscript
   pdf(paste(plt_sv_nm, '.pdf', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54)
-  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=2/3)
+  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=1)
   plot_r_bias_cor(bias)
   fig_label(fig_lab)
   dev.off()
   
   svg(paste(plt_sv_nm, '.svg', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54)
-  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=2/3)
+  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=1)
   plot_r_bias_cor(bias)
   fig_label(fig_lab)
   dev.off()
@@ -160,8 +160,8 @@ plot_r_bias_cor <- function(bias){
                      frame.plot=F, 
                      ylim=c(0.1, 0.9),
                      xlim=c(0.8, 3.6),
-                     xlab = "log r",
-                     ylab = "transfer bias",
+                     xlab = "log TE",
+                     ylab = "TB",
                      col = '#7570b3',
                      main = "",
                      xaxt = "n",
