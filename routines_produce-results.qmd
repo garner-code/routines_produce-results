@@ -1078,7 +1078,7 @@ ims = lapply(fnms, function(x) image_read_pdf(paste(x, '.pdf', sep='')))
 
 bottom <- image_append(c(ims[[2]],ims[[3]])) # decided to put bottom in paper and top in supplemental
 pdf(paste(fig_path, 'LT_results.pdf', sep=''), 
-    width=trn_bp_wdth,
+    width=bs_wdth*2,
     height=bs_hgt)
 plot(bottom)
 dev.off()
@@ -1118,6 +1118,7 @@ bias_desc_stats <- onset_dat %>% select(sub, train_type, log_r_flt, k4_flt) %>%
                             SD=sd(k4_flt),
                             N=length(k4_flt),
                             SE=SD/sqrt(N))
+bias_desc_stats[,c('M', 'SE')] <- apply(bias_desc_stats[,c('M', 'SE')], 2, round, 2)
 write.csv(bias_desc_stats, paste(res_path, 'lt_bias_desc-stats.csv', sep=''), row.names=FALSE)
 
 lt_ts <- tibble(fx = c('transfer', 'group-bias'),
