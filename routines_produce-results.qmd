@@ -1019,7 +1019,7 @@ this_form = 'k4_flt ~ train_type'
 ylabel = 'TB'
 fig_lab = 'A'
 
-bs_wdth = z_p_wdth*.65
+bs_wdth = z_p_wdth/2
 bs_hgt = trn_bp_hgt
 
 bias_by_grp_fname = paste(fig_path, 'bias-by-grp', sep='')

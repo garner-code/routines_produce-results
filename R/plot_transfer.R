@@ -70,14 +70,14 @@ plt_bias_by_grp_4paper_andtlks <- function(plt_sv_nm,
   # for the manuscript
   pdf(paste(plt_sv_nm, '.pdf', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54)
-  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=1)
+  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=2/3)
   trn_bias(dat, this_form, col_scheme, ylabel)
   fig_label(fig_lab)
   dev.off()
   
   svg(paste(plt_sv_nm, '.svg', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54)
-  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=1)
+  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=2/3)
   trn_bias(dat, this_form, col_scheme, ylabel)
   fig_label(fig_lab)
   dev.off()
@@ -125,14 +125,14 @@ plt_r_bias_cor_4paper_andtlks <- function(plt_sv_nm,
   # for the manuscript
   pdf(paste(plt_sv_nm, '.pdf', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54)
-  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=1)
+  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=2/3)
   plot_r_bias_cor(bias)
   fig_label(fig_lab)
   dev.off()
   
   svg(paste(plt_sv_nm, '.svg', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54)
-  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=1)
+  par(family="Source Sans Pro", mar=c(4,4,2,1), las=2, cex=2/3)
   plot_r_bias_cor(bias)
   fig_label(fig_lab)
   dev.off()
