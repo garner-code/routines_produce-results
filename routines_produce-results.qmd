@@ -1019,8 +1019,8 @@ this_form = 'k4_flt ~ train_type'
 ylabel = 'TB'
 fig_lab = 'A'
 
-bs_wdth = z_p_wdth/2
-bs_hgt = trn_bp_hgt
+bs_wdth = 6
+bs_hgt = 6
 
 bias_by_grp_fname = paste(fig_path, 'bias-by-grp', sep='')
 plt_bias_by_grp_4paper_andtlks(bias_by_grp_fname,
@@ -1077,9 +1077,7 @@ fnms = c(k4_by_grp_fname, bias_by_grp_fname, lt_bias_corr_fname)
 ims = lapply(fnms, function(x) image_read_pdf(paste(x, '.pdf', sep='')))
 
 bottom <- image_append(c(ims[[2]],ims[[3]])) # decided to put bottom in paper and top in supplemental
-pdf(paste(fig_path, 'LT_results.pdf', sep=''), 
-    width=bs_wdth*2,
-    height=bs_hgt)
+pdf(paste(fig_path, 'LT_results.pdf', sep=''))
 plot(bottom)
 dev.off()
 
@@ -1145,9 +1143,6 @@ And now correlate the routine score, and perform a regression where we control f
 ```{r}
 
 r_bias_cor = with(onset_dat, cor.test(k4_flt, log_r_flt, na.rm=TRUE))
-# lm controlling for accuracy
-r_bias_cor_cntrl = summary(lm(k4_flt ~ log_r_flt + general_errors, data=onset_dat))
-
 
 lt_r_cor_info <- tibble(r=r_bias_cor$estimate,
                         l=r_bias_cor$conf.int[1],
@@ -1155,10 +1150,21 @@ lt_r_cor_info <- tibble(r=r_bias_cor$estimate,
                         t=r_bias_cor$statistic,
                         df=r_bias_cor$parameter,
                         p=r_bias_cor$p.value) %>%
-    mutate(across(where(is.numeric) & !matches("p"), ~round(.x, 2))) 
+    mutate(across(where(is.numeric) & !matches("p"), ~round(.x, 2))) %>% 
+  mutate(id="cor")
 lt_r_cor_info <- lt_r_cor_info %>% mutate(p = round(p, 3))
 write.csv(lt_r_cor_info, paste(res_path, 'lt-r_corr.csv', sep=''), row.names=FALSE)
 kable(lt_r_cor_info)
+```
+
+Now I print out the results of the control analysis
+
+```{r}
+
+# lm controlling for accuracy
+r_bias_cor_cntrl = summary(lm(k4_flt ~ log_r_flt + general_errors, data=onset_dat))
+
+
 ```
 
 ### Task switching
