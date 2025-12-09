@@ -1016,7 +1016,7 @@ bias <- onset_dat %>% select(sub, train_type, log_r_flt, k4_flt) %>%
                na.omit()
 col_scheme <- wesanderson::wes_palette('IsleofDogs1')[5:6]
 this_form = 'k4_flt ~ train_type'
-ylabel = 'TB'
+ylabel = 'Transfer Bias'
 fig_lab = 'A'
 
 bs_wdth = 6
