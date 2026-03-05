@@ -48,8 +48,8 @@ do_cor_plot <- function(rel_dat, fig_lab){
                      bty='n',
                      xlim=c(min_x, max_x),
                      ylim=c(min_x, max_x),
-                     xlab='SA',
-                     ylab='SB',
+                     xlab='Session A',
+                     ylab='Session B',
                      xaxt = 'n',
                      yaxt = 'n'))
   axis(1, at = seq(min_x, max_x, by = 8))
