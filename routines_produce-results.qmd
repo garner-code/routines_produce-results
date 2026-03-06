@@ -1,9 +1,10 @@
 ---
-title: "routine-produce-results"
+title: "Transition Entropy and Routines"
 format: 
   html:
     code-fold: TRUE
     default-image-extension: svg
+    output-file: "index"
 editor: visual
 ---
 
@@ -71,15 +72,9 @@ loadfonts(device='pdf')
 
 Here, I calculate the routine (R) scores for each participant, generate density plots of those scores over experiments and conditions, and then I print out the analysis of the basis differences between conditions, across replications.
 
-### Compute R Scores
+### Compute TE Scores
 
-First I compute R scores for each participant, using the formula -
-
-![](figs/R_def.png){width="390"}
-
-```         
-![r formula](figs/R_def.png){fig-align="cent"}
-```
+First I compute TE scores for each participant. Note that these shall now mostly be referred to as R scores within this document.
 
 ```{r, fold=TRUE, results='hide'}
 
@@ -1066,7 +1061,7 @@ lt_bias_corr_fname = paste(fig_path, 'lt-bias_r_corr', sep='')
 plt_r_bias_cor_4paper_andtlks(lt_bias_corr_fname,
                               bs_wdth, bs_hgt,
                               bias,
-                              'B')
+                              'A')
 
 ```
 

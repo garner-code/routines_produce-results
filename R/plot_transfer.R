@@ -156,13 +156,15 @@ plt_r_bias_cor_4paper_andtlks <- function(plt_sv_nm,
 
 plot_r_bias_cor <- function(bias){
   
+  colours = c("#9986A5", "#79402E")
+  
   with(bias, plot(x=log_r_flt, y=k4_flt, pch=19,
                      frame.plot=F, 
                      ylim=c(0.1, 0.9),
                      xlim=c(0.8, 3.6),
                      xlab = "log TE",
                      ylab = "Transfer Bias",
-                     col = '#7570b3',
+                     col = colours[factor(train_type)],
                      main = "",
                      xaxt = "n",
                      yaxt = "n"))
@@ -176,5 +178,12 @@ plot_r_bias_cor <- function(bias){
   # draw regression line
   mod <- lm(k4_flt ~ log_r_flt, data=bias)
   abline(mod, col = "darkgrey", lwd = 1)
-  text(x=1.6, y=0.15, labels="r(78)=-0.23**", cex = 1)
+  text(x=3, y=0.15, labels="r(78)=-0.23**", cex = 1)
+  
+  legend("bottomleft",
+         legend = c("Stable", "Variable"),
+         pch = 19,
+         col = colours,
+         bty="n")
+
 }
