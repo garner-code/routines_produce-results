@@ -1157,16 +1157,6 @@ write.csv(lt_r_cor_info, paste(res_path, 'lt-r_corr.csv', sep=''), row.names=FAL
 kable(lt_r_cor_info)
 ```
 
-Now I print out the results of the control analysis
-
-```{r}
-
-# lm controlling for accuracy
-r_bias_cor_cntrl = summary(lm(k4_flt ~ log_r_flt + general_errors, data=onset_dat))
-
-
-```
-
 ### Task switching
 
 And now we ask exactly the same kinds of questions about task switching performance. Focusing on first correct RT
