@@ -119,12 +119,12 @@ plot_coefs_scnd_lvl <- function(dat,
     text(11, 2, '*', cex=1.5)
   } else {
     text(1, 2, '*', cex=1.5)
-    text(5, 2, '.', cex=1.5)
+    text(5, 2, '.', cex=3)
     text(7, 2, '*', cex=1.5)
-    text(11, 2, '.', cex=1.5)
+    text(11, 2, '.', cex=3)
   }
   if (x_on){
-    axis(1, at=c(1:5), labels=c(expression(B[0]), 'Sw', expression(Sw[r]), expression(O[LT]), expression(O[S])))    
+    axis(1, at=c(1:5), labels=c(expression(B[0]), 'Sw', expression(Sw[r]), expression(OR[LT]), expression(OR[S])))    
   }
   axis(2, at=seq(-6, 2, by=2), labels=paste(seq(-6, 2, by=2)))
 }
