@@ -8,3 +8,5 @@ sims/
 res/
 routines_produce-results_files/figure-html/unnamed-chunk*.png
 /.quarto/
+
+**/*.quarto_ipynb

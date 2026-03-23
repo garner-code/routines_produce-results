@@ -54,7 +54,7 @@ tran_grp_bp <- function(dat, this_form, col_scheme, ylabel, ylim, xlab_cex){
                xaxt='n',
                xlab='',
                notch=FALSE))
-  axis(1, at=c(1.5, 4), labels=c('Sta', 'Var'))
+  axis(1, at=c(1.5, 4), labels=c('Stable', 'Variable'), las=1)
   axis(2, at=seq(0, max(ylim), by=50), labels=paste(seq(0, max(ylim), by=50)))
   mtext('Group', side=1, line=2, las=1, cex=xlab_cex)
   legend(0.25, 230, c('I','M'), fill=col_scheme, bty='n')
@@ -113,7 +113,7 @@ trn_bias <- function(dat,
                xaxt='n',
                xlab='Group',
                ylim=c(0,1)))
-  axis(1, at=c(1,2), labels=c('Sta', 'Var'))
+  axis(1, at=c(1,2), las=1, labels=c('Stable', 'Variable'))
   axis(2, at=seq(0,1, by=0.25), labels=paste(seq(0,1, by=0.25)))
   abline(h=0.5, lty=2, col='darkgrey')
 }
@@ -156,13 +156,15 @@ plt_r_bias_cor_4paper_andtlks <- function(plt_sv_nm,
 
 plot_r_bias_cor <- function(bias){
   
+  colours = c("#9986A5", "#79402E")
+  
   with(bias, plot(x=log_r_flt, y=k4_flt, pch=19,
                      frame.plot=F, 
                      ylim=c(0.1, 0.9),
                      xlim=c(0.8, 3.6),
                      xlab = "log TE",
-                     ylab = "TB",
-                     col = '#7570b3',
+                     ylab = "Transfer Bias",
+                     col = colours[factor(train_type)],
                      main = "",
                      xaxt = "n",
                      yaxt = "n"))
@@ -176,5 +178,12 @@ plot_r_bias_cor <- function(bias){
   # draw regression line
   mod <- lm(k4_flt ~ log_r_flt, data=bias)
   abline(mod, col = "darkgrey", lwd = 1)
-  text(x=1.6, y=0.15, labels="r(78)=-0.23**", cex = 1)
+  text(x=3, y=0.15, labels="r(78)=-0.23**", cex = 1)
+  
+  legend("bottomleft",
+         legend = c("Stable", "Variable"),
+         pch = 19,
+         col = colours,
+         bty="n")
+
 }

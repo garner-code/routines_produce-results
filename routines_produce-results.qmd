@@ -1,9 +1,10 @@
 ---
-title: "routine-produce-results"
+title: "Transition Entropy and Routines"
 format: 
   html:
     code-fold: TRUE
     default-image-extension: svg
+    output-file: "index"
 editor: visual
 ---
 
@@ -71,15 +72,9 @@ loadfonts(device='pdf')
 
 Here, I calculate the routine (R) scores for each participant, generate density plots of those scores over experiments and conditions, and then I print out the analysis of the basis differences between conditions, across replications.
 
-### Compute R Scores
+### Compute TE Scores
 
-First I compute R scores for each participant, using the formula -
-
-![](figs/R_def.png){width="390"}
-
-```         
-![r formula](figs/R_def.png){fig-align="cent"}
-```
+First I compute TE scores for each participant. Note that these shall now mostly be referred to as R scores within this document.
 
 ```{r, fold=TRUE, results='hide'}
 
@@ -302,12 +297,13 @@ Now I can put Figs 1, 2 and 3 together to make one figure. Going to use the magi
 
 ```{r, eval=FALSE}
 
-fnms = c(traj_fig_fname, ms_z_plt_fname, rel_plt_fname)
+# fnms = c(traj_fig_fname, ms_z_plt_fname, rel_plt_fname)
+fnms = c(traj_fig_fname, ms_z_plt_fname)
 
 ims = lapply(fnms, function(x) image_read_pdf(paste(x, '.pdf', sep='')))
 
 im_info = lapply(ims, image_info)
-top_width = im_info[[2]]$width + im_info[[3]]$width
+top_width = im_info[[2]]$width #+ im_info[[3]]$width
 bottom_width = im_info[[1]]$width
 
 bottom_centered <- image_extent(ims[[1]],
@@ -316,12 +312,15 @@ bottom_centered <- image_extent(ims[[1]],
                                 gravity = "north",
                                 color = "none")
 
-multi <- c(ims[[2]], ims[[3]]) %>%
-         image_append() %>%
-        c(bottom_centered) %>% # might want to adjust the size of this
+
+# multi <- c(ims[[2]]) %>%
+#          image_append() %>%
+#         c(bottom_centered) %>% # might want to adjust the size of this
+#          image_append(stack=TRUE)
+multi <- c(ims[[2]], ims[[1]]) %>%
          image_append(stack=TRUE)
 traj_hght = (w/6*2)+.5 # get the height of the traj plot
-pdf(paste(fig_path, 'FigA.pdf', sep=''), width=z_p_wdth+r_p_wdth,
+pdf(paste(fig_path, 'FigA.pdf', sep=''), width=z_p_wdth+1, # +r_p_wdth,
     height=z_p_hgt+traj_hght)
 plot(multi)
 dev.off()
@@ -1016,7 +1015,7 @@ bias <- onset_dat %>% select(sub, train_type, log_r_flt, k4_flt) %>%
                na.omit()
 col_scheme <- wesanderson::wes_palette('IsleofDogs1')[5:6]
 this_form = 'k4_flt ~ train_type'
-ylabel = 'TB'
+ylabel = 'Transfer Bias'
 fig_lab = 'A'
 
 bs_wdth = 6
@@ -1062,7 +1061,7 @@ lt_bias_corr_fname = paste(fig_path, 'lt-bias_r_corr', sep='')
 plt_r_bias_cor_4paper_andtlks(lt_bias_corr_fname,
                               bs_wdth, bs_hgt,
                               bias,
-                              'B')
+                              'A')
 
 ```
 

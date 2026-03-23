@@ -62,7 +62,7 @@ draw_trajectory <- function(dat, cntxt, xs, ys, obs){
                data = doors,
                aes(x = xs,
                    y = ys,
-                   colour = tgt), size = 4, alpha = .3) +
+                   colour = tgt), size = 3, alpha = .3, shape=15) +
     scale_colour_manual(values=c("#fa9fb5", "#4dd0a9ff" ,"#a7a2e5ff")) + 
     theme(axis.title.x=element_blank(),
           axis.text.x=element_blank(),
@@ -104,7 +104,7 @@ tracs <- grid.arrange(all_ps[[1]], all_ps[[2]],
                       nrow=nsubs, ncol=length(all_ps)/nsubs,
                       widths = rep(2.5, length(all_ps)/nsubs), 
                       heights = rep(2.5, nsubs),
-                      left = textGrob("sub", gp=gpar(fontfamily="Source Sans Pro", fontsize = 12)),
+                      left = textGrob("sub", gp=gpar(fontfamily="Source Sans Pro", fontsize = 12), rot=90),
                       bottom = textGrob("epochs", gp=gpar(fontfamily="Source Sans Pro", fontsize = 12)))
 annotate_figure(tracs,
                 fig.lab='D')
