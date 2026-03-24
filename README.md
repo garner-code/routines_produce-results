@@ -4,7 +4,7 @@ K. Garner (2025). *Towards the definition and measurement of routines and their 
 
 This repository provides a computationally reproducible record of the analyses and figures reported in the paper above. It is intended to allow others to reproduce all results from the raw data.
 
-If you want a quick overview of the analysis and the code used to produce it, you can follow along [here](https://garner-code.github.io/routines_produce-results/).
+**If you want a quick overview of the analysis and the code used to produce it, you can follow along [here](https://garner-code.github.io/routines_produce-results/).**
 
 ## Overview
 
