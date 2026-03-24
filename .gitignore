@@ -3,7 +3,6 @@
 .RData
 .Ruserdata
 data-wrangled/
-figs/
 sims/
 res/
 routines_produce-results_files/figure-html/unnamed-chunk*.png
