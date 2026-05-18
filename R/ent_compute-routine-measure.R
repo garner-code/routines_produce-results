@@ -15,22 +15,6 @@ ent_compute_routine_measure <- function(data_fname,
   # averaged across context
   # -------- save_sum_data_fname - as above but averaged across context
   
-  #rm(list=ls())
-  #library(tidyverse)
-  
-  #str <- 'lt' ## experiment to get scores for
-  
-  ######################################################################
-  ## functions
-  ######################################################################
-  #source("src-ent/ent_functions.R")
-  
-  ######################################################################
-  ## load data
-  ######################################################################
-  # dat <- read.csv(paste("../doors-data/data-wrangled/exp", str, 
-  #                           "door_selections_for_ent.csv", sep="_"))
-  
   dat <- read.csv(data_fname)
   
   ### compute entropy score/routine measure for each subject
@@ -46,27 +30,19 @@ ent_compute_routine_measure <- function(data_fname,
     door_dat <- tmp$door
     count_mat <- data_2_counts_matrix(data = door_dat, n_doors)
     probs <- p_st1_gs(counts_matrix = count_mat, n_doors = n_doors)
-    ent <- sum(apply(probs, 1, H))
-    tibble(sub = subN, context = cntxN, r = ent)
+    # now that we have the Hs, we can get the occupancy weights
+    TE <- get_wMTE(counts_matrix = count_mat, p_mat = probs)
+    tibble(sub = subN, context = cntxN, TE=TE)
   }
   
   r_dat <- do.call(rbind, mapply(compute_ent_by_sub, subs, cntxts, MoreArgs = list(dat=dat),
                                  SIMPLIFY = FALSE))
-  
-  # write.csv(r_dat, file=paste("../doors-data/data-wrangled/exp", str, 
-  #                             "rscore-full.csv", sep="_"),
-  #           row.names=FALSE)
+
   
   write.csv(r_dat, file=save_new_data_fname,
             row.names=FALSE)
-  
-  #plot(x=r_dat$r[r_dat$context == 1], y=r_dat$r[r_dat$context == 2]) # very similar so will average
-  r_dat <- r_dat %>% group_by(sub) %>% summarise(r = mean(r)) %>% ungroup()
-  
-  # write.csv(r_dat, file=paste("../doors-data/data-wrangled/exp", str, 
-  #                                "rscore.csv", sep="_"),
-  #           row.names=FALSE)
-  
+
+  r_dat <- r_dat %>% group_by(sub) %>% summarise(TE=mean(TE)) %>% ungroup()
   write.csv(r_dat, save_sum_data_fname,
             row.names=FALSE)
 }

@@ -25,6 +25,14 @@ p_st1_gs <- function(counts_matrix, n_doors){
   out
 }
 
+get_wMTE <- function(counts_matrix, p_mat){
+  # get the weighted mean transition entropy from a probability matrix and counts matrix
+  lps <- log(p_mat)
+  occupancy_wgt <- counts_matrix/sum(counts_matrix)
+  wMTE = -sum(occupancy_wgt * lps, na.rm = TRUE)
+  wMTE
+}
+
 ####################################################################
 ### functions to generate null distributions and random agents
 ####################################################################

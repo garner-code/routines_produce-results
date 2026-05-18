@@ -65,21 +65,25 @@ sapply(req_functions, function(x) source(paste(here::here(function_loc),
 library(extrafont)
 #font_import() # run this once only, comment out after first time
 loadfonts(device='pdf')
+fig_font <- grep("source", fonts(), value = TRUE, ignore.case = TRUE)
+
+# the below are relevant to the z-score plot but are also the base for many other plot dims and colour schemes so will put these here
+z_p_wdth <- 10 # plot width of ms plot, in cm
+z_p_hgt <- z_p_wdth*(6/10)
+col_scheme <- c('#1b9e77','#d95f02', '#7570b3')
 ```
 
 ## Q1. Can we produce routines in a consistent way across sessions and conditions?
 
 Here, I calculate the routine (R) scores for each participant, generate density plots of those scores over experiments and conditions, and then I print out the analysis of the basis differences between conditions, across replications.
 
-### Compute R Scores
+### Compute TE Scores
 
-First I compute R scores for each participant, using the formula -
+First I compute TE scores for each participant, using the formula -
 
 ![](figs/R_def.png){width="390"}
 
-```         
-![r formula](figs/R_def.png){fig-align="cent"}
-```
+NOTE TO SELF: UPDATE THIS
 
 ```{r, fold=TRUE, results='hide'}
 
@@ -121,7 +125,7 @@ exp_str <- 'lt'
 traj_data_fname <- paste(data_path, 'exp_', exp_str, '_evt.csv', sep="")
 traj_fig_fname <- paste(fig_path, 'trajectories', sep='')
 w <- 10 # width of plot, in cm
-traj_plt <- plot_trajectories(traj_data_fname, traj_fig_fname, w)
+traj_plt <- plot_trajectories(traj_data_fname, traj_fig_fname, w, fig_font)
 
 
 ```
@@ -206,13 +210,11 @@ Now lets plot the histograms of humans vs random agent. Note this code produces 
 ```{r}
 
 exp_strs <- c('lt', 'ts')
-col_scheme <- c('#1b9e77','#d95f02', '#7570b3')
 names(col_scheme) <- c(exp_strs, "agent")
 sims_fname = paste(sim_data_path, 'random-agent_z-score-analysis.Rds', sep='/')
 ms_z_plt_fname = paste(fig_path, 'z-hsts_ms', sep='')
 tlk_z_plt_fname = paste(fig_path, 'z-hsts_tlk', sep='')
-z_p_wdth <- 10 # plot width of ms plot, in cm
-z_p_hgt <- z_p_wdth*(6/10)
+
 produce_z_plts(exp_strs,
                col_scheme,
                z_p_wdth,
@@ -275,8 +277,8 @@ reliability_analysis(rel_data_fname, rel_data_save_name,
 
 # now we've made the data file, report the results of the reliability analysis
 rel <- read.csv(rel_analysis_save_name)
-fmt = 'the measure demonstrates some reliability, r = %.2f, 95 CI[%.2f, %.2f], t(%.0f) = %.2f, p = %.2f'
-sprintf(fmt, rel$r, rel$l, rel$u, rel$df, rel$t, rel$p)
+fmt = 'the %s measure demonstrates some reliability, r = %.2f, 95 CI[%.2f, %.2f], t(%.0f) = %.2f, p = %.2f'
+sprintf(fmt, rel$measure, rel$r, rel$l, rel$u, rel$df, rel$t, rel$p)
 ```
 
 Now let's see the correlation in the data -
@@ -293,7 +295,8 @@ rel_plt_fname = paste(fig_path, 'reliability_data', sep='')
 plot_rel(r_p_wdth, r_p_hgt, r_col,
          fig_lab, 
          rel_data_save_name,
-         rel_plt_fname)
+         rel_plt_fname,
+         fig_font=fig_font)
 ```
 
 ![Fig 3: Correlation of routine scores between sessions](figs/reliability_data_4tlks.svg){fig-align="cent"}
@@ -717,9 +720,7 @@ $$P(C = A | n, m) = \frac{ P(n,m|C=A)P(C=A)}{P(n,m)}$$
 
 Once we have the probability of being in that context, given n and m, we can compute the probability of success for staying in that context, and the probability of success for moving to the other context, by taking the new probability of still being in context A, and multiplying it by the probability of success, given the number of doors left in A.
 
-$$
-P(S|C = A,n) = \frac{P(C=A|n,m)}{n_\mathrm{max} - n}
-$$
+$$P(S|C = A,n) = \frac{P(C=A|n,m)}{n_\mathrm{max} - n}$$
 
 where S is success, and $n_{\mathrm{max}}$ is the total number of n that can be chosen (i.e. the number of target doors in the set).
 
@@ -729,15 +730,11 @@ We want to see how well each set of probabilities accounts for task jumps, over 
 
 Switches are the cumulative sum of experienced switches - i.e. how often you found a target in a context that is different to the last context where you found a target:
 
-$$
-\mathrm{Sw} = \sum_{i=1}^S S(i)
-$$
+$$\mathrm{Sw} = \sum_{i=1}^S S(i)$$
 
 And switch rate is simply the probability of a switch, given the number of targets you have found:
 
-$$
-\mathrm{Sw_{r}} = \frac{\mathrm{Sw}}{t}
-$$
+$$\mathrm{Sw_{r}} = \frac{\mathrm{Sw}}{t}$$
 
 where t is the total number of targets found so far.
 
@@ -771,9 +768,7 @@ For each trial, I then count the number of n's and m's. Note that n and m are ch
 
 For the cumulative counts of n and m on each trial, I assign the probability of that many nulls, given you are in the context to which those doors belong. Note the equation below is defined for n, but I also do the same for $p(m|C=B)$
 
-$$
-p(n | C=A) =  \frac{n_{max} - n}{n_{max}}
-$$
+$$p(n | C=A) =  \frac{n_{max} - n}{n_{max}}$$
 
 This allows me to compute, based on trial by trial experience, $p(C = A | n, m)$ and $p(S|C=A, n,m)$. At the end, I then shift all the information down 1 row, as the current outcome should affect the next behaviour. For each regressor, I then take the odds by dividing by $p(C=B|n,m)$ and $p(S|C = B,n,m)$. I then use the odds variables in the subsequent logistic regressions.
 

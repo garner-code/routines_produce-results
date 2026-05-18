@@ -28,8 +28,8 @@ get_Rs <- function(dat, subN, drugN, condN){
                                          drugN=drugN,
                                          condN=condN)
   p_mat <- p_st1_gs(counts_mat, n_doors = 16)
-  r_score = sum(apply(p_mat, 1, H))
-  tibble(sub=subN, cond=condN, drug=drugN, r=r_score)
+  TE <- get_wMTE(counts_matrix = counts_mat, p_mat = p_mat)
+  tibble(sub=subN, cond=condN, drug=drugN, TE=TE)
 }
 
 reliability_analysis <- function(rel_data_fname, 
@@ -40,7 +40,7 @@ reliability_analysis <- function(rel_data_fname,
   # load data
   # ---------------------------------------------------------------------------
   load(rel_data_fname) # this will load a dataframe called 'blocked_dat'
-  
+
   # ----------------------------------------------------------------------------
   # compute R's
   # ---------------------------------------------------------------------------
@@ -53,23 +53,18 @@ reliability_analysis <- function(rel_data_fname,
   
   # now pivot wider
   r_dat_w <- r_dat %>% group_by(sub, drug) %>% 
-    summarise(mu = mean(r)) %>%
-    ungroup() %>% group_by(sub) %>% 
+    summarise(TE=mean(TE),,
+              .groups="drop") %>%
     pivot_wider(id_cols=sub, names_from=drug,
-                        values_from=mu)
+                values_from=c(TE), 
+                names_sep="_")
   write.csv(r_dat_w, rel_data_save_name, row.names=FALSE)
+  measures = c("TE")
   
-  rel_results <- with(r_dat_w, cor.test(levodopa, placebo))
-  
-  rel_results <- tibble(r = round(rel_results$estimate,2),
-                        l = round(rel_results$conf.int[1],2),
-                        u = round(rel_results$conf.int[2],2),
-                        t = round(rel_results$statistic,2),
-                        df = rel_results$parameter,
-                        p = round(rel_results$p.value,3))
-  rel_results$id <- "cor"
-  
-  write.csv(rel_results, rel_analysis_save_name, row.names=FALSE)
+  cor_results <- cor.test(r_dat_w$levodopa, r_dat_w$placebo) %>%
+    tidy() %>%
+    mutate(measure = "TE")
+  names(cor_results) <- c("r","t","p","df","l","u","method","alt","measure")
+  write.csv(cor_results, rel_analysis_save_name, row.names=FALSE)
 }
-
 
