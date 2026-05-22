@@ -234,7 +234,7 @@ plot_r_bias_cor <- function(x,y, # data for x and y
   abline(mod, col = "darkgrey", lwd = 1)
   text(x=xtext, y=ytext, labels=cor_text, cex = 1)
   
-  legend("topleft",
+  legend("bottomleft",
          legend = c("Stable", "Variable"),
          pch = 19,
          col = colours,

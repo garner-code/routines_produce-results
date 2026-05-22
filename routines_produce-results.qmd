@@ -933,7 +933,11 @@ onset_dat <- read.csv(paste(data_path, 'exp_lt_maggi-k4.csv', sep='')) %>%
   filter(ses == 3) %>%
   mutate(transfer=recode(transfer, `1` = 'comp', `2` = 'part')) %>%
   pivot_wider(names_from=transfer, values_from=k4_onset) %>% 
-  mutate(k4 = part / (comp + part))
+  mutate(k4 = (comp - part) / (comp + part))
+# of all the time you spent learning, what proportion of that time was spent learning
+# each task?
+# the closer to +1, the more time you spent learning the comp relative to partial,
+# the closer to -1, the more time you spent learning the partial relative to the comp
 names(onset_dat)[names(onset_dat) == "sid"] = "sub"
 # proportion makes it more normal
 
@@ -964,33 +968,31 @@ onset_dat <- inner_join(onset_dat, jumps %>% filter(exp == 'lt' & switch == 0) %
 # now I log my variables, and I load the avg data so that I can get the training 
 # group variale
 onset_dat <- onset_dat %>% mutate(log_TE = log(TE),
-                                  log_k4 = log(k4),
                                   log_jumps = log(jumps+.01)) # add a small constant to get rid of zeros
 
 
 # Now I have the data, I want to replace any outliers with NA
-dvs <- c('log_k4','log_TE','log_jumps')
+dvs <- c('k4','log_TE','log_jumps')
 onset_dat <- cbind(onset_dat,
          do.call(cbind, lapply(dvs, remove_outliers, betas=onset_dat)))
 
 
 rem <- do.call(cbind, lapply(onset_dat, function(x) sum(is.na(x))))
-rem <- rem[colnames(rem) %in% c("log_k4_flt", "log_TE_flt", "log_jumps_flt")]
-rem <- tibble(var=c("log_k4_flt", "log_TE_flt", "log_jumps_flt"),
+rem <- rem[colnames(rem) %in% c("k4_flt", "log_TE_flt", "log_jumps_flt")]
+rem <- tibble(var=c("k4_flt", "log_TE_flt", "log_jumps_flt"),
               rem=rem)
 write.csv(rem, paste(res_path, 'exp_lt_k4_r_outs-rem.csv', sep=''), row.names = FALSE)
 write.csv(onset_dat, paste(data_path, 'exp_lt_onsetwr.csv', sep=''), row.names=FALSE)
 ```
 
-
 Now I will plot some residual plots to determine the relationship between log_k4 and the other variables.
 
 ```{r}
 
-transfer_mod_dat <- onset_dat %>% select(train_type, log_k4_flt, log_TE_flt, log_jumps_flt, train_type) %>% 
+transfer_mod_dat <- onset_dat %>% select(train_type, k4_flt, log_TE_flt, log_jumps_flt, train_type) %>% 
  drop_na()
 
-transfer_mod <- lm(log_k4_flt ~ log_TE_flt*log_jumps_flt, data=transfer_mod_dat)
+transfer_mod <- lm(k4_flt ~ log_TE_flt*log_jumps_flt, data=transfer_mod_dat)
 
 # first get the required stats for reporting in the paper
 transfer_results <- tidy(transfer_mod)
@@ -1010,17 +1012,20 @@ print(transfer_results)
 
 ```
 
-
 Now we know the model is significant, and both the effect of TE and task jumps is sig, we can next plot the partial regression plot of TE vs task knowledge onset, while regressing out variance due to task jumps on both TE and knowledge onset.
 
 ```{r}
 
 #now make partial regression plots - first the one between TE and k4
-resid_k4 <- lm(log_k4_flt ~ log_jumps_flt, data=transfer_mod_dat)$residuals
+resid_k4 <- lm(k4_flt ~ log_jumps_flt, data=transfer_mod_dat)$residuals
 resid_TE <- lm(log_TE_flt ~ log_jumps_flt, data=transfer_mod_dat)$residuals
 resid_jumps <- lm(log_jumps_flt ~ log_TE_flt, data=transfer_mod_dat)$residuals
 k4TE_cor <- cor.test(resid_k4, resid_TE) 
 k4jump_cor <- cor.test(resid_k4, resid_jumps)
+
+# some plot settings
+bs_wdth = 6
+bs_hgt = 6
 
 
 lt_bias_corr_fname = paste(fig_path, 'lt-bias_r_corr', sep='')
@@ -1033,9 +1038,9 @@ plt_r_bias_cor_4paper_andtlks(plt_sv_nm=lt_bias_corr_fname,
                               xlabel="TE",
                               ylabel="Transfer Bias",
                               x_seq = round(seq(-0.6, 0.2, 0.2),2),
-                              y_seq = round(seq(-0.7, 0.5, 0.2),2),
-                              cor_text=expression(beta ~ "=0.63, p=.009"),
-                              xtext = -0.4,
+                              y_seq = round(seq(-0.7, 0.7, 0.2),2),
+                              cor_text=expression(beta ~ "=-0.6, p=.02"),
+                              xtext = 0,
                               ytext = -0.68)
 
 
@@ -1051,7 +1056,7 @@ plt_r_bias_cor_4paper_andtlks(plt_sv_nm=lt_bias_tjs_corr_fname,
                               ylabel="Transfer Bias",
                               x_seq = round( seq(-2, 2.8, .8),2),
                               y_seq = round(seq(-0.7, 0.7, 0.2),2),
-                              cor_text=expression(beta ~ "=-0.17, p=.001"),
+                              cor_text=expression(beta ~ "=0.19, p=.001"),
                               xtext = 1.7,
                               ytext = -0.68)
 
@@ -1059,9 +1064,8 @@ plt_r_bias_cor_4paper_andtlks(plt_sv_nm=lt_bias_tjs_corr_fname,
 
 
 ```
+
 ![Transfer bias correlates with routine score.](figs/lt-bias_r_corr_4tlks.svg){fig-align="cent"}
-
-
 
 Now I want to plot the bias score, by group, for online reference.
 
@@ -1073,9 +1077,6 @@ col_scheme <- wesanderson::wes_palette('IsleofDogs1')[5:6]
 this_form = 'k4 ~ train_type'
 ylabel = 'Transfer Bias'
 fig_lab = 'A'
-
-bs_wdth = 6
-bs_hgt = 6
 
 bias_by_grp_fname = paste(fig_path, 'bias-by-grp', sep='')
 plt_bias_by_grp_4paper_andtlks(bias_by_grp_fname,
@@ -1089,4 +1090,3 @@ plt_bias_by_grp_4paper_andtlks(bias_by_grp_fname,
 ```
 
 ![Transfer bias score, by group.](figs/bias-by-grp_4tlks.svg){fig-align="cent"}
-
