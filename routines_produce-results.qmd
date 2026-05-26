@@ -59,8 +59,7 @@ res_path = 'res/' # for inferential results
 
 function_loc <- "R" # where are the functions?
 req_functions <- list.files(function_loc)
-sapply(req_functions, function(x) source(paste(here::here(function_loc),
-                                               x, sep="/")))
+sapply(req_functions, function(x) source(paste(here::here(function_loc),x, sep="/")))
 
 # # now some font settings
 library(extrafont)
@@ -758,10 +757,13 @@ get_sw_info <- function(exp_str){
       subs <- unique(dat$sub)
       dat <- do.call(rbind, lapply(subs, get_Sw, dat=dat))
       dat$exp = exp_str
+      dat <- do.call(rbind, lapply(subs, counts_since_last_switch_for_log_reg, dat=dat))
       dat
 }
 
 dat <- do.call(rbind, lapply(exp_strs, get_sw_info))
+
+
 ```
 
 Now I will get $p(C = A | n, m)$ and $p(S|C,n)$. The function I call is a bit of a beast, but hopefully its sufficiently commented that its easy enough to follow what is happening. Basically for each trial, I calculate:
