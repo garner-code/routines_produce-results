@@ -6,6 +6,7 @@ data-wrangled/
 figs/
 sims/
 res/
+katana/
 routines_produce-results_files/figure-html/unnamed-chunk*.png
 /.quarto/
 .positai

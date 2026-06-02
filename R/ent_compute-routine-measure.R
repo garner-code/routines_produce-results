@@ -32,7 +32,8 @@ ent_compute_routine_measure <- function(data_fname,
     probs <- p_st1_gs(counts_matrix = count_mat, n_doors = n_doors)
     # now that we have the Hs, we can get the occupancy weights
     TE <- get_wMTE(counts_matrix = count_mat, p_mat = probs)
-    tibble(sub = subN, context = cntxN, TE=TE)
+
+    tibble(sub = subN, context = cntxN, TE=TE, H=H)
   }
   
   r_dat <- do.call(rbind, mapply(compute_ent_by_sub, subs, cntxts, MoreArgs = list(dat=dat),
@@ -42,7 +43,7 @@ ent_compute_routine_measure <- function(data_fname,
   write.csv(r_dat, file=save_new_data_fname,
             row.names=FALSE)
 
-  r_dat <- r_dat %>% group_by(sub) %>% summarise(TE=mean(TE)) %>% ungroup()
+  r_dat <- r_dat %>% group_by(sub) %>% summarise(TE=mean(TE), H=mean(H)) %>% ungroup()
   write.csv(r_dat, save_sum_data_fname,
             row.names=FALSE)
 }

@@ -4,6 +4,7 @@ library(performance)
 library(ggeffects)
 library(DHARMa)
 library(tidyverse)
+library(stringr)
 ##############################################################################
 ## Plan for multi-level modelling of LT experiment
 ## Things I have learned so far from visually inspecting the data -
@@ -17,6 +18,19 @@ library(tidyverse)
 ## some extreme values of odds of success and odds of context, so for each participant,
 ## I will remove any observations that are above or below 2.5 x the IQR for that participant.
 ## I will then re-plot to check what removal of these outliers does.
+## The other thing I have learned is that there can be a very up/down pattern along
+## the odds measures - i.e. some of the levels of odds have zero observations of
+## task jumps, and some have plenty. This tells me that the predictors may be too granular as
+## they are, and that we may be better off binning the odds measures into 5 or 6 bins,
+## to get more stable estimates at each level of odds.
+## ok, so binning works. the questions that remain are:
+## can I get as good results when not removing extreme odds/cntxt values?
+## the visual inspection suggests this is a bad plan, as it greatly affects the binning
+## should I log transform the odds measures?
+## the answer to the log transform is no. The model performs better
+## when the odds predictors are not log transformed.
+## should I drop one of the random fx?
+## no. model performs best w maximal rfx structure (according to bic and aic)
 #########################################################################################
 
 ##############################################################################
@@ -31,94 +45,106 @@ dat <- dat %>%
                              labels=c("stable", "variable")),
          sub = if_else(exp == 'ts', sub + 100, sub),
          sub = factor(sub),
-         exp = factor(exp, levels = c('lt', 'ts')))
-# now I will scale the key variables, for keeping the model calls neater
+         exp = factor(exp, levels = c('lt', 'ts'))) %>%
+  mutate(idx=if_else(door_n == 0 & door_m == 0, 1, 0)) %>%# these are general errors, so remove them
+  filter(idx == 0)
+# now I will select the key variables, for keeping the model calls neater
 lt_dat <- dat %>% filter(exp == 'lt') %>%
-  select(door_m, train_type, sub, Sw, succss_odds, cntxt_odds, idx) 
+  select(door_n, door_m, train_type, sub, Sw, succss_odds, cntxt_odds, t)
 
-
+# remove extreme cases
 lt_dat <- lt_dat %>%
   group_by(sub) %>%
-  filter(if_all(where(is.numeric), ~ 
+  filter(if_all(where(is.numeric), ~
                   . >= mean(., na.rm = TRUE) - 3 * sd(., na.rm = TRUE) &
                   . <= mean(., na.rm = TRUE) + 3 * sd(., na.rm = TRUE)
   )) %>%
   ungroup() # this keeps .95% of data, so I am happy with that I will check distributions
 # again, and also check the relationships
 
+# round these two variables to 2 dp, don't need more granularity than that
+# and will help with visual checks
 lt_dat <- lt_dat %>%
   mutate(coddr=round(cntxt_odds, 2))
-
 lt_dat <- lt_dat %>%
   mutate(soddr=round(succss_odds, 2)) 
 
-
-# now, I will do some visual checks of the relationship between the predictors and
-# the outcome variable
-# with the switch predictor, I think things are good enough. We might be missing some nuances
-# around people who don't switch most the time but switch from time to time, but
-# overall, I don't think there are any key non-linear trends that we are missing. 
-sw_p <- lt_dat %>%
-  group_by(Sw, train_type, sub) %>% # group by these bins
-  summarise(
-    door_m_mean = mean(door_m) # calculate the proportion of observed values here
+# now bin the Sw, coddr and soddr measures into a coarser level of granularity
+lt_dat <- lt_dat %>%
+  group_by(train_type) %>%
+  mutate(
+    coddr_bin = cut(coddr, breaks = 10),
+    soddr_bin = cut(soddr, breaks = 10),
+    Sw_bin    = cut(Sw, breaks = 10)
   ) %>%
-  ggplot(aes(x = Sw, y = door_m_mean, colour=train_type)) +
+  mutate(across(ends_with("_bin"), as.character)) %>%
+  mutate(
+    across(
+      ends_with("_bin"),
+      ~ {
+        parts <- strsplit(.x, ",")
+        lower <- as.numeric(gsub("\\(|\\[", "", sapply(parts, `[`, 1)))
+        upper <- as.numeric(gsub("\\)|\\]", "", sapply(parts, `[`, 2)))
+        (lower + upper) / 2
+      },
+      .names = "{.col}_mid"
+    )
+  )
+
+# now that I have smoothed the granularity of the predictors a little, 
+# I will next visually check whether or not the relationship between the predictors
+# and the outcome is linear enough, or whether a log transform of the predictors is needed.
+
+# this one is not perfect, but I reckon it's good enough
+sw_p <- lt_dat %>%
+  group_by(Sw_bin_mid, train_type, sub) %>% # group by these bins
+  summarise(
+    door_m_mean = mean(door_m) + .0001,     # calculate the proportion of observed values here
+    log_odds = log(door_m_mean / (1 - door_m_mean) ) # to check for linear relationship to predictor variables
+  ) %>%
+  ggplot(aes(x = Sw_bin_mid, y = log_odds, colour=train_type)) +
   geom_point() +
   geom_smooth(
-    method = "glm",
-    method.args = list(family = "binomial")
+    method = "lm"
   ) +
   facet_wrap(~sub, scales="free") +
   theme_classic()
-ggsave(sw_p, filename = paste(res_path, 'sw_p.svg', sep='/'))
+ggsave(sw_p, filename = paste(res_path, 'sw_p.svg', sep='/'), width=12, height=12)
 
-# for some participants, there does seem to be a u-shaped function that we're not fitting, but its only
-# a subset. For the rest, we're kinda doing ok.
-cntxt_p <- lt_dat %>%
-  group_by(coddr, train_type, sub) %>% # group by these bins
+# I think the log is a bit better
+cntxt_p <- lt_dat %>% 
+  group_by(coddr_bin_mid, train_type, sub) %>% # group by these bins
   summarise(
-    door_m_mean = mean(door_m) # calculate the proportion of observed values here
+    door_m_mean = mean(door_m) + .001, # calculate the proportion of observed values here
+    log_odds = log(door_m_mean / (1 - door_m_mean))
   ) %>%
-  ggplot(aes(x = coddr, y = door_m_mean, colour=train_type)) +
+  ggplot(aes(x = coddr_bin_mid, y = log_odds, colour=train_type)) +
   geom_point() +
   facet_wrap(~sub, scales="free") + 
   geom_smooth(
-    method = "glm",
-    method.args = list(family = "binomial")) +
+    method = "lm"
+    ) +
   theme_classic()
-ggsave(cntxt_p, filename = paste(res_path, 'cntxt_p.svg', sep='/'))
+ggsave(cntxt_p, filename = paste(res_path, 'cntxt_p.svg', sep='/'), width=14, height=14)
 
-# same as above
+# log will prob help a bit but the difference is neglible
 scss_odds_p <- lt_dat %>%
-  group_by(sub, soddr, train_type) %>% # group by these bins
+  group_by(sub, soddr_bin_mid, train_type) %>% # group by these bins
   summarise(
-    door_m_mean = mean(door_m) # calculate the proportion of observed values here
+    door_m_mean = mean(door_m) + .001,
+    log_odds = log(door_m_mean / (1 - door_m_mean))
   ) %>%
-  ggplot(aes(x = soddr, y = door_m_mean, colour=train_type)) +
+  ggplot(aes(x = log(soddr_bin_mid), y = log_odds, colour=train_type)) +
   geom_point() +
   facet_wrap(~sub, scales="free") +
   geom_smooth(
-    method = "glm",
-    method.args = list(family = "binomial")) +
+    method = "lm",
+  ) +
   theme_classic()
-ggsave(scss_odds_p, filename = paste(res_path, 'scss_odds_p.svg', sep='/'))
+ggsave(scss_odds_p, filename = paste(res_path, 'scss_odds_p.svg', sep='/'), width=14, height=14)
 
-idx_p <- lt_dat %>%
-  group_by(sub, idx, train_type) %>%
-  summarise(
-    door_m_mean = mean(door_m) # calculate the proportion of observed values here
-  ) %>%
-  ggplot(aes(x = idx, y = door_m_mean, colour=train_type)) +
-  geom_point() +
-  facet_wrap(~sub, scales="free") +
-  geom_smooth(
-    method = "glm",
-    method.args = list(family = "binomial")) +
-  theme_classic()
-ggsave(idx_p, filename = paste(res_path, 'idx_p.svg', sep='/'))
 
-pairs(lt_dat %>% select(Sw, coddr, soddr, idx))
+# pairs(lt_dat %>% select(Sw_bin_mid, coddr_bin_mid, soddr_bin_mid))
 ######################################################################################
 ## overall, what these visual checks tell me is that trimming the predictor variables
 ## helps a lot.
@@ -127,85 +153,47 @@ pairs(lt_dat %>% select(Sw, coddr, soddr, idx))
 #################################################################################
 # first, centre variables
 lt_dat <- lt_dat %>%
-  mutate(Sw_c = Sw - mean(Sw, na.rm=TRUE),
-         soddr_c = soddr - mean(soddr, na.rm=TRUE),
-         coddr_c = coddr - mean(coddr, na.rm=TRUE),
-         idx_c = idx - mean(idx, na.rm=TRUE))
+  mutate(Sw_c = Sw_bin_mid - mean(Sw_bin_mid, na.rm=TRUE),
+         soddr_c = soddr_bin_mid - mean(soddr_bin_mid, na.rm=TRUE),
+         coddr_c = coddr_bin_mid - mean(coddr_bin_mid, na.rm=TRUE))
 
-# now I'll code the most complex
-# gonna run the full model of interest on the lt data, and then do some model checks
-# if this is not good, then I will think about how to address the poor fits.
-# lt_mod <- glmer(door_m ~ train_type +
-#                   Sw_c +
-#                   soddr_c +
-#                   coddr_c + 
-#                   train_type*Sw_c +
-#                   train_type*soddr_c +
-#                   train_type*coddr_c +
-#                   train_type*coddr_c*soddr_c +
-#                   (1 + Sw_c + soddr_c + coddr_c |sub),
-#                 data = lt_dat, family = binomial)
-# # save the model!
-# save(lt_mod, file = paste(res_path, 'lt_mod.Rdata', sep=''))
-# check_model(lt_mod)
+# save this data
+save(lt_dat, file = paste(res_path, 'lt_dat_4_model.Rdata', sep=""))
 
+# okies, first model, with all the interactions and the maximal random effects structure. 
 # actually, thinking about it, we don't need the train x Sw_c interaction, 
 # as we're only controlling for that
-lt_mod_red <- glmer(door_m ~ train_type +
-                  Sw_c +
-                  soddr_c +
-                  coddr_c + 
-                  train_type*soddr_c +
-                  train_type*coddr_c +
-                  train_type*coddr_c*soddr_c +
-                  (1 + Sw_c + soddr_c + coddr_c |sub),
+lt_mod <- glmer(door_m ~ train_type +
+                      Sw_c +
+                      soddr_c +
+                      coddr_c + 
+                      train_type*soddr_c +
+                      train_type*coddr_c +
+                      train_type*coddr_c*soddr_c +
+                      (1 + Sw_c + soddr_c + coddr_c |sub),
                 data = lt_dat, family = binomial)
-save(lt_mod_red, file = paste(res_path, 'lt_mod_red.Rdata'))
-check_model(lt_mod_red)
+save(lt_mod, file = paste(res_path, 'lt_mod.Rdata', sep=""))
 
 ### now I am checking simulated residuals, instead of binned
-sim_res_lt_mod_red <- simulateResiduals(lt_mod_red, 
-                                        n=1000,
-                                        refit=TRUE,
-                                        plot = TRUE)
+lt_mod_res <- simulateResiduals(lt_mod, plot = TRUE)
+plotResiduals(lt_mod_res, form = "Sw_c")
+# testUniformity(lt_mod_res)
+testOutliers(lt_mod_res, type = "bootstrap")
+# data:  lt_mod_res
+# outliers at both margin(s) = 0, observations = 70197, p-value = 1
+# alternative hypothesis: two.sided
+#  percent confidence interval:
+#  0.0000000000 0.0001656054
+# sample estimates:
+# outlier frequency (expected: 2.15108907788082e-05 ) 
+testDispersion(lt_mod_res)
+check_model(lt_mod) # use performance package to check assumptions re:
+# normality of random fx
 
-lt_mod_idx <- glmer(door_m ~ train_type + # gonna start with simplest rfx
-                      Sw_c +
-                      soddr_c +
-                      coddr_c +
-                      idx_c +
-                      train_type*soddr_c +
-                      train_type*coddr_c +
-                      train_type*coddr_c*soddr_c +
-                      (1|sub),
-                    data = lt_dat, family = binomial)
-save(lt_mod_idx, file = paste(res_path, 'lt_mod_idx.Rdata'))
-
-lt_mod_idx_rfx <- glmer(door_m ~ train_type + 
-                      Sw_c +
-                      soddr_c +
-                      coddr_c +
-                      idx_c +
-                      train_type*soddr_c +
-                      train_type*coddr_c +
-                      train_type*coddr_c*soddr_c +
-                      (1 + soddr_c + coddr_c |sub),
-                    data = lt_dat, family = binomial)
-save(lt_mod_idx_rfx, file = paste(res_path, 'lt_mod_idx_rfx.Rdata'))
-check_model(lt_mod_idx)
-check_model(lt_mod_idx_rfx)
-
-##### 
-### Next things to do:
-### check the distribution of quantile residuals plot
-### Triple check regressors - regressors are tripple checked and are doing what I think
-### can confirm that the p(s|c) is working as assumed
-### Now I will re-add the get N since last switch and see how that correlates with the predictors
-### it does not. Going to add time since switch as a predictor in a model and leave overnight.
-### will see what it does.
-
-### Tomorrow! Must work through model diagnostics.
-
-
-
-
+# now make the required null models
+lt_mod_no_soddr <- update(lt_mod, . ~ . - soddr_c)
+save(lt_mod_no_soddr, file = paste(res_path, 'lt_mod_no_soddr.Rdata', sep=""))
+lt_mod_no_3way <- update(lt_mod, . ~ . - train_type:soddr_c:coddr_c)
+save(lt_mod_no_3way, file = paste(res_path, 'lt_mod_no_3way.Rdata', sep=""))
+lt_mod_no_grp <- update(lt_mod, . ~ . - train_type)
+save(lt_mod_no_grp, file = paste(res_path, 'lt_mod_no_grp.Rdata'))

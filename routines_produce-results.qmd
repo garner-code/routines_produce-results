@@ -757,13 +757,10 @@ get_sw_info <- function(exp_str){
       subs <- unique(dat$sub)
       dat <- do.call(rbind, lapply(subs, get_Sw, dat=dat))
       dat$exp = exp_str
-      dat <- do.call(rbind, lapply(subs, counts_since_last_switch_for_log_reg, dat=dat))
       dat
 }
 
 dat <- do.call(rbind, lapply(exp_strs, get_sw_info))
-
-
 ```
 
 Now I will get $p(C = A | n, m)$ and $p(S|C,n)$. The function I call is a bit of a beast, but hopefully its sufficiently commented that its easy enough to follow what is happening. Basically for each trial, I calculate:
@@ -970,7 +967,7 @@ onset_dat <- inner_join(onset_dat, jumps %>% filter(exp == 'lt' & switch == 0) %
 # now I log my variables, and I load the avg data so that I can get the training 
 # group variale
 onset_dat <- onset_dat %>% mutate(log_TE = log(TE),
-                                  log_jumps = log(jumps+.01)) # add a small constant to get rid of zeros
+                                  log_jumps = log(jumps)) # add a small constant to get rid of zeros
 
 
 # Now I have the data, I want to replace any outliers with NA
