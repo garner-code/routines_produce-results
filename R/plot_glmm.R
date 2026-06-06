@@ -5,33 +5,30 @@ plot_obs_vs_pred <- function(p_wdth, p_hgt,
                      fig_font){
   # plot the observed vs predicted data (by group)
   
-  # first, get the data
-  rel_dat <- read.csv(rel_data_save_name)
-  
   #### for manuscripts
-  pdf(paste(rel_plt_fname, '.pdf', sep=''), 
+  pdf(paste(plt_fname, '.pdf', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54) 
-  par(family=fig_font, mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=2/3)
-  do_cor_plot(rel_dat, fig_lab)
+  par(family=fig_font, mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=1)
+  get_obs_vs_pred(obs_sum_dat, col_scheme)
   dev.off()
   
-  svg(paste(rel_plt_fname, '.svg', sep=''), 
+  svg(paste(plt_fname, '.svg', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54) 
-  par(family=fig_font, mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=2/3)
-  do_cor_plot(rel_dat, fig_lab)
+  par(family=fig_font, mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=1)
+  get_obs_vs_pred(obs_sum_dat, col_scheme)
   dev.off()
   
   ## for talks
-  pdf(paste(rel_plt_fname, '_4tlks', '.pdf', sep=''), # for talks
+  pdf(paste(plt_fname, '_4tlks', '.pdf', sep=''), # for talks
       width = p_wdth/2.54*2.5, height = p_hgt/2.54*2.5)
-  par(family=fig_font, mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=1.5)
-  do_cor_plot(rel_dat, fig_lab)
+  par(family=fig_font, mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=2)
+  get_obs_vs_pred(obs_sum_dat, col_scheme)
   dev.off()
   
-  svg(paste(rel_plt_fname, '_4tlks', '.svg', sep=''), # for talks
+  svg(paste(plt_fname, '_4tlks', '.svg', sep=''), # for talks
       width = p_wdth/2.54*2.5, height = p_hgt/2.54*2.5)
-  par(family=fig_font, mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=1.5)
-  do_cor_plot(rel_dat, fig_lab)
+  par(family=fig_font, mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=2)
+  get_obs_vs_pred(obs_sum_dat, col_scheme)
   dev.off()
   
 }
