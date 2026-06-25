@@ -10,26 +10,28 @@ library(tidyverse)
 library(ggeffects)
 library(merTools)
 library(extrafont)
+source("R/plot_glmm.R")
 #font_import() # run this once only, comment out after first time
 
 res_path = 'res'
 
 loadfonts(device='pdf')
 fig_font <- grep("source", fonts(), value = TRUE, ignore.case = TRUE)
-
+fig_font <- fig_font[3]
 # the below are relevant to the z-score plot but are also the base for many other plot dims and colour schemes so will put these here
 g_p_wdth <- 10 # plot width of ms plot, in cm
 g_p_hgt <- g_p_wdth
 col_scheme <- c('#1b9e77','#d95f02', '#7570b3')
+cols_4_fx <- c('#0868ac','#43a2ca', '#7bccc4')
 ################################################################
 ## lt model
-load(paste(res_path, 'lt_mod.RData', sep='/'))
-eff_grp <- ggpredict(lt_mod, terms=c("train_type"))
+load(paste(res_path, 'lt_mod.Rdata', sep='/'))
 eff_3way <- ggpredict(lt_mod, terms=c("train_type", "soddr_c", "coddr_c"))
+
 
 ################################################################
 ## load the data
-load(paste(res_path, 'lt_dat_4_model.RData', sep='/'))
+load(paste(res_path, 'lt_dat_4_model.Rdata', sep='/'))
 
 ## first, I want to plot predicted against observed data, so we
 ## can check how far off the model was in its predictions
@@ -57,28 +59,26 @@ plot_obs_vs_pred(g_p_wdth*0.8, g_p_hgt,
                  lt_dat_sum,
                  fig_font)
 
-# and now plot the key interaction from the model
-lt_3way <- plot(eff_3way, grid=FALSE) +
-  theme_classic() +
-  labs(title = "",
-       y = expression(p(Task["¬"*LT])),
-       x = "Group") +
-  scale_x_discrete(
-    labels = c("Stable", "Variable")
-  )
-# save that plot as a base for subsequent edits
-ggsave(lt_3way, filename = paste('figs', 'lt_3way.pdf', sep='/'),
-       width=g_p_wdth*1.25, height=g_p_hgt*0.75, units="cm",
-       dpi=300)
+# am customising the gg_effects plot
+# next step is to add the needed titles
+# for the facet_wrap - putting that in the too hard
+# basket, will need to annotate manually
+# so the last thing here before editing is the 
+# change to the group labels so that they have capitals
+# and make sure the font is the one that we want.
+# coddr_c = -5.26, 0, 5.26,
+# 
+lt_ps <- mapply(plot_fx, fsz=c(12, 18), m=c(1,1.25), 
+                MoreArgs=list(eff_3way))
 
 ################################################################
 ## ts model
-load(paste(res_path, 'ts_mod.RData', sep='/'))
+load(paste(res_path, 'ts_mod.Rdata', sep='/'))
 grp_by_soddr_c <- ggpredict(ts_mod, terms=c("train_type", "soddr_c"))
 soddr_c_by_coddr_c <- ggpredict(ts_mod, terms=c("soddr_c", "coddr_c"))
 
 ## load the data
-load(paste(res_path, 'ts_dat_4_model.RData', sep='/'))
+load(paste(res_path, 'ts_dat_4_model.Rdata', sep='/'))
 
 ## first, I want to plot predicted against observed data, so we
 ## can check how far off the model was in its predictions
@@ -105,28 +105,5 @@ plot_obs_vs_pred(g_p_wdth*0.8, g_p_hgt,
                  ts_dat_sum,
                  fig_font)
 
-# now plot interactions
-ts_2way_grp <- plot(grp_by_soddr_c, grid=FALSE) +
-  theme_classic() +
-  labs(title = "",
-       y = expression(p(Task["¬"*LT])),
-       x = "Group") +
-  scale_x_discrete(
-    labels = c("Stable", "Variable")
-  )
-ggsave(ts_2way_grp, filename = paste('figs', 'ts_2way_grp.pdf', sep='/'),
-       width=g_p_wdth*1.25, height=g_p_hgt*0.75, units="cm",
-       dpi=300)
-
-ts_2way_odds <- plot(soddr_c_by_coddr_c, grid=FALSE) +
-  theme_classic() +
-  labs(title = "",
-       y = expression(p(Task["¬"*LT])),
-       x = "Success odds") +
-  scale_x_discrete(
-    labels = c("Stable", "Variable")
-  )
-
-ggsave(ts_2way_odds, filename = paste('figs', 'ts_2way_odds.pdf', sep='/'),
-       width=g_p_wdth*1.25, height=g_p_hgt*0.75, units="cm",
-       dpi=300)
+# now plot the fx
+plot_fx(grp_by_soddr_c, fsz=12, m=1, wdth=g_p_wdth, tsk='ts')
