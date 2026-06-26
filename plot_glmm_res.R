@@ -101,11 +101,14 @@ ts_dat_sum <- ts_dat %>% group_by(sub, train_type) %>%
 save(ts_dat_sum, file = paste(res_path, 'ts_dat_sum.RData', sep='/'))
 
 # plot obs vs pred
-plot_obs_vs_pred(g_p_wdth*0.8, g_p_hgt,
+plot_obs_vs_pred(g_p_wdth, g_p_hgt,
                  col_scheme,
                  paste('figs', 'ts_mod_obs_vs_pred', sep='/'),
                  ts_dat_sum,
                  fig_font)
 
-# now plot the fx
-plot_fx(grp_by_soddr_c, fsz=12, m=1, wdth=g_p_wdth, tsk='ts')
+prnt_plt_2way(g_p_wdth, g_p_hgt,
+             col_scheme, 
+             plt_fname=paste('figs', 'ts_mod_2way', sep='/'),
+             fx_dat=grp_by_soddr_c,
+             fig_font=fig_font)
