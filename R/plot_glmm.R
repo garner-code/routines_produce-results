@@ -49,7 +49,7 @@ get_obs_vs_pred <- function(dat_sum, col_scheme){
   axis(2, at=seq(0,0.4,0.2), labels=seq(0,0.4,0.2), las=2)
   points(x=c(1.05,1.55), y=dat_sum$prop_pred, pch=16, cex=2, 
          col=adjustcolor(col_scheme[2], alpha.f=0.5))
-  legend("topright", legend=c("Observed", "Predicted"), pch=c(17,16), 
+  legend("topleft", legend=c("Observed", "Predicted"), pch=c(17,16), 
          col=c(col_scheme[3], adjustcolor(col_scheme[2], alpha.f=0.5)),
          bty="n")
 }
@@ -111,5 +111,56 @@ plot_fx_3way <- function(df, col_scheme){
   legend("topright", legend=c("Stable", "Variable"), pch=19,
          col=unique(plt_cols), bty="n")
   
+}
+
+plot_fx_2way <- function(df, col_scheme){
+  # plot predicted door_m responses and error bars for each group,
+  # across odds of success
+  ylims = c(0, 0.5)
+  plt_cols = c(rep(col_scheme[1],3), rep(col_scheme[2],3))
+  xs = c(1:3, 5:7)
+  with(df, plot(xs, predicted,
+                pch=19, cex=2,
+                ylim=ylims,
+                frame.plot=FALSE,
+                xlab="Success Odds Quantile",
+                ylab="p(Response)",
+                axes=F,
+                col=plt_cols))
+  with(df, arrows(x0=xs, y0=conf.low,
+                  x1=xs, y1=conf.high, 
+                  angle=90, code=3, length=0.1,
+                  col=plt_cols))
+  x_tick_txt <- rep(c(".25", ".5", ".75"), times=2)
+  with(df, axis(1, at=xs, labels=x_tick_txt))
+  with(df, axis(2, at=seq(0.1, ylims[2], by=.2), las=2))
+  legend("topleft", legend=c("Stable", "Variable"), pch=19,
+         col=unique(plt_cols), bty="n")
+}
+
+prnt_plt_2way <- function(p_wdth, p_hgt,
+                     col_scheme, 
+                     plt_fname, # including full path
+                     fx_dat, # predicted summary data
+                     fig_font){
+  # print the 2-way interaction plot
+  
+  pdf(paste(plt_fname, '.pdf', sep=''),
+      width = p_wdth/2.54, height = p_hgt/2.54)
+  par(family=fig_font, mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=1)
+  plot_fx_2way(fx_dat, col_scheme)
+  dev.off()
+  
+  svg(paste(plt_fname, '.svg', sep=''), 
+      width = p_wdth/2.54, height = p_hgt/2.54) 
+  par(family=fig_font, mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=1)
+  plot_fx_2way(fx_dat, col_scheme)
+  dev.off()
+  
+  svg(paste(plt_fname, '_4tlks', '.svg', sep=''), # for talks
+      width = p_wdth/2.54*2.5, height = p_hgt/2.54*2.5)
+  par(family=fig_font, mfrow = c(1,1), mar = c(5, 4, 2, 1), las=2, cex=3)
+  plot_fx_2way(fx_dat, col_scheme)
+  dev.off()
 }
 
