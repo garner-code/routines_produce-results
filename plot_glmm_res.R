@@ -19,7 +19,7 @@ loadfonts(device='pdf')
 fig_font <- grep("source", fonts(), value = TRUE, ignore.case = TRUE)
 fig_font <- fig_font[3]
 # the below are relevant to the z-score plot but are also the base for many other plot dims and colour schemes so will put these here
-g_p_wdth <- 10 # plot width of ms plot, in cm
+g_p_wdth <- 8 # plot width of ms plot, in cm
 g_p_hgt <- g_p_wdth
 col_scheme <- c('#1b9e77','#d95f02', '#7570b3')
 cols_4_fx <- c('#0868ac','#43a2ca', '#7bccc4')
@@ -27,7 +27,13 @@ cols_4_fx <- c('#0868ac','#43a2ca', '#7bccc4')
 ## lt model
 load(paste(res_path, 'lt_mod.Rdata', sep='/'))
 eff_3way <- ggpredict(lt_mod, terms=c("train_type", "soddr_c", "coddr_c"))
-
+## U2H - change the levels of eff_3way$facet to go from high to low instead of low
+## to high
+eff_3way$facet <- factor(eff_3way$facet, levels = rev(levels(eff_3way$facet)),
+                         labels=c(".75", ".5", ".25"))
+# eff_3way is now just a dataframe with the predicted values and confidence 
+# intervals for each combination of train_type, soddr_c, and coddr_c. 
+# We can use this to plot the interaction effects.
 
 ################################################################
 ## load the data
@@ -53,23 +59,19 @@ save(lt_dat_sum, file = paste(res_path, 'lt_dat_sum.RData', sep='/'))
 
 # now for this new dataframe, I want to predict the proportion of 
 # responses, using the model
-plot_obs_vs_pred(g_p_wdth*0.8, g_p_hgt,
+plot_obs_vs_pred(g_p_wdth, g_p_hgt,
                  col_scheme,
                  paste('figs', 'lt_mod_obs_vs_pred', sep='/'),
                  lt_dat_sum,
                  fig_font)
 
-# am customising the gg_effects plot
-# next step is to add the needed titles
-# for the facet_wrap - putting that in the too hard
-# basket, will need to annotate manually
-# so the last thing here before editing is the 
-# change to the group labels so that they have capitals
-# and make sure the font is the one that we want.
-# coddr_c = -5.26, 0, 5.26,
-# 
-lt_ps <- mapply(plot_fx, fsz=c(12, 18), m=c(1,1.25), 
-                MoreArgs=list(eff_3way))
+# now plot the predicted effects from the model
+prnt_plt_3way(g_p_wdth*2, g_p_hgt*2,
+             col_scheme, 
+             plt_fname=paste('figs', 'lt_mod_3way', sep='/'),
+             fx_dat=eff_3way,
+             fig_font=fig_font)
+
 
 ################################################################
 ## ts model
