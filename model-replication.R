@@ -116,3 +116,5 @@ save(ts_mod_no_ttbys, file = paste(res_path, 'ts_mod_no_ttbys.Rdata', sep=""))
 ts_mod_no_me_grp <- update(ts_mod, . ~ . - train_type)
 save(ts_mod_no_me_grp, file = paste(res_path, 'ts_mod_no_me_grp.Rdata', sep=""))
 
+ts_mod_no_sbyc <- update(ts_mod, . ~ . - soddr_c:coddr_c)
+save(ts_mod_no_sbyc, file = paste(res_path, 'ts_mod_no_sbyc.Rdata', sep=""))

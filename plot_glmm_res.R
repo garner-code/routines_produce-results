@@ -17,7 +17,7 @@ res_path = 'res'
 
 loadfonts(device='pdf')
 fig_font <- grep("source", fonts(), value = TRUE, ignore.case = TRUE)
-fig_font <- fig_font[3]
+#fig_font <- fig_font[3]
 # the below are relevant to the z-score plot but are also the base for many other plot dims and colour schemes so will put these here
 g_p_wdth <- 8 # plot width of ms plot, in cm
 g_p_hgt <- g_p_wdth

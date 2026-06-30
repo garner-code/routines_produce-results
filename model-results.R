@@ -81,3 +81,11 @@ ts_2way_res$exp <- exp
 sim_results <- rbind(lt_me_grp_res, lt_3way_res,
                      ts_me_grp_res, ts_2way_res)
 write.csv(sim_results, paste("res", "glmm_sims.csv", sep="/"))
+
+#########################################################################
+## NOW LOAD THE MODELS AND GET THE RELEVANT BETA CO-EFFICIENTS
+load(paste('res', 'lt_mod.Rdata', sep='/'))
+
+
+
+load(paste('res', 'ts_mod.Rdata', sep='/'))
