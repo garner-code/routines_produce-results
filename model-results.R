@@ -80,12 +80,28 @@ ts_2way_res$exp <- exp
 ## SAVE RESULTS
 sim_results <- rbind(lt_me_grp_res, lt_3way_res,
                      ts_me_grp_res, ts_2way_res)
-write.csv(sim_results, paste("res", "glmm_sims.csv", sep="/"))
+apply(sim_results[, c("obs", "mu_sim", "sd_sim", "p")], 2, function(x) round(x, 2)) -> sim_results[, c("obs", "mu_sim", "sd_sim", "p")]
+sim_results$id <- paste(sim_results$exp, sim_results$fx, sep="_")
+write.csv(sim_results, paste("res", "glmm_sims.csv", sep="/"), row.names=F)
 
 #########################################################################
 ## NOW LOAD THE MODELS AND GET THE RELEVANT BETA CO-EFFICIENTS
 load(paste('res', 'lt_mod.Rdata', sep='/'))
-
-
+lt_summary <- summary(lt_mod)
+lt_summary$coefficients %>% as.data.frame() %>% rownames_to_column(var = "term") %>%
+  filter(term != "(Intercept)") %>%
+  mutate(exp = "lt") -> lt_coefs
+lt_coefs <- lt_coefs %>% select(term, Estimate, `Std. Error`)
+names(lt_coefs) <- c("term", "beta", "se")
+apply(lt_coefs[, c("beta", "se")], 2, function(x) round(x, 2)) -> lt_coefs[, c("beta", "se")]
+write.csv(lt_coefs, paste("res", "lt_coefs.csv", sep="/"), row.names = F)
 
 load(paste('res', 'ts_mod.Rdata', sep='/'))
+ts_summary <- summary(ts_mod)
+ts_summary$coefficients %>% as.data.frame() %>% rownames_to_column(var = "term") %>%
+  filter(term != "(Intercept)") %>%
+  mutate(exp = "ts") -> ts_coefs
+ts_coefs <- ts_coefs %>% select(term, Estimate, `Std. Error`)
+names(ts_coefs) <- c("term", "beta", "se")
+apply(ts_coefs[, c("beta", "se")], 2, function(x) round(x, 2)) -> ts_coefs[, c("beta", "se")]
+write.csv(ts_coefs, paste("res", "ts_coefs.csv", sep="/"), row.names = F)
