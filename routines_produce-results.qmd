@@ -210,19 +210,21 @@ Now lets plot the histograms of humans vs random agent. Note this code produces 
 ```{r}
 
 exp_strs <- c('lt', 'ts')
-names(col_scheme) <- c(exp_strs, "agent")
+z_col_scheme <- c('#1f78b4', '#b2df8a', '#a6cee3')
+names(z_col_scheme) <- c(exp_strs, "agent")
 sims_fname = paste(sim_data_path, 'random-agent_z-score-analysis.Rds', sep='/')
 ms_z_plt_fname = paste(fig_path, 'z-hsts_ms', sep='')
 tlk_z_plt_fname = paste(fig_path, 'z-hsts_tlk', sep='')
 
 produce_z_plts(exp_strs,
-               col_scheme,
+               z_col_scheme,
                z_p_wdth,
                z_p_hgt,
                data_path,
                sims_fname,
                ms_z_plt_fname,
-               tlk_z_plt_fname)
+               tlk_z_plt_fname,
+               fig_font)
 ```
 
 ![Fig 2: Showing z-scores for humans and random agent](figs/z-hsts_tlk.svg){fig-align="cent"}
@@ -301,31 +303,18 @@ plot_rel(r_p_wdth, r_p_hgt, r_col,
 
 ![Fig 3: Correlation of routine scores between sessions](figs/reliability_data_4tlks.svg){fig-align="cent"}
 
-Now I can put Figs 1, 2 and 3 together to make one figure. Going to use the magick package, as dealing with pdfs.
+Now I can put Figs 1, 2 together to make one figure. (3 is for refs, not for the manuscript). Going to use the magick package, as dealing with pdfs.
 
 ```{r, eval=FALSE}
 
-fnms = c(traj_fig_fname, ms_z_plt_fname, rel_plt_fname)
+fnms = c(traj_fig_fname, ms_z_plt_fname)
 
 ims = lapply(fnms, function(x) image_read_pdf(paste(x, '.pdf', sep='')))
 
-im_info = lapply(ims, image_info)
-top_width = im_info[[2]]$width + im_info[[3]]$width
-bottom_width = im_info[[1]]$width
+multi <- image_append(c(ims[[2]], ims[[1]]), stack = TRUE)
 
-bottom_centered <- image_extent(ims[[1]],
-                                geometry = paste0(top_width, "x", ... =  
-                                                    im_info[[1]]$height),
-                                gravity = "north",
-                                color = "none")
-
-multi <- c(ims[[2]], ims[[3]]) %>%
-         image_append() %>%
-        c(bottom_centered) %>% # might want to adjust the size of this
-         image_append(stack=TRUE)
-traj_hght = (w/6*2)+.5 # get the height of the traj plot
-pdf(paste(fig_path, 'FigA.pdf', sep=''), width=z_p_wdth+r_p_wdth,
-    height=z_p_hgt+traj_hght)
+pdf(paste(fig_path, 'FigA.pdf', sep='')) #, width=z_p_wdth+r_p_wdth,
+   # height=z_p_hgt+traj_hght)
 plot(multi)
 dev.off()
 
