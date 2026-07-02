@@ -49,7 +49,7 @@ generate_null_for_one_person <- function(observed_data, n_samples = 1000, n_door
   null_seqs <- replicate(n_samples, sample_non_consec(observed_data), simplify=FALSE)
   null_counts <- lapply(null_seqs, data_2_counts_matrix, n_doors = n_doors)
   null_ps <- lapply(null_counts, p_st1_gs, n_doors = n_doors)
-  null_Rs <- apply(do.call(rbind, lapply(null_ps, function(x) apply(x, 1, H))), 1, sum)
+  null_Rs <- mapply(get_wMTE, null_counts, null_ps)
   null_Rs
 }
 
@@ -94,7 +94,7 @@ null_z_for_random_agent <- function(n_doors = 16){
   # get their transition counts, probability matrix, and ent
   counts <- data_2_counts_matrix(resps, n_doors = n_doors)
   probs <- p_st1_gs(counts, n_doors = n_doors)
-  ent <- sum(apply(probs, 1, H))
+  ent <- get_wMTE(counts, probs)
   
   # get their null distribution
   tmp_null <- generate_null_for_one_person(resps)

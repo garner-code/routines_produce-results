@@ -433,7 +433,7 @@ kable(grp_r_comp, digits=2)
 
 ### What kinds of responses account for the differences in routine observed between the groups, across the two experiments?
 
-This is where we look at the task-jumps measure between the two groups. Here I create a group x trial type dataframe and draw and save the boxplots.
+This is where we look at the task-jumps measure between the two groups. Here I create a group x trial type dataframe and draw and save the boxplots. Note that this data is reported in Barnes et al (2026), and is not presented in the current project.
 
 ```{r, results='hide'}
 
@@ -468,138 +468,10 @@ gen_jumps_plot(jumps,
                fig_labs = c('A', 'B'),
                ylabel = 'Jumps',
                xlabel = 'Group',
-               ylims=c(0,5))
+               ylims=c(0,5),
+               fig_font)
 
 ```
-
-Now lets see the fig in all its glory -
-
-![Fig 5: People in the frequent switch group broke up their routines to jump tasks](figs/task-jumps_4tlks.svg){fig-align="cent"}
-
-Now I will put the routine by group and the task jumps figure into one plot for the manuscript.
-
-```{r}
-
-fnms = c(paste(fig_path, 'rs_by-traintype_hists', sep=''),
-         paste(fig_path, 'task-jumps', sep=''))
-
-ims = lapply(fnms, function(x) image_read_pdf(paste(x, '.pdf', sep='')))
-
-multi <- c(ims[[1]]) %>%
-         image_append() %>%
-        c(ims[[2]]) %>%
-         image_append(stack=TRUE)
-
-pdf(paste(fig_path, 'FigB.pdf', sep=''), width=j_wdth,
-    height=j_hgt)
-plot(multi)
-dev.off()
-
-```
-
-Note that general errors are low, and that information can be called in from ....
-
-It looks like there is an interaction between group and switch (in fact we know there is, from Emily & Dinuk's analysis). Here I replicate their results: -
-
-```{r, results='hide'}
-
-# first set the factors to be factors
-jumps$sub <- as.factor(jumps$sub)
-jumps$train_type <- as.factor(jumps$train_type)
-levels(jumps$train_type) <- c('stable','variable')
-jumps$switch <- as.factor(jumps$switch)
-levels(jumps$switch) <- c('stay','switch')
-
-# now run the ANOVA model
-# set emmeans option to multivariate
-afex_options(emmeans_model = "multivariate")
-# perform the statistical model
-exp_strs <- unique(jumps$exp)
-tj_aovs <- lapply(exp_strs, function(x) 
-  aov_ez("sub", "jumps", jumps %>% filter(exp == x), 
-         within = "switch",
-         between = "train_type"))
-names(tj_aovs) <- exp_strs
-
-# convert the anovas to a dataframe, save the results and show as a table
-convert_aov_to_df <- function(aovl, exp_str){
-  ref = aovl$anova_table
-  tibble(exp = rep(exp_str, length(ref$F)),
-         effect = rownames(ref),
-         numDF = ref$`num Df`,
-         denDF = ref$`den Df`,
-         Fstat = round(ref$F, 2),
-         ges = round(ref$ges, 2),
-         p = round(ref$`Pr(>F)`, 2))
-}
-tj_aov_dat <- do.call(rbind, 
-                      lapply(1:length(exp_strs),
-                             function(x) convert_aov_to_df(tj_aovs[[x]],
-                                                           exp_strs[x])))
-tj_aov_dat$id <- with(tj_aov_dat, paste(exp, effect, sep="_"))
-write.csv(tj_aov_dat, paste(res_path, 'task-jumps_aov.csv'), row.names=FALSE)
-
-```
-
-```{r}
-
-#| label: impact of condition on routines
-#| tbl-cap: "impact of switch condition on routines by group"
-
-kable(tj_aov_dat, digits=2)
-
-```
-
-Now I need to follow up the interactions, and grab the estimated marginal means so I can report the main effects.
-
-Getting the desc stats on the main effect of group:
-
-```{r}
-
-# first I get the between group effect
-me_grp <- lapply(tj_aovs, function(x) summary(emmeans(x, 'train_type')))
-me_grp <- do.call(rbind, me_grp)
-me_grp$exp <- rep(exp_strs, each=length(unique(me_grp$train_type)))
-names(me_grp) <- c('group', 'emmean', 'se', 'df', 'l', 'u', 'exp')
-me_grp$id <- with(me_grp, paste(exp, group, sep="_"))
-cols2round <- c("emmean", "se", "l", "u")
-me_grp[,cols2round] <- apply(me_grp[,cols2round], 2, round, 2)
-write.csv(me_grp, paste(res_path, '/task-jumps_ph_me-grp.csv', sep=''))
-
-```
-
-```{r}
-
-#| label: main effect of group - estimated marginal means
-#| tbl-cap: "main effect of group - estimated marginal means"
-kable(me_grp, digits=2)
-```
-
-And get the mean estimates for each switch by group condition -
-
-```{r}
-
-# and now I test the following 
-simp_fx <- lapply(tj_aovs, function(x) 
-           list(summary(emmeans(x, 'switch', by='train_type'))))
-sw_by_tt <- do.call(rbind, lapply(simp_fx, function(x) summary(x[[1]])))
-sw_by_tt$exp <- rep(c('lt','ts'), each = 4)
-names(sw_by_tt) <- c('group', 'switch', 'emmean', 
-                     'se', 'df', 'l', 'u', 'exp')
-sw_by_tt$id <- with(sw_by_tt, paste(exp, group, switch, sep="_"))
-sw_by_tt[,cols2round] <- apply(sw_by_tt[,cols2round], 2, round, 2)
-write.csv(sw_by_tt, file=paste(res_path, 'task-jumps_ph_se-sw.csv', sep=''), row.names=FALSE)
-
-```
-
-```{r}
-
-#| label: estimated means for each level of group x switch 
-#| tbl-cap: "estimated means for each level of group x switch"
-kable(sw_by_tt)
-```
-
-Decide whether to add further post-hoc info.
 
 We can conclude at this point that frequent switching makes people more variable in the order in which they perform their behaviours, and that this might be because they are jumping between the two tasks more frequently. This may be because they are mixing up the two tasks more. We also want to rule out general confusion. To do this, we look at responses that come from neither task. Note, this figure can go in the supplemental info.
 
@@ -631,72 +503,11 @@ gen_jumps_plot(errors,
                fig_labs = c('C', 'D'),
                ylabel = 'Errors',
                ylims=c(0,1),
-               xlabel = 'Group')
-
-
+               xlabel = 'Group',
+               fig_font)
 ```
 
 ![Fig 5: People in the two groups showed the same levels of out of task errors](figs/general-errors_4tlks.svg){fig-align="cent"}
-
-Now I analyse errors in the same way as I did task jumps. Note that after correcting for multiple tests, only the main effect of switch is consistently significant across the two experiments.
-
-```{r, results='hide'}
-
-# first set the factors to be factors
-errors$sub <- as.factor(errors$sub)
-errors$train_type <- as.factor(errors$train_type)
-levels(errors$train_type) <- c('stable','variable')
-errors$switch <- as.factor(errors$switch)
-levels(errors$switch) <- c('stay','switch')
-
-# perform the statistical model
-exp_strs <- unique(errors$exp)
-er_aovs <- lapply(exp_strs, function(x) 
-  aov_ez("sub", "errors", errors %>% filter(exp == x), 
-         within = "switch",
-         between = "train_type"))
-names(er_aovs) <- exp_strs
-
-er_aov_dat <- do.call(rbind, 
-                      lapply(1:length(exp_strs),
-                             function(x) convert_aov_to_df(er_aovs[[x]],
-                                                           exp_strs[x])))
-er_aov_dat$id <- with(er_aov_dat, paste(exp, effect, sep="_"))
-write.csv(er_aov_dat, paste(res_path, 'gen-errs_aov.csv'), row.names=FALSE)
-
-```
-
-```{r}
-
-#| label: effect of group and switch on general errors
-#| tbl-cap: "effect of group and switch on general errors"
-kable(er_aov_dat, digits=2)
-```
-
-Because of that, I'll just get the emms on the me of switch.
-
-```{r}
-
-me_sw_er <- lapply(er_aovs, function(x) summary(emmeans(x, 'switch')))
-me_sw_er <- do.call(rbind, me_sw_er)
-me_sw_er$exp <- rep(exp_strs, each=length(unique(errors$train_type)))
-names(me_sw_er) <- c('switch', 'emmean', 'se', 'df', 'l', 'u', 'exp')
-
-me_sw_er$id <- with(me_sw_er, paste(exp, switch, sep="_"))
-cols2round <- c("emmean", "se", "l", "u")
-me_sw_er[,cols2round] <- apply(me_sw_er[,cols2round], 2, round, 2)
-
-write.csv(me_sw_er, paste(res_path, '/gen-errs_ph_sw.csv', sep=''))
-```
-
-```{r}
-
-#| label: effect of switch on errors
-#| tbl-cap: "effect that switch has on general errors"
-kable(me_sw_er, digits=2)
-```
-
-OK, so now we know that the variable group showed less consistent behaviours in terms of order, but comparable accuracy to the stable group (the test is well powered and we can't discern a group difference).
 
 So being in the variable group impacts your routines. The next question is why?
 
@@ -762,7 +573,7 @@ For the cumulative counts of n and m on each trial, I assign the probability of 
 
 $$p(n | C=A) =  \frac{n_{max} - n}{n_{max}}$$
 
-This allows me to compute, based on trial by trial experience, $p(C = A | n, m)$ and $p(S|C=A, n,m)$. At the end, I then shift all the information down 1 row, as the current outcome should affect the next behaviour. For each regressor, I then take the odds by dividing by $p(C=B|n,m)$ and $p(S|C = B,n,m)$. I then use the odds variables in the subsequent logistic regressions.
+This allows me to compute, based on trial by trial experience, $p(C = A | n, m)$ and $p(S|C=A, n,m)$. At the end, I then shift all the information down 1 row, as the current outcome should affect the next behaviour. For each regressor, I then take the odds by dividing by $p(C=B|n,m)$ and $p(S|C = B,n,m)$.
 
 ```{r, eval=FALSE}
 
@@ -781,136 +592,24 @@ write.csv(dat, paste(data_path, 'evt-dat_4log-reg.csv', sep=''), row.names=FALSE
 rm(dat)
 ```
 
-Now I have the model-based regressors, I use them in a logistic regression to predict $m$ selections for each individual. Note that I scale the predictors before running the model.
+Now I have the model-based regressors, I use them in a hierarchical logistic regression to predict $m$ selections for each individual. Note that I scale the predictors before running the model. See the following files for details of that analysis:
 
-```{r, results='hide'}
+``` markdown
 
-betas_fname = paste(data_path, 'evt-dat_4log-reg.csv', sep='')
-exp_strs <- c('lt', 'ts')
-
-lapply(exp_strs, get_logist_mods_and_betas, fname=betas_fname, 
-       data_path=data_path, res_path=res_path)
-```
-
-Note that I played with plotting the individual level fits, and while I was happy the models were doing a good enough capturing individual variance, I am yet to find a satisfying way to plot the individual model fits (owing to the multiple continuous predictors). So I will skip straight to the second level analysis, where we take the parameters from the logistic regression models and compare between groups.
-
-```{r, eval=FALSE}
-# some notes re: cleaning. For some participants, the algorithm did not converge,  or the estimated probabilties could not be distinguished between 0 and 1. Eyeballing the boxplots, these subjects largely fell outside the > 1.5 x the IQR (although sometimes the IQR excluded extra participants for whom there was no warning). Removing outliers > 1.5 x IQR seems the most objective way to treat the data, to me.
-
-apply_clean_and_analyse_betas <- function(exp_str, data_path, res_path){
-  
-  betas <- read.csv(paste(data_path, 
-                          'betas_', exp_str, '_first-level.csv',
-                          sep=''))
-  betas <- apply_outlier_filter_to_all_vars(betas)
-  # save the new data file, as it has extra variables
-  write.csv(betas, file=paste(data_path, 'betas_',
-                              exp_str, '_first-level_cln.csv',
-                              sep=''))
-  apply_t_tests_to_all_vars(betas, exp_str, res_path) # this applies inferential t-tests and writes the results to csv files in res_path
-}
-lapply(c('lt', 'ts'), apply_clean_and_analyse_betas, 
-                      data_path = data_path,
-                      res_path = res_path)
-
-```
-
-Now I am going to collapse across the two experiments to see if the p(success\|task) holds up:
-
-```{r}
-
-read_and_label_beta_dat <- function(exp_str, fname){
-  dat <- read.csv(fname)
-  dat$exp <- exp_str
-  dat
-}
-
-beta_both <- do.call(rbind, lapply(c('lt', 'ts'), function(x) read_and_label_beta_dat(x,
-  paste(data_path, 'betas_', x, '_first-level_cln.csv',
-                              sep=''))))
-
-apply_t_tests_to_all_vars(beta_both, 'all', res_path)
-
-
-```
-
-I don't present the beta inferential tests here, as there are so many, but the take home is that they all betas are significantly above zero, the mu is clearly sig between the two groups, which we know, there is some glimpse of an impact of p(scs\|cntxt), for each experiment, and it is the only significant variable(other than mu) when both experiments are aggregated.
-
-Next step is to blot the beta coefficients by group (and analysis)
-
-```{r}
-
-# now that we have analysed the betas ()
-# plan is to do box plots
-# top row = co-effs by parameter, by group # lt
-# second row = co-effs by parameter, by group # ts
-
-make_coefs_plts_4paper_andtlks(data_path,
-                               paste(fig_path, 
-                                     'betas_scnd-lvl',
-                                     sep=''),
-                               p_wdth=12,
-                               p_hgt=12)
-
-```
-
-Now lets see the results:
-
-::: {#fig-betas layout-ncol="1"}
-![](figs/betas_scnd-lvl_4tlks.svg)
-
-Showing the betas by group and parameter
-:::
-
-So it looks like all of the tested factors contributed to the increase of other context door selections, which differed by groups (who differed by routine). It looks like the variable group was generally more confused than the other group, with a small suggestion that they may have also been matching to the probability of the context.
-
-As an exploratory plot, I plot routine scores against beta coefficients, to check the correlations between them appear to do what we think - this is possibly one for the supplemental
-
-```{r}
-
-exp_str = 'lt'
-r_dat = read.csv(paste(data_path, 'exp_', exp_str, '_rscore.csv', sep=''))
-betas = read.csv(paste(data_path, 'betas_', exp_str, '_first-level_cln.csv',
-                                sep=''))
-betas_r <- inner_join(betas %>% select(c(sub, train_type, ends_with('_flt'))),
-                      r_dat, by='sub')
-betas_r <- betas_r %>% na.omit() %>% mutate(r = log(r))
-
-# first I'll check for multivariate outliers
-mhl.mat <- as.matrix(betas_r[,c('mu_flt', 'scs_flt', 'cntx_flt','r')]) 
-mhl.cov <- cov(mhl.mat) # here I get the covariance matrix
-mhl.dist <- mahalanobis(mhl.mat, colMeans(mhl.mat), mhl.cov) # now calc the M dist
-cut_off <- qchisq(.001, df=length(mhl.dist)-1)
-#hist(mhl.dist)
-sum(mhl.dist > cut_off) # we keep all the data
-
-# prepare for the pairs plot
-betas_r$train_type <- as.factor(betas_r$train_type)
-levels(betas_r$train_type) <- c('stable', 'variable')
-svg(paste(fig_path, 'pairs4backup.svg', sep=''), height=7, width=7)
-g <- ggpairs(betas_r %>% select(mu_flt, scs_flt, cntx_flt, r),
-        mapping=ggplot2::aes(colour = betas_r$train_type),
-        upper = list(continuous = wrap("cor", method = "spearman")))
-print(g)
-dev.off()
-```
-
-What this plot tells us is that the more that the probability of context increases your log odds of hitting a door from the other context, the less that the probability of success given context influences the probability of hitting a door from the other context. This is good. It tells us that the parameters trade off against each other in a way we would expect. (Note that I don't include sw and swr, for visual clarity. Comfortingly, the correlations between these parameters and the others were not significant (nor with the routine scores.))
-
-To understand the relationship between R scores and the remaining predictors, here is an optional lm to run. I am not concluding much from it as everything is calculated on the same data, but it does tell us that we can't trust the direction of the first order correlations with r, so I am not going to over interpret the direction here. But we do see that these predictors correlate with the routine score.
-
-```{r, eval=FALSE}
-
-summary(with(betas_r, lm(r ~ mu_flt + scs_flt + cntx_flt)))
+routines_produce-results/
+│ model-choices.R
+| model-plots.R
+| model-results.R
+| plot_glmm_res.R
 ```
 
 ## Does the formation of routines attenuate capacity to transfer learning, or promote task switching performance?
 
-Now the cherry on top. We ask whether the extent to which you became routine (the lower your r score) predicts your difficulty being flexible, or corresponds to you being better at task switching.
+Now the cherry on top. We ask whether the extent to which you became routine (the lower your r score) predicts your difficulty being flexible on a novel task.
 
 ### Learning transfer/flexibility
 
-First steps are to wrangle the routine and group x transfer task data, and looking at learning onset for each group and task as a boxplot. Note that from visual inspection of qqplots, I decided to log transform the data, to improve normality. Then I take the ratio of the scores from each task and correlate with the routine score, then an inferential test of the things. Last, I add mean accuracy from training, to see if that changes the effect (note to self, maybe do a path analysis if required).
+First steps are to wrangle the routine and group x transfer task data, and looking at learning onset for each group and task as a boxplot. Note that from visual inspection of qqplots, I decided to log transform the data, to improve normality. Then I take the ratio of the scores from each task and regress against task jumps and TE from the training phase.
 
 ```{r}
 
@@ -977,7 +676,7 @@ Now I will plot some residual plots to determine the relationship between log_k4
 
 ```{r}
 
-transfer_mod_dat <- onset_dat %>% select(train_type, k4_flt, log_TE_flt, log_jumps_flt, train_type) %>% 
+transfer_mod_dat <- onset_dat %>% select(train_type, k4_flt, log_TE_flt, log_jumps_flt) %>% 
  drop_na()
 
 transfer_mod <- lm(k4_flt ~ log_TE_flt*log_jumps_flt, data=transfer_mod_dat)

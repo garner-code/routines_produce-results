@@ -1,4 +1,4 @@
-generate_nulls <- function(door_selections_fname, r_dat_fname,null_rs_fname){
+generate_nulls <- function(door_selections_fname, r_dat_fname, null_rs_fname){
 ## K. Garner, 2025. Generate null distributions per participant
 ## take differences between observed and nulls and save outcome
 ## note that commented lines of code refer to how the code
@@ -27,7 +27,7 @@ get_null_per_sub <- function(door_dat, r_dat, subN, cntxN){
   tmp_null <- generate_null_for_one_person(tmp)
   # the more chaotic someone is, the higher their null distribution will be
   tibble(sub = subN, context=cntxN, null = tmp_null, 
-         r = r_dat$r[r_dat$sub == subN & r_dat$context == cntxN])
+         r = r_dat$TE[r_dat$sub == subN & r_dat$context == cntxN])
 }
 
 ###################################################################
