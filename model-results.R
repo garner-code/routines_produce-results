@@ -76,10 +76,17 @@ ts_2way_res <- get_sim_results(ts_2way_flst)
 ts_2way_res$fx <- "2way"
 ts_2way_res$exp <- exp
 
+## so x to interaction
+ts_sbyc_flst <- list.files(paste(res_nm, exp, 'ts_sbyc', sep='/'),
+                            pattern = "\\.RData$", full.names = TRUE)
+ts_sbyc_res <- get_sim_results(ts_sbyc_flst)
+ts_sbyc_res$fx <- "sbyc"
+ts_sbyc_res$exp <- exp
+
 ##########################################################################
 ## SAVE RESULTS
 sim_results <- rbind(lt_me_grp_res, lt_3way_res,
-                     ts_me_grp_res, ts_2way_res)
+                     ts_me_grp_res, ts_2way_res, ts_sbyc_res)
 apply(sim_results[, c("obs", "mu_sim", "sd_sim", "p")], 2, function(x) round(x, 2)) -> sim_results[, c("obs", "mu_sim", "sd_sim", "p")]
 sim_results$id <- paste(sim_results$exp, sim_results$fx, sep="_")
 write.csv(sim_results, paste("res", "glmm_sims.csv", sep="/"), row.names=F)
@@ -104,4 +111,5 @@ ts_summary$coefficients %>% as.data.frame() %>% rownames_to_column(var = "term")
 ts_coefs <- ts_coefs %>% select(term, Estimate, `Std. Error`)
 names(ts_coefs) <- c("term", "beta", "se")
 apply(ts_coefs[, c("beta", "se")], 2, function(x) round(x, 2)) -> ts_coefs[, c("beta", "se")]
+ts_coefs[ts_coefs$term == "soddr_c:coddr_c",c('beta', 'se')] <- round(ts_summary$coefficients['soddr_c:coddr_c',c(1:2)], 4)
 write.csv(ts_coefs, paste("res", "ts_coefs.csv", sep="/"), row.names = F)
