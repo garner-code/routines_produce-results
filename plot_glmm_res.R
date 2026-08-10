@@ -29,8 +29,9 @@ load(paste(res_path, 'lt_mod.Rdata', sep='/'))
 eff_3way <- ggpredict(lt_mod, terms=c("train_type", "soddr_c", "coddr_c"))
 ## U2H - change the levels of eff_3way$facet to go from high to low instead of low
 ## to high
+thrway_facet_labs <- c("+1", "0", "-1")
 eff_3way$facet <- factor(eff_3way$facet, levels = rev(levels(eff_3way$facet)),
-                         labels=c(".75", ".5", ".25"))
+                         labels=thrway_facet_labs)
 # eff_3way is now just a dataframe with the predicted values and confidence 
 # intervals for each combination of train_type, soddr_c, and coddr_c. 
 # We can use this to plot the interaction effects.
@@ -70,6 +71,7 @@ prnt_plt_3way(g_p_wdth*2, g_p_hgt*2,
              col_scheme, 
              plt_fname=paste('figs', 'lt_mod_3way', sep='/'),
              fx_dat=eff_3way,
+             fc_lbs=thrway_facet_labs,
              fig_font=fig_font)
 
 

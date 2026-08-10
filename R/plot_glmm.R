@@ -58,39 +58,40 @@ prnt_plt_3way <- function(p_wdth, p_hgt,
                      col_scheme, 
                      plt_fname, # including full path
                      fx_dat, # predicted summary data
+                     fc_lbs, # facet label for facetted cont variable
                      fig_font){
   # print the 3-way interaction plot
   
   pdf(paste(plt_fname, '.pdf', sep=''),
       width = p_wdth/2.54, height = p_hgt/2.54)
   par(family=fig_font, mfrow = c(2,2), mar = c(5, 4, 2, 1), las=2, cex=1)
-  plot_fx_3way(fx_dat, col_scheme)
+  plot_fx_3way(fx_dat, col_scheme, fc_lbs)
   dev.off()
   
   svg(paste(plt_fname, '.svg', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54) 
   par(family=fig_font, mfrow = c(2,2), mar = c(5, 4, 2, 1), las=2, cex=1)
-  plot_fx_3way(fx_dat, col_scheme)
+  plot_fx_3way(fx_dat, col_scheme, fc_lbs)
   dev.off()
   
   svg(paste(plt_fname, '_4tlks', '.svg', sep=''), # for talks
       width = p_wdth/2.54*2.5, height = p_hgt/2.54*2.5)
   par(family=fig_font, mfrow = c(2,2), mar = c(5, 4, 2, 1), las=2, cex=3)
-  plot_fx_3way(fx_dat, col_scheme)
+  plot_fx_3way(fx_dat, col_scheme, fc_lbs)
   dev.off()
 }
 
-plot_fx_3way <- function(df, col_scheme){
+plot_fx_3way <- function(df, col_scheme, fc_lbs){
   # this will plot the predicted door_m responses and error bars for each group, 
   # at each level of success, for each level of task odds
   ylims = c(0, .7)
   plt_cols = c(rep(col_scheme[1],3), rep(col_scheme[2],3))
   xs = c(1:3, 5:7)
   plot(0, 0, xlim=c(0,8), ylim=ylims, axes=F, xlab="", ylab="")
-  for(g in c(".75", ".5", ".25")){
-    ylab_text <- if (g ==".5" | g==".75") "p(Response)" else ""
-    xlab_text <- if (g == ".5" | g==".25") "Success Odds Quantile" else ""
-    title_text <- paste("Task Odds Quantile = ", g, sep="")
+  for(g in fc_lbs){
+    ylab_text <- if (g ==fc_lbs[2] | g==fc_lbs[3]) "p(Response)" else ""
+    xlab_text <- if (g == fc_lbs[2] | g==fc_lbs[3]) "Success Odds" else ""
+    title_text <- paste("Task Odds: ", g, sep="")
     with(df, plot(xs, predicted[facet==g],
                   pch=19, cex=2,
                   ylim=ylims,
@@ -104,7 +105,7 @@ plot_fx_3way <- function(df, col_scheme){
                     x1=xs, y1=conf.high[facet==g],
                     angle=90, code=3, length=0.1, 
                     col=plt_cols))
-    x_tick_txt <- if (g==".25" | g==".5")  rep(c(".25", ".5", ".75"), times=2) else rep("", times=6)
+    x_tick_txt <- if (g==fc_lbs[3] | g==fc_lbs[2])  rep(fc_lbs, times=2) else rep("", times=6)
     with(df, axis(1, at=xs, labels=x_tick_txt))
     with(df, axis(2, at=seq(0.1, ylims[2], by=.2), las=2))
   }
@@ -123,7 +124,7 @@ plot_fx_2way <- function(df, col_scheme){
                 pch=19, cex=2,
                 ylim=ylims,
                 frame.plot=FALSE,
-                xlab="Success Odds Quantile",
+                xlab="Success Odds",
                 ylab="p(Response)",
                 axes=F,
                 col=plt_cols))
@@ -131,7 +132,7 @@ plot_fx_2way <- function(df, col_scheme){
                   x1=xs, y1=conf.high, 
                   angle=90, code=3, length=0.1,
                   col=plt_cols))
-  x_tick_txt <- rep(c(".25", ".5", ".75"), times=2)
+  x_tick_txt <- rep(c("-1", "0", "+1"), times=2)
   with(df, axis(1, at=xs, labels=x_tick_txt))
   with(df, axis(2, at=seq(0.1, ylims[2], by=.2), las=2))
   legend("topleft", legend=c("Stable", "Variable"), pch=19,

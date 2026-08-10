@@ -47,7 +47,7 @@ produce_z_plts <- function(exp_strs, col_scheme,
          xaxt = "n",
          yaxt = "n",
          breaks=50)
-    axis(1, at = seq(-180, 0, by = 30))
+    axis(1, at = seq(-180, 0, by = 60))
     axis(2, at = seq(0, 0.04, by = 0.01))
     fig_label("A")
     legend(-180, 0.04, c("Exp 1", "Exp 2"), fill = c(fill_col_scheme[exp_strs[1]],
@@ -66,7 +66,7 @@ produce_z_plts <- function(exp_strs, col_scheme,
          main=main_titles[2],
          xaxt = "n",
          yaxt = "n")
-    axis(1, at = seq(-100, 0, by = 50))
+    axis(1, at = seq(-180, 0, by = 60))
     axis(2, at = seq(0, 0.4, by = 0.2))
     abline(v=-1.96, col="grey", lwd = 1, lty=2)
     fig_label("B")
