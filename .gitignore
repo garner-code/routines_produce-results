@@ -5,7 +5,10 @@
 data-wrangled/
 sims/
 res/
+katana/
+figs/
 routines_produce-results_files/figure-html/unnamed-chunk*.png
 /.quarto/
-
 **/*.quarto_ipynb
+.positai
+katana.zip

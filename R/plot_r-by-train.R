@@ -1,8 +1,9 @@
-plot_r_train <- function(p_wdth, p_hgt, 
-                         cols, breaks = 10,  
+plot_r_train <- function(x, p_wdth, p_hgt, 
+                         cols, breaks = 20,  
                          x_rng, y_rng,
                          exp_strs, data_path,
-                         r_by_g_fname){
+                         r_by_g_fname,
+                         fig_font){
   # this function takes the r scores from a given experiment,
   # combines them with a subject's training condition, 
   # and then plots a violin plot showing the group difference
@@ -17,38 +18,40 @@ plot_r_train <- function(p_wdth, p_hgt,
   ###### for manuscripts
   pdf(paste(r_by_g_fname, '.pdf', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54) 
-  par(family="Source Sans Pro", mfrow = c(1,2), mar = mar_set, las=las_set, cex=cex_set)
-  do_data_and_plot(exp_strs, data_path, x_rng, y_rng, cols, breaks)
+  par(family=fig_font, mfrow = c(1,2), mar = mar_set, las=las_set, cex=cex_set)
+  do_data_and_plot(exp_strs, data_path, x, x_rng, y_rng, cols, breaks)
   dev.off()
   
   svg(paste(r_by_g_fname, '.svg', sep=''), 
       width = p_wdth/2.54, height = p_hgt/2.54) 
-  par(family="Source Sans Pro", mfrow = c(1,2), mar = mar_set, las=las_set, cex=cex_set)
-  do_data_and_plot(exp_strs, data_path, x_rng, y_rng, cols, breaks)
+  par(family=fig_font, mfrow = c(1,2), mar = mar_set, las=las_set, cex=cex_set)
+  do_data_and_plot(exp_strs, data_path, x, x_rng, y_rng, cols, breaks)
   dev.off()
   
   ###### for talks
   pdf(paste(r_by_g_fname, '_4tlks.pdf', sep=''), 
       width = p_wdth/2.54*tlk_scl, height = p_hgt/2.54*tlk_scl) 
-  par(family="Source Sans Pro", mfrow = c(1,2), mar = mar_set, las=las_set, cex=1.5)
-  do_data_and_plot(exp_strs, data_path, x_rng, y_rng, cols, breaks)
+  par(family=fig_font, mfrow = c(1,2), mar = mar_set, las=las_set, cex=1.5)
+  do_data_and_plot(exp_strs, data_path, x, x_rng, y_rng, cols, breaks)
   dev.off()
   
   svg(paste(r_by_g_fname, '_4tlks.svg', sep=''), 
       width = p_wdth/2.54*tlk_scl, height = p_hgt/2.54*tlk_scl) 
-  par(family="Source Sans Pro", mfrow = c(1,2), mar = mar_set, las=las_set, cex=1.5)
-  do_data_and_plot(exp_strs, data_path, x_rng, y_rng, cols, breaks)
+  par(family=fig_font, mfrow = c(1,2), mar = mar_set, las=las_set, cex=1.5)
+  do_data_and_plot(exp_strs, data_path, x, x_rng, y_rng, cols, breaks)
   dev.off()
 }
 
-plot_r_grp_hst <- function(rdat, x_rng, y_rng, cols,
+plot_r_grp_hst <- function(rdat, x, x_rng, y_rng, cols,
                            fig_lab, leg, breaks, ylab){
   # do the actual plot
   # now set colours to be more alpha-ey
   col_scheme <- unlist(lapply(cols, adjustcolor, alpha.f=0.7))
   names(col_scheme) <- levels(rdat$train_type)
   
-  hist(with(rdat, r[train_type == "Stable"]), 
+  vals <- rdat[[x]]
+  
+  hist(vals[rdat$train_type == "Stable"], 
        probability=FALSE,
        col = col_scheme['Stable'], 
        xlim = x_rng,
@@ -58,7 +61,7 @@ plot_r_grp_hst <- function(rdat, x_rng, y_rng, cols,
        xaxt = "n",
        yaxt = "n",
        breaks = breaks)
-  axis(1, at = seq(x_rng[1], x_rng[2], by = 20))
+  axis(1, at = seq(x_rng[1], x_rng[2], by = x_rng[2]))
   axis(2, at = seq(y_rng[1], y_rng[2], by = 5))
   fig_label(fig_lab)
   if (leg){
@@ -67,7 +70,7 @@ plot_r_grp_hst <- function(rdat, x_rng, y_rng, cols,
                     col_scheme[levels(rdat$train_type)[2]]),
            bty='n') 
   }
-  hist(with(rdat, r[train_type == "Variable"]), probability=FALSE, 
+  hist(vals[rdat$train_type == "Variable"], probability=FALSE, 
        col=col_scheme['Variable'], add=T, breaks = breaks)
 }
 
@@ -80,10 +83,10 @@ get_dat <- function(exp_str, data_path){
   rdat
 }
 
-do_data_and_plot <- function(exp_strs, data_path, x_rng, y_rng, cols, breaks){
+do_data_and_plot <- function(exp_strs, data_path, x, x_rng, y_rng, cols, breaks){
   # need to run this code for each plot generated, so may as well make into a function
   rdat <- get_dat(exp_strs[1], data_path)
-  plot_r_grp_hst(rdat, x_rng, y_rng, cols, 'A', leg = TRUE, breaks, ylab='freq')
+  plot_r_grp_hst(rdat, x, x_rng, y_rng, cols, 'A', leg = TRUE, breaks, ylab='freq')
   rdat <- get_dat(exp_strs[2], data_path)
-  plot_r_grp_hst(rdat, x_rng, y_rng, cols, 'B', leg = FALSE, breaks, ylab='')
+  plot_r_grp_hst(rdat, x, x_rng, y_rng, cols, 'B', leg = FALSE, breaks, ylab='')
 }
