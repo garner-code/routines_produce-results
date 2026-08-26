@@ -66,7 +66,7 @@ sapply(req_functions, function(x) source(paste(here::here(function_loc),x, sep="
 library(extrafont)
 #font_import() # run this once only, comment out after first time
 loadfonts(device='pdf')
-fig_font <- grep("source", fonts(), value = TRUE, ignore.case = TRUE)
+fig_font <- grep("source", fonts(), value = TRUE, ignore.case = TRUE)[1]
 
 # the below are relevant to the z-score plot but are also the base for many other plot dims and colour schemes so will put these here
 z_p_wdth <- 10 # plot width of ms plot, in cm
@@ -80,14 +80,11 @@ Here, I calculate the routine (R) scores for each participant, generate density 
 
 ### Compute TE Scores
 
-
 First I compute TE scores for each participant. Note that these shall be sometimes referred to as R scores within this document.
 
 First I compute TE scores for each participant, using the formula -
 
 ![](figs/R_def.png){width="390"}
-
-
 
 ```{r, fold=TRUE, results='hide'}
 
